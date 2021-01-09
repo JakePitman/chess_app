@@ -2,7 +2,8 @@ import './style.css'
 
 function component() {
   const element = document.createElement('div');
-  element.innerText = "Hello World!"
+  const msg: string = "Hello World >:]"
+  element.innerText = msg
   element.classList.add("hello")
 
   return element;
