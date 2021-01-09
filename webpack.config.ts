@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
+const webpack = require('webpack')
+
 module.exports = {
   mode: 'development',
   entry: './src/index.ts',
@@ -13,6 +15,9 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: 'Development'
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser'
     })
   ],
   output: {
@@ -37,5 +42,11 @@ module.exports = {
         }
       }
     ]
+  },
+  resolve: {
+    fallback: {
+      "crypto": require.resolve("crypto-browserify"),
+      "stream": require.resolve("stream-browserify")
+    }
   }
 };
