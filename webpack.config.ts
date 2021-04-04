@@ -29,8 +29,19 @@ module.exports = {
   module: {
     rules: [ 
       {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        test: /\.[s]css$/i,
+        use: [
+          'style-loader', 
+          { 
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              modules: {
+                localIdentName: "[name]__[local]___[hash:base64:5]",
+              }
+            }
+          },
+          'sass-loader'],
       },
       {
         test: /\.m?[jt]s[x]$/,
