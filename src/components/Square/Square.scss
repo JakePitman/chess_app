@@ -1,0 +1,32 @@
+@use '/src/sharedStyles/colors.scss';
+
+.square {
+  width: 100px;
+  height: 100px;
+  position: relative
+}
+
+.white {
+  @extend .square;
+  background: colors.$white;
+}
+
+.black {
+  @extend .square;
+  background: #212121;
+}
+
+.location {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+
+  opacity: 0.2;
+
+  .black & {
+    color: colors.$white;
+  }
+  .white & {
+    color: colors.$black;
+  }
+}
