@@ -13,7 +13,7 @@
 
 .black {
   @extend .square;
-  background: #212121;
+  background: colors.$black;
 }
 
 .location {
@@ -21,7 +21,7 @@
   bottom: 2px;
   left: 2px;
 
-  opacity: 0.2;
+  opacity: 0.3;
 
   .black & {
     color: colors.$white;
