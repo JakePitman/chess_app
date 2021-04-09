@@ -6,15 +6,17 @@ const webpack = require('webpack')
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.ts',
+  entry: './src/index.tsx',
   devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist'
   },
   plugins: [ 
+    
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Development'
+      title: '♚ Chess App ♛',
+      template: 'index.html'
     }),
     new webpack.ProvidePlugin({
       process: 'process/browser'
@@ -27,16 +29,27 @@ module.exports = {
   module: {
     rules: [ 
       {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        test: /\.[s]css$/i,
+        use: [
+          'style-loader', 
+          { 
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              modules: {
+                localIdentName: "[name]__[local]___[hash:base64:5]",
+              }
+            }
+          },
+          'sass-loader'],
       },
       {
-        test: /\.m?[jt]s$/,
+        test: /\.m?[jt]s[x]$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-typescript'],
+            presets: ['@babel/preset-env', '@babel/preset-typescript', '@babel/preset-react'],
             plugins: ['@babel/plugin-proposal-object-rest-spread']
           }
         }
@@ -44,6 +57,7 @@ module.exports = {
     ]
   },
   resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
     fallback: {
       "crypto": require.resolve("crypto-browserify"),
       "stream": require.resolve("stream-browserify")
