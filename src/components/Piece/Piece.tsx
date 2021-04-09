@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './Piece.scss'
+import { PieceName, Side } from "../../sharedTypes"
 
 const PIECES = {
   white: {
@@ -21,14 +22,8 @@ const PIECES = {
 }
 
 type Props = {
-  color: "black" | "white",
-  piece:
-    "king",
-    "queen",
-    "rook",
-    "bishop",
-    "knight",
-    "pawn",
+  color: Side,
+  piece: PieceName
 }
 
 const Piece = ({color, piece}: Props) => {
