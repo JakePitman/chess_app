@@ -1,4 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
+import { ItemTypes } from '../../itemTypes'
+import { useDrop } from 'react-dnd'
 
 import styles from './Square.scss'
 import BoardInfoContext from '../../contexts/BoardInfoContext'
@@ -34,8 +36,21 @@ const Square = ({ rankNumber, fileNumber, fileLetter }: Props) => {
     ).piece)
   }, [board])
 
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: ItemTypes.KNIGHT,
+    drop: (e) => console.log("dropped: ", e),
+    collect: monitor => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }), [])
+
   return (
-    <div className={isWhite(rankNumber, fileNumber) ? styles.white : styles.black}>
+    <div 
+      className={
+        isWhite(rankNumber, fileNumber) ? styles.white : styles.black
+      }
+      ref={drop}
+    >
       {
         pieceInfo && 
         <Piece 
@@ -43,6 +58,7 @@ const Square = ({ rankNumber, fileNumber, fileLetter }: Props) => {
           piece={pieceInfo.type}
         />
       }
+      <div className={isOver && styles.hoverCircle}/>
       <p className={styles.location}>
         {fileLetter + rankNumber}
       </p>
