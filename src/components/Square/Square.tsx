@@ -11,6 +11,7 @@ type Props = {
   rankNumber: number
   fileNumber: number
   fileLetter: string
+  movePiece: (piece: PieceName, targetSquare: string) => void
 }
 
 const isWhite = (rankNumber: number, fileNumber: number) => {
@@ -26,7 +27,7 @@ type PieceInfo = null | {
   type: PieceName
 }
 
-const Square = ({ rankNumber, fileNumber, fileLetter }: Props) => { 
+const Square = ({ rankNumber, fileNumber, fileLetter, movePiece }: Props) => { 
   const board = useContext(BoardInfoContext)
   const [ pieceInfo, setPieceInfo ] = useState<PieceInfo>(null)
 
@@ -36,9 +37,11 @@ const Square = ({ rankNumber, fileNumber, fileLetter }: Props) => {
     ).piece)
   }, [board])
 
+  const squareNotation = `${fileLetter}${rankNumber}`
+
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.KNIGHT,
-    drop: (e) => console.log("dropped: ", e),
+    drop: () => movePiece("knight", squareNotation),
     collect: monitor => ({
       isOver: !!monitor.isOver(),
     }),
@@ -60,7 +63,7 @@ const Square = ({ rankNumber, fileNumber, fileLetter }: Props) => {
       }
       <div className={isOver && styles.hoverCircle}/>
       <p className={styles.location}>
-        {fileLetter + rankNumber}
+        {squareNotation}
       </p>
     </div>
   )

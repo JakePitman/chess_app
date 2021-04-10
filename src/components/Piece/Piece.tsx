@@ -39,7 +39,9 @@ const Piece = ({color, piece}: Props) => {
 
   return (
     <div 
-      className={isDragging ? styles.dragging : styles.piece}
+      className={
+        isDragging ? styles.dragging : styles.piece
+      }
       ref={drag}
     >
       {PIECES[color][piece]}
