@@ -3,7 +3,6 @@ import { useDrag } from 'react-dnd'
 
 import styles from './Piece.scss'
 import { PieceName, Side } from "../../sharedTypes"
-import { ItemTypes } from "../../itemTypes"
 
 const PIECES = {
   white: {
@@ -31,7 +30,7 @@ type Props = {
 
 const Piece = ({color, piece}: Props) => {
   const [{isDragging}, drag] = useDrag(() => ({
-    type: ItemTypes.KNIGHT,
+    type: piece,
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),

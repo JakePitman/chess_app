@@ -40,8 +40,8 @@ const Square = ({ rankNumber, fileNumber, fileLetter, movePiece }: Props) => {
   const squareNotation = `${fileLetter}${rankNumber}`
 
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: ItemTypes.KNIGHT,
-    drop: () => movePiece("knight", squareNotation),
+    accept: ['king', 'queen', 'rook', 'bishop', 'knight', 'pawn'],
+    drop: (item, monitor) => movePiece(monitor.getItemType() as PieceName, squareNotation),
     collect: monitor => ({
       isOver: !!monitor.isOver(),
     }),
@@ -61,7 +61,7 @@ const Square = ({ rankNumber, fileNumber, fileLetter, movePiece }: Props) => {
           piece={pieceInfo.type}
         />
       }
-      <div className={isOver && styles.hoverCircle}/>
+      <div className={isOver ? styles.hoverCircle : ''}/>
       <p className={styles.location}>
         {squareNotation}
       </p>
