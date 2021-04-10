@@ -18,6 +18,7 @@ const pieceNameToNotation = {
 
 const App = () => { 
   const [board, setBoard] = useState(gameClient.game.board)
+  const [input, setInput] = useState('')
 
   const movePiece = (piece: PieceName, targetSquare: string) => {
     const pieceNotation = pieceNameToNotation[piece]
@@ -30,6 +31,17 @@ const App = () => {
     <BoardInfoProvider value={board}>
       <div className={styles.appContainer}>
         <Board movePiece={movePiece}></Board>
+        <input 
+          onChange={(e) => setInput(e.target.value)}
+          value={input}
+          onKeyDown={(e) => {
+            if (e.keyCode === 13) {
+              gameClient.move(input)
+              setInput('')
+              setBoard({...gameClient.game.board})
+            }
+          }}
+        />
       </div>
     </BoardInfoProvider>
   )
