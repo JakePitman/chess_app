@@ -26,11 +26,16 @@ const PIECES = {
 type Props = {
   color: Side,
   piece: PieceName
+  location: { rank: number, file: string }
 }
 
-const Piece = ({color, piece}: Props) => {
+const Piece = ({color, piece, location}: Props) => {
   const [{isDragging}, drag] = useDrag(() => ({
     type: piece,
+    item: { 
+      pieceName: piece,
+      square: location 
+    },
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),

@@ -11,7 +11,7 @@ type Props = {
   rankNumber: number
   fileNumber: number
   fileLetter: string
-  movePiece: (piece: PieceName, targetSquare: string) => void
+  movePiece: (piece: PieceName, targetSquare: string, currentLocation: string) => void
 }
 
 const isWhite = (rankNumber: number, fileNumber: number) => {
@@ -41,7 +41,13 @@ const Square = ({ rankNumber, fileNumber, fileLetter, movePiece }: Props) => {
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ['king', 'queen', 'rook', 'bishop', 'knight', 'pawn'],
-    drop: (item, monitor) => movePiece(monitor.getItemType() as PieceName, squareNotation),
+    drop: (item: {pieceName: PieceName, square: string}, monitor) => {
+      movePiece(
+        item.pieceName,
+        squareNotation,
+        item.square
+      )
+    },
     collect: monitor => ({
       isOver: !!monitor.isOver(),
     }),
@@ -59,6 +65,7 @@ const Square = ({ rankNumber, fileNumber, fileLetter, movePiece }: Props) => {
         <Piece 
           color={pieceInfo.side.name}
           piece={pieceInfo.type}
+          location={{rank: rankNumber, file: fileLetter}}
         />
       }
       <div className={isOver ? styles.hoverCircle : ''}/>
