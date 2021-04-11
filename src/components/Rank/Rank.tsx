@@ -6,7 +6,12 @@ import PieceName from "../../sharedTypes/PieceName"
 
 type Props = {
   rankNumber: number;
-  movePiece: (piece: PieceName, targetSquare: string, currentLocation: {rank: number, file: string}) => void;
+  movePiece: (
+    piece: PieceName,
+    targetSquare: string,
+    currentLocation: {rank: number, file: string},
+    isTaking: boolean
+  ) => void;
 }
 
 const FILE_LETTERS = {

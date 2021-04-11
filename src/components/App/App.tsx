@@ -23,19 +23,29 @@ const App = () => {
   const movePiece = (
     piece: PieceName,
     targetSquare: string,
-    currentLocation: {rank: number, file: string}
+    currentLocation: {rank: number, file: string},
+    isTaking: boolean
   ) => {
     const { rank, file } = currentLocation
+    targetSquare = isTaking ? "x" + targetSquare : targetSquare
     if ( piece === "pawn" ) {
-      gameClient.move(targetSquare)
+      gameClient.move(
+        isTaking ?
+        file + targetSquare :
+        targetSquare
+      )
     } else {
       const pieceNotation = pieceNameToNotation[piece]
-      const moveNotation = pieceNotation + currentLocation.file + targetSquare
+      const moveNotation = pieceNotation + targetSquare
       try {
         gameClient.move(moveNotation)
       // Passing rank & file together isn't supported (eg. Nb1C3)
       } catch(e) {
-        gameClient.move(pieceNotation + currentLocation.rank + targetSquare)
+        try {
+          gameClient.move(pieceNotation + file + targetSquare)
+        } catch(e) {
+          gameClient.move(pieceNotation + rank + targetSquare)
+        }
       }
     }
     setBoard({ ...gameClient.game.board })

@@ -11,7 +11,12 @@ type Props = {
   rankNumber: number
   fileNumber: number
   fileLetter: string
-  movePiece: (piece: PieceName, targetSquare: string, currentLocation: string) => void
+  movePiece: (
+    piece: PieceName,
+    targetSquare: string,
+    currentLocation: string,
+    isTaking: boolean
+  ) => void
 }
 
 const isWhite = (rankNumber: number, fileNumber: number) => {
@@ -29,12 +34,15 @@ type PieceInfo = null | {
 
 const Square = ({ rankNumber, fileNumber, fileLetter, movePiece }: Props) => { 
   const board = useContext(BoardInfoContext)
+  const getPieceInfo = () => {
+    return board.squares.find(square =>
+      square.file === fileLetter && square.rank === rankNumber
+    ).piece
+  }
   const [ pieceInfo, setPieceInfo ] = useState<PieceInfo>(null)
 
   useEffect(() => {
-    setPieceInfo(board.squares.find(square =>
-      square.file === fileLetter && square.rank === rankNumber
-    ).piece)
+    setPieceInfo(getPieceInfo())
   }, [board])
 
   const squareNotation = `${fileLetter}${rankNumber}`
@@ -45,7 +53,8 @@ const Square = ({ rankNumber, fileNumber, fileLetter, movePiece }: Props) => {
       movePiece(
         item.pieceName,
         squareNotation,
-        item.square
+        item.square,
+        !!getPieceInfo()
       )
     },
     collect: monitor => ({
