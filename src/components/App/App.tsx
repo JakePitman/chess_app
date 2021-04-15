@@ -34,6 +34,18 @@ const App = () => {
         file + targetSquare :
         targetSquare
       )
+    } else if ( piece === "king" ) {
+      const moveNotation = "K" + targetSquare
+      try { 
+        gameClient.move(moveNotation) 
+      } catch {
+        if (targetSquare === "g1" || targetSquare === "g8") {
+          gameClient.move("0-0")
+        } else if (targetSquare === "c1" || targetSquare === "c8") {
+          gameClient.move("0-0-0")
+        }
+        throw Error("Invalid King move")
+      }
     } else {
       const pieceNotation = pieceNameToNotation[piece]
       const moveNotation = pieceNotation + targetSquare
