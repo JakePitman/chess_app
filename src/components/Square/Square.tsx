@@ -72,8 +72,7 @@ const Square = ({ rankNumber, fileNumber, fileLetter, movePiece }: Props) => {
       {
         pieceInfo && 
         <Piece 
-          color={pieceInfo.side.name}
-          piece={pieceInfo.type}
+          pieceInfo={pieceInfo}
           location={{rank: rankNumber, file: fileLetter}}
         />
       }
