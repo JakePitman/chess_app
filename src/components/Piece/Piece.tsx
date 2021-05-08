@@ -1,4 +1,6 @@
 import React from 'react'
+import { useDrag } from 'react-dnd'
+
 import styles from './Piece.scss'
 import { PieceName, Side } from "../../sharedTypes"
 
@@ -22,13 +24,33 @@ const PIECES = {
 }
 
 type Props = {
-  color: Side,
-  piece: PieceName
+  pieceInfo: {side: { name: Side }, type: PieceName}
+  location: { rank: number, file: string }
 }
 
-const Piece = ({color, piece}: Props) => {
+const Piece = ({pieceInfo, location}: Props) => {
+  const { type, side } = pieceInfo
+
+  const [{isDragging}, drag] = useDrag(() => ({
+    type: type,
+    item: { 
+      pieceName: type,
+      square: location 
+    },
+    collect: monitor => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }))
+
   return (
-    <div className={styles.piece}>{PIECES[color][piece]}</div>
+    <div 
+      className={
+        isDragging ? styles.dragging : styles.piece
+      }
+      ref={drag}
+    >
+      {PIECES[side.name][type]}
+    </div>
   )
 }
 

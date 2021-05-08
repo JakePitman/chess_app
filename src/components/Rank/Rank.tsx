@@ -2,9 +2,16 @@ import React from 'react'
 
 import Square from '../Square'
 import styles from './Rank.scss'
+import PieceName from "../../sharedTypes/PieceName"
 
 type Props = {
   rankNumber: number;
+  movePiece: (
+    piece: PieceName,
+    targetSquare: string,
+    currentLocation: {rank: number, file: string},
+    isTaking: boolean
+  ) => void;
 }
 
 const FILE_LETTERS = {
@@ -18,7 +25,7 @@ const FILE_LETTERS = {
   "8": "h",
 }
 
-const Rank = ({rankNumber}: Props) => { 
+const Rank = ({rankNumber, movePiece}: Props) => { 
   return (
     <div className={styles.mainContainer}>
       {
@@ -29,6 +36,7 @@ const Rank = ({rankNumber}: Props) => {
               rankNumber={rankNumber}
               fileNumber={fileNumber}
               fileLetter={fileLetter}
+              movePiece={movePiece}
               key={`square-${fileLetter}${rankNumber}`}
             /> 
           )

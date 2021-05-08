@@ -3,4 +3,12 @@
   height: 100%;
   font-size: 80px;
   text-align: center;
+  cursor: grab;
+}
+
+.dragging {
+  @extend .piece;
+
+  opacity: 0;
+  cursor: grabbing;
 }
