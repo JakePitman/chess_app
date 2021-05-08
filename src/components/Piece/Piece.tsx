@@ -29,7 +29,6 @@ type Props = {
 }
 
 const Piece = ({pieceInfo, location}: Props) => {
-
   const { type, side } = pieceInfo
 
   const [{isDragging}, drag] = useDrag(() => ({

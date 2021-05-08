@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useLayoutEffect } from 'react'
 import { ItemTypes } from '../../itemTypes'
 import { useDrop } from 'react-dnd'
 
@@ -41,8 +41,9 @@ const Square = ({ rankNumber, fileNumber, fileLetter, movePiece }: Props) => {
   }
   const [ pieceInfo, setPieceInfo ] = useState<PieceInfo>(null)
 
-  useEffect(() => {
-    setPieceInfo(getPieceInfo())
+  useLayoutEffect(() => {
+    const newInfo = getPieceInfo()
+    setPieceInfo(newInfo)
   }, [board])
 
   const squareNotation = `${fileLetter}${rankNumber}`
@@ -50,12 +51,18 @@ const Square = ({ rankNumber, fileNumber, fileLetter, movePiece }: Props) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ['king', 'queen', 'rook', 'bishop', 'knight', 'pawn'],
     drop: (item: {pieceName: PieceName, square: string}, monitor) => {
+      const isTaking = !!getPieceInfo()
       movePiece(
         item.pieceName,
         squareNotation,
         item.square,
         !!getPieceInfo()
       )
+      if (isTaking) {
+        // Hack: set to null first, so Piece rerenders
+        setPieceInfo(null)
+        setPieceInfo(getPieceInfo())
+      }
     },
     collect: monitor => ({
       isOver: !!monitor.isOver(),
