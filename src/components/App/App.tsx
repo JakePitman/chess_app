@@ -19,8 +19,17 @@ const pieceNameToNotation = {
 
 const App = () => { 
   const [board, setBoard] = useState(gameClient.game.board)
-  const [input, setInput] = useState('')
-  const [moves, setMoves] = useState<Move[][]>([ [{notation: "e4"}, {notation: "e5"}], [{notation: "d4"}, {notation: "d5"}], [{notation: "f4"}] ])
+  const [reasonInput, setReasonInput] = useState('')
+  const [moves, setMoves] = useState<Move[][]>([])
+
+  const addMoveToList = ( move: string ) => {
+    setMoves(prevMoves => { 
+      const lastTurn = prevMoves[prevMoves.length -1]
+      return lastTurn && lastTurn[0] && !lastTurn[1] ? 
+        [...prevMoves.slice(0, prevMoves.length - 1), [lastTurn[0], {notation: move}]] :
+        [...prevMoves, [{notation: move}]]
+    });
+  }
 
   const movePiece = (
     piece: PieceName,
@@ -31,20 +40,23 @@ const App = () => {
     const { rank, file } = currentLocation
     targetSquare = isTaking ? "x" + targetSquare : targetSquare
     if ( piece === "pawn" ) {
-      gameClient.move(
-        isTaking ?
+      const move = isTaking ?
         file + targetSquare :
         targetSquare
-      )
+      gameClient.move(move)
+      addMoveToList(move)
     } else if ( piece === "king" ) {
       const moveNotation = "K" + targetSquare
       try { 
         gameClient.move(moveNotation) 
+        addMoveToList(moveNotation)
       } catch {
         if (targetSquare === "g1" || targetSquare === "g8") {
           gameClient.move("0-0")
+          addMoveToList("0-0")
         } else if (targetSquare === "c1" || targetSquare === "c8") {
           gameClient.move("0-0-0")
+          addMoveToList("0-0-0")
         } else {
           throw Error("Invalid King move")
         }
@@ -54,12 +66,17 @@ const App = () => {
       const moveNotation = pieceNotation + targetSquare
       try {
         gameClient.move(moveNotation)
+        addMoveToList(moveNotation)
       // Passing rank & file together isn't supported (eg. Nb1C3)
       } catch(e) {
         try {
-          gameClient.move(pieceNotation + file + targetSquare)
+          const move = pieceNotation + file + targetSquare
+          gameClient.move(move)
+          addMoveToList(move)
         } catch(e) {
-          gameClient.move(pieceNotation + rank + targetSquare)
+          const move = pieceNotation + rank + targetSquare
+          gameClient.move(move)
+          addMoveToList(move)
         }
       }
     }
@@ -76,17 +93,28 @@ const App = () => {
           <Board movePiece={movePiece}></Board>
           <div className={styles.sideColumn}>
             <input 
-              onChange={(e) => setInput(e.target.value)}
-              value={input}
-              onKeyDown={(e) => {
-                if (e.keyCode === 13) {
-                  gameClient.move(input)
-                  setInput('')
-                  setBoard({...gameClient.game.board})
-                }
-              }}
+              onChange={(e) => setReasonInput(e.target.value)}
+              value={reasonInput}
               style={{"width": "100%"}}
+              placeholder="Add reason to last move"
+              // Add reason to last move
+              onKeyDown={(e) => {
+                  if (e.keyCode === 13) {
+                    moves.length > 0 && setMoves(prevMoves => {
+                      const lastTurn = prevMoves[prevMoves.length - 1]
+                      const lastMoveDup = { ...lastTurn[lastTurn.length - 1] }
+                      lastMoveDup.reason = reasonInput
+                      return [
+                        ...prevMoves.slice(0, prevMoves.length - 1),
+                        [ ...lastTurn.slice(0, lastTurn.length - 1), lastMoveDup ]
+                      ]
+                    })
+                    setReasonInput('')
+                  }
+                }}
+
             />
+            <button onClick={() => console.log(moves)}>Show moves</button>
           </div>
         </div>
       </div>

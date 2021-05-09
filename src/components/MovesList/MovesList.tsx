@@ -14,7 +14,7 @@ const MovesList = ({ turns }: Props) => {
         {
           turns.map((turn, i) => { 
             return ( 
-              <div className={styles.turn}>
+              <div className={styles.turn} key={i}>
                 <p>{i + 1}. {turn[0].notation}</p>
                 {
                   turn[1] && <p>, {turn[1].notation}</p>
