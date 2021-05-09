@@ -1,5 +1,8 @@
+@use '/src/sharedStyles/colors.scss';
+@use '/src/sharedStyles/spacing.scss';
+
 .mainContainer {
-  border: 10px solid #212121;
-  border-radius: 5px;
+  border: spacing.$border solid colors.$border;
+  border-radius: spacing.$border-radius;
   height: min-content;
 }

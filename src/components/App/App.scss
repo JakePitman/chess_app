@@ -1,10 +1,20 @@
 .appContainer {
   width: 100%;
   min-height: 100vh;
-  border: 1px solid black;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
   background: #596375;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.columnsContainer {
+  display: flex;
+}
+
+.sideColumn {
+  width: 100%;
+  margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

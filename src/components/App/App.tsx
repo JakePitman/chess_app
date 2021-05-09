@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import chess from 'chess'
 
 import Board from '../Board'
+import MovesList from '../MovesList'
 import styles from "./App.scss"
 import { BoardInfoProvider } from '../../contexts/BoardInfoContext';
-import { PieceName } from "../../sharedTypes"
+import { PieceName, Move } from "../../sharedTypes"
 
 const gameClient = chess.create()
 
@@ -19,6 +20,7 @@ const pieceNameToNotation = {
 const App = () => { 
   const [board, setBoard] = useState(gameClient.game.board)
   const [input, setInput] = useState('')
+  const [moves, setMoves] = useState<Move[][]>([ [{notation: "e4"}, {notation: "e5"}], [{notation: "d4"}, {notation: "d5"}], [{notation: "f4"}] ])
 
   const movePiece = (
     piece: PieceName,
@@ -67,18 +69,26 @@ const App = () => {
   return(
     <BoardInfoProvider value={board}>
       <div className={styles.appContainer}>
-        <Board movePiece={movePiece}></Board>
-        <input 
-          onChange={(e) => setInput(e.target.value)}
-          value={input}
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) {
-              gameClient.move(input)
-              setInput('')
-              setBoard({...gameClient.game.board})
-            }
-          }}
-        />
+        <div className={styles.columnsContainer}>
+          <div className={styles.sideColumn}>
+            <MovesList turns={moves}></MovesList>
+          </div>
+          <Board movePiece={movePiece}></Board>
+          <div className={styles.sideColumn}>
+            <input 
+              onChange={(e) => setInput(e.target.value)}
+              value={input}
+              onKeyDown={(e) => {
+                if (e.keyCode === 13) {
+                  gameClient.move(input)
+                  setInput('')
+                  setBoard({...gameClient.game.board})
+                }
+              }}
+              style={{"width": "100%"}}
+            />
+          </div>
+        </div>
       </div>
     </BoardInfoProvider>
   )
