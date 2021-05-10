@@ -13,7 +13,7 @@
 }
 
 .title {
-  background: colors.$black;
+  background: colors.$border;
   color: colors.$white;
   width: 100%;
   padding: 5px;
@@ -22,7 +22,7 @@
 }
 
 .notations {
-  color: colors.$black;
+  color: colors.$border;
   display: flex;
   flex-direction: column;
   justify-content: center;

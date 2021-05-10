@@ -22,6 +22,7 @@ const App = () => {
   const [board, setBoard] = useState(gameClient.game.board)
   const [reasonInput, setReasonInput] = useState('')
   const [moves, setMoves] = useState<Move[][]>([])
+  const [commandColumnMessage, setCommandColumnMessage] = useState<string>(null)
 
   const addMoveToList = ( move: string ) => {
     setMoves(prevMoves => { 
@@ -40,46 +41,51 @@ const App = () => {
   ) => {
     const { rank, file } = currentLocation
     targetSquare = isTaking ? "x" + targetSquare : targetSquare
-    if ( piece === "pawn" ) {
-      const move = isTaking ?
-        file + targetSquare :
-        targetSquare
-      gameClient.move(move)
-      addMoveToList(move)
-    } else if ( piece === "king" ) {
-      const moveNotation = "K" + targetSquare
-      try { 
-        gameClient.move(moveNotation) 
-        addMoveToList(moveNotation)
-      } catch {
-        if (targetSquare === "g1" || targetSquare === "g8") {
-          gameClient.move("0-0")
-          addMoveToList("0-0")
-        } else if (targetSquare === "c1" || targetSquare === "c8") {
-          gameClient.move("0-0-0")
-          addMoveToList("0-0-0")
-        } else {
-          throw Error("Invalid King move")
+    try {
+      if ( piece === "pawn" ) {
+        const move = isTaking ?
+          file + targetSquare :
+          targetSquare
+        gameClient.move(move)
+        addMoveToList(move)
+      } else if ( piece === "king" ) {
+        const moveNotation = "K" + targetSquare
+        try { 
+          gameClient.move(moveNotation) 
+          addMoveToList(moveNotation)
+        } catch {
+          if (targetSquare === "g1" || targetSquare === "g8") {
+            gameClient.move("0-0")
+            addMoveToList("0-0")
+          } else if (targetSquare === "c1" || targetSquare === "c8") {
+            gameClient.move("0-0-0")
+            addMoveToList("0-0-0")
+          } else {
+            throw Error("Invalid King move")
+          }
         }
-      }
-    } else {
-      const pieceNotation = pieceNameToNotation[piece]
-      const moveNotation = pieceNotation + targetSquare
-      try {
-        gameClient.move(moveNotation)
-        addMoveToList(moveNotation)
-      // Passing rank & file together isn't supported (eg. Nb1C3)
-      } catch(e) {
+      } else {
+        const pieceNotation = pieceNameToNotation[piece]
+        const moveNotation = pieceNotation + targetSquare
         try {
-          const move = pieceNotation + file + targetSquare
-          gameClient.move(move)
-          addMoveToList(move)
+          gameClient.move(moveNotation)
+          addMoveToList(moveNotation)
+        // Passing rank & file together isn't supported (eg. Nb1C3)
         } catch(e) {
-          const move = pieceNotation + rank + targetSquare
-          gameClient.move(move)
-          addMoveToList(move)
+          try {
+            const move = pieceNotation + file + targetSquare
+            gameClient.move(move)
+            addMoveToList(move)
+          } catch(e) {
+            const move = pieceNotation + rank + targetSquare
+            gameClient.move(move)
+            addMoveToList(move)
+          }
         }
       }
+      setCommandColumnMessage('')
+    } catch {
+      setCommandColumnMessage("Invalid move")
     }
     setBoard({ ...gameClient.game.board })
   }
@@ -111,6 +117,7 @@ const App = () => {
               reasonInput={reasonInput}
               addReasonToMove={addReasonToMove}
               moves={moves}
+              incomingMessage={commandColumnMessage}
             />
           </div>
         </div>
