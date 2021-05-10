@@ -8,7 +8,7 @@ type Props = {
 
 const MovesList = ({ turns }: Props) => {
   return(
-    <div className={styles.container}>
+    <>
       <div className={styles.title}>Moves</div>
       <div className={styles.notations}>
         {
@@ -24,7 +24,7 @@ const MovesList = ({ turns }: Props) => {
           })
         }
       </div>
-    </div>
+    </>
   )
 }
 

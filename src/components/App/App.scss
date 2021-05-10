@@ -1,3 +1,6 @@
+@use '/src/sharedStyles/colors.scss';
+@use '/src/sharedStyles/spacing.scss';
+
 .appContainer {
   width: 100%;
   min-height: 100vh;
@@ -16,5 +19,9 @@
   margin: 0 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  background: colors.$white;
+  padding: 20px;
+  border: spacing.$border solid colors.$border;
+  border-radius: spacing.$border-radius;
 }

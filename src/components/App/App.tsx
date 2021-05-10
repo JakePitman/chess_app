@@ -3,6 +3,7 @@ import chess from 'chess'
 
 import Board from '../Board'
 import MovesList from '../MovesList'
+import CommandColumn from '../CommandColumn'
 import styles from "./App.scss"
 import { BoardInfoProvider } from '../../contexts/BoardInfoContext';
 import { PieceName, Move } from "../../sharedTypes"
@@ -83,6 +84,19 @@ const App = () => {
     setBoard({ ...gameClient.game.board })
   }
 
+  const addReasonToMove = () => {
+    moves.length > 0 && setMoves(prevMoves => {
+      const lastTurn = prevMoves[prevMoves.length - 1]
+      const lastMoveDup = { ...lastTurn[lastTurn.length - 1] }
+      lastMoveDup.reason = reasonInput
+      return [
+        ...prevMoves.slice(0, prevMoves.length - 1),
+        [ ...lastTurn.slice(0, lastTurn.length - 1), lastMoveDup ]
+      ]
+    })
+    setReasonInput('')
+  }
+
   return(
     <BoardInfoProvider value={board}>
       <div className={styles.appContainer}>
@@ -92,29 +106,12 @@ const App = () => {
           </div>
           <Board movePiece={movePiece}></Board>
           <div className={styles.sideColumn}>
-            <input 
-              onChange={(e) => setReasonInput(e.target.value)}
-              value={reasonInput}
-              style={{"width": "100%"}}
-              placeholder="Add reason to last move"
-              // Add reason to last move
-              onKeyDown={(e) => {
-                  if (e.keyCode === 13) {
-                    moves.length > 0 && setMoves(prevMoves => {
-                      const lastTurn = prevMoves[prevMoves.length - 1]
-                      const lastMoveDup = { ...lastTurn[lastTurn.length - 1] }
-                      lastMoveDup.reason = reasonInput
-                      return [
-                        ...prevMoves.slice(0, prevMoves.length - 1),
-                        [ ...lastTurn.slice(0, lastTurn.length - 1), lastMoveDup ]
-                      ]
-                    })
-                    setReasonInput('')
-                  }
-                }}
-
+            <CommandColumn 
+              setReasonInput={setReasonInput}
+              reasonInput={reasonInput}
+              addReasonToMove={addReasonToMove}
+              moves={moves}
             />
-            <button onClick={() => console.log(moves)}>Show moves</button>
           </div>
         </div>
       </div>
