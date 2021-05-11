@@ -1,0 +1,37 @@
+@use '/src/sharedStyles/colors.scss';
+@use '/src/sharedStyles/spacing.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: colors.$white;
+  height: 100%;
+  padding: 20px;
+  border: spacing.$border solid colors.$border;
+  border-radius: spacing.$border-radius;
+}
+
+.title {
+  background: colors.$border;
+  color: colors.$white;
+  width: 100%;
+  padding: 5px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.notations {
+  color: colors.$border;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.turn {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
