@@ -1,4 +1,6 @@
 import React, { useState, SetStateAction, Dispatch } from 'react'
+import axios from "axios"
+
 import { Move } from "../../sharedTypes"
 import styles from "./CommandColumn.scss"
 
