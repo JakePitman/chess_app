@@ -8,7 +8,7 @@ const pool = new Pool({
   port: 5432,
 })
 const getLines = (request, response) => {
-  pool.query('SELECT * FROM lines ORDER BY id ASC', (error, results) => {
+  pool.query('SELECT * FROM lines', (error, results) => {
     if (error) {
       throw error
     }

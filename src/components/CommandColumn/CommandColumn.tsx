@@ -57,8 +57,20 @@ const CommandColumn = ({
         onClick={() => {
           if (titleInput.length <= 0) {
             setMessage("Please enter a title")
+          } else if (moves.length <=0) {
+            setMessage("Please make some moves")
           } else {
-            console.log(moves)
+            axios.post(
+              "http://localhost:3000/lines",
+              {
+                name: titleInput,
+                moves: JSON.stringify(moves)
+              }
+            ).then(
+              res => console.log("RES: ", res)
+            ).catch ( e  => {
+              console.log(e)
+            })
           }
         }
         }
