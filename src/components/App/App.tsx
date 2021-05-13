@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import FreeMode from '../FreeMode'
 
 import Menu from "../Menu"
+import FreeMode from '../FreeMode'
+import TestMode from '../TestMode'
 import Button from "../Button"
 import styles from "./App.scss"
 
@@ -12,8 +13,8 @@ const App = () => {
 
   const modes = {
     "menu": <Menu setMode={setMode}/>,
-    "free": <FreeMode></FreeMode>,
-    "test": <div>Test</div>,
+    "free": <FreeMode/>,
+    "test": <TestMode/>,
     "list": <div>List</div>
   }
 

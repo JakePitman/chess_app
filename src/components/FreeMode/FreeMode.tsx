@@ -5,7 +5,6 @@ import Board from '../Board'
 import MovesList from '../MovesList'
 import CommandColumn from '../CommandColumn'
 import styles from "./FreeMode.scss"
-import { BoardInfoProvider } from '../../contexts/BoardInfoContext';
 import { PieceName, Move } from "../../sharedTypes"
 
 
@@ -104,13 +103,12 @@ const FreeMode = () => {
   }
 
   return(
-    <BoardInfoProvider value={board}>
       <div className={styles.appContainer}>
         <div className={styles.columnsContainer}>
           <div className={styles.sideColumn}>
             <MovesList turns={moves}></MovesList>
           </div>
-          <Board movePiece={movePiece}></Board>
+          <Board movePiece={movePiece} board={board}></Board>
           <div className={styles.sideColumn}>
             <CommandColumn 
               setReasonInput={setReasonInput}
@@ -122,7 +120,6 @@ const FreeMode = () => {
           </div>
         </div>
       </div>
-    </BoardInfoProvider>
   )
 }
 
