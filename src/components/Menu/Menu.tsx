@@ -1,4 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react'
+
+import Button from '../Button'
+import styles from './Menu.scss'
+
 type Mode = "menu" | "free" | "test" | "list"
 
 type Props = {
@@ -6,10 +10,16 @@ type Props = {
 }
 
 const Menu = ({ setMode }: Props) => {
-  return <div>
-    <button onClick={() => setMode("free")}>FREE</button>
-    <button onClick={() => setMode("test")}>TEST</button>
-    <button onClick={() => setMode("list")}>LIST</button>
+  return <div className={styles.container}>
+    <div className={styles.buttonContainer}>
+      <Button text="FREE" onClick={() => setMode("free")}/>
+    </div>
+    <div className={styles.buttonContainer}>
+      <Button text="TEST" onClick={() => setMode("test")}/>
+    </div>
+    <div className={styles.buttonContainer}>
+      <Button text="LIST" onClick={() => setMode("list")}/>
+    </div>
   </div>
 }
 

@@ -11,15 +11,9 @@
   position: relative;
 }
 
-.menuButton {
-  background: colors.$border;
-  color: colors.$white;
-  border: none;
+.menuButtonContainer {
   width: max-content;
-  padding: 5px 10px;
-  font-size: 20px;
   position: absolute;
   top: 0;
-  cursor: pointer;
   margin: spacing.$side-margin;
 }
