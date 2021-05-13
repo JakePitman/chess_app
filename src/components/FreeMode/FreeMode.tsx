@@ -22,6 +22,7 @@ const FreeMode = () => {
   const [reasonInput, setReasonInput] = useState('')
   const [moves, setMoves] = useState<Move[][]>([])
   const [commandColumnMessage, setCommandColumnMessage] = useState<string>(null)
+  const [isWhite, setIsWhite] = useState<boolean>(true)
 
   const addMoveToList = ( move: string ) => {
     setMoves(prevMoves => { 
@@ -116,6 +117,8 @@ const FreeMode = () => {
               addReasonToMove={addReasonToMove}
               moves={moves}
               incomingMessage={commandColumnMessage}
+              isWhite={isWhite}
+              setIsWhite={setIsWhite}
             />
           </div>
         </div>

@@ -28,13 +28,13 @@ const getLineById = (request, response) => {
 }
 
 const createLine = (request, response) => {
-  const { name, moves } = request.body
+  const { name, playercolor, moves } = request.body
 
-  pool.query('INSERT INTO lines (name, moves) VALUES ($1, $2)', [name, moves], (error, result) => {
+  pool.query('INSERT INTO lines (name, playercolor, moves) VALUES ($1, $2, $3)', [name, playercolor, moves], (error, result) => {
     if (error) {
       throw error
     }
-    response.status(201).send(`Line added with ID: ${result.insertId}`)
+    response.status(201).send(`Line added with name: ${result.name}`)
   })
 }
 
