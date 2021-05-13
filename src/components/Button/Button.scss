@@ -1,0 +1,30 @@
+@use '/src/sharedStyles/colors.scss';
+
+.button {
+  width: 100%;
+  color: colors.$white;
+  background: colors.$border;
+  padding: 3px;
+  text-align: center;
+  margin-bottom: 10px;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  outline: 2px solid colors.$border;
+
+  &:hover {
+    color: colors.$border;
+  }
+  transition: all 0.2s;
+}
+
+.innerBorder {
+  padding: 5px;
+  outline: 2px solid colors.$white;
+  background: colors.$border;
+  &:hover {
+    outline: 2px solid colors.$border;
+    background: colors.$white;
+  }
+  transition: all 0.2s;
+}

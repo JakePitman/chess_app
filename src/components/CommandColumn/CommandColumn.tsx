@@ -3,6 +3,7 @@ import axios from "axios"
 
 import { Move } from "../../sharedTypes"
 import styles from "./CommandColumn.scss"
+import Button from "../Button"
 
 type Props = {
   setReasonInput: Dispatch<SetStateAction<string>>;
@@ -52,8 +53,8 @@ const CommandColumn = ({
             }}
           /> 
       </div>
-      <button 
-        className={styles.button}
+      <Button 
+        text="SAVE MOVES"
         onClick={() => {
           if (titleInput.length <= 0) {
             setMessage("Please enter a title")
@@ -74,7 +75,7 @@ const CommandColumn = ({
           }
         }
         }
-      >Save moves</button>
+      />
       <p className={styles.message}>{incomingMessage ? incomingMessage : message}</p>
     </div>
   )
