@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import FreeMode from '../FreeMode'
 
 import Menu from "../Menu"
+import styles from "./App.scss"
 
 type Mode = "menu" | "free" | "test" | "list"
 
@@ -16,8 +17,14 @@ const App = () => {
   }
 
   return (
-    <div>
-      { mode !== "menu" && <button onClick={() => setMode("menu")}>MENU</button> }
+    <div className={styles.container}>
+      { 
+        mode !== "menu" && 
+          <button 
+            className={styles.menuButton}
+            onClick={() => setMode("menu")}
+          >MENU</button> 
+      }
       {
         modes[mode]
       }
