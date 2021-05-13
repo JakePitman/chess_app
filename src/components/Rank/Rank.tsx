@@ -12,6 +12,7 @@ type Props = {
     currentLocation: {rank: number, file: string},
     isTaking: boolean
   ) => void;
+  isWhite: boolean;
 }
 
 const FILE_LETTERS = {
@@ -25,11 +26,15 @@ const FILE_LETTERS = {
   "8": "h",
 }
 
-const Rank = ({rankNumber, movePiece}: Props) => { 
+const Rank = ({rankNumber, movePiece, isWhite}: Props) => { 
   return (
     <div className={styles.mainContainer}>
       {
-        [1,2,3,4,5,6,7,8].map((fileNumber) => {
+        (
+          isWhite ?
+          [1,2,3,4,5,6,7,8] :
+          [8,7,6,5,4,3,2,1]
+        ).map((fileNumber) => {
           const fileLetter = FILE_LETTERS[fileNumber]
           return (
             <Square 

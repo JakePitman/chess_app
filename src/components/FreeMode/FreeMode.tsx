@@ -109,7 +109,7 @@ const FreeMode = () => {
           <div className={styles.sideColumn}>
             <MovesList turns={moves}></MovesList>
           </div>
-          <Board movePiece={movePiece} board={board}></Board>
+          <Board movePiece={movePiece} board={board} isWhite={isWhite}></Board>
           <div className={styles.sideColumn}>
             <CommandColumn 
               setReasonInput={setReasonInput}
