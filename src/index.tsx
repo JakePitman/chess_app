@@ -1,7 +1,7 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
 
-import Menu from "./components/Menu"
+import App from "./components/App"
 import "./style.scss"
 
-ReactDOM.render(<Menu />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
