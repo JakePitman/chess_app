@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import FreeMode from '../FreeMode'
 
+import Menu from "../Menu"
+
 type Mode = "menu" | "free" | "test" | "list"
 
 const App = () => {
-  const [mode, setMode] = useState<Mode>("free")
+  const [mode, setMode] = useState<Mode>("menu")
 
   const modes = {
-    "menu": <div>Menu</div>,
+    "menu": <Menu setMode={setMode}/>,
     "free": <FreeMode></FreeMode>,
     "test": <div>Test</div>,
     "list": <div>List</div>
@@ -15,6 +17,7 @@ const App = () => {
 
   return (
     <div>
+      { mode !== "menu" && <button onClick={() => setMode("menu")}>MENU</button> }
       {
         modes[mode]
       }
