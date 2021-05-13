@@ -4,7 +4,7 @@ import chess from 'chess'
 import Board from '../Board'
 import MovesList from '../MovesList'
 import CommandColumn from '../CommandColumn'
-import styles from "./App.scss"
+import styles from "./FreeMode.scss"
 import { BoardInfoProvider } from '../../contexts/BoardInfoContext';
 import { PieceName, Move } from "../../sharedTypes"
 
@@ -18,7 +18,7 @@ const pieceNameToNotation = {
   "knight": "N",
 }
 
-const App = () => { 
+const FreeMode = () => { 
   const [board, setBoard] = useState(gameClient.game.board)
   const [reasonInput, setReasonInput] = useState('')
   const [moves, setMoves] = useState<Move[][]>([])
@@ -126,4 +126,4 @@ const App = () => {
   )
 }
 
-export default App
+export default FreeMode
