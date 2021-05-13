@@ -8,7 +8,6 @@ import styles from "./FreeMode.scss"
 import { BoardInfoProvider } from '../../contexts/BoardInfoContext';
 import { PieceName, Move } from "../../sharedTypes"
 
-const gameClient = chess.create()
 
 const pieceNameToNotation = {
   "king": "K",
@@ -19,6 +18,7 @@ const pieceNameToNotation = {
 }
 
 const FreeMode = () => { 
+  const gameClient = chess.create()
   const [board, setBoard] = useState(gameClient.game.board)
   const [reasonInput, setReasonInput] = useState('')
   const [moves, setMoves] = useState<Move[][]>([])
