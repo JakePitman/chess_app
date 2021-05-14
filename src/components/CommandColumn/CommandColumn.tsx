@@ -1,7 +1,7 @@
 import React, { useState, SetStateAction, Dispatch } from 'react'
 import axios from "axios"
 
-import { Move } from "../../sharedTypes"
+import { Move, MovesListType } from "../../sharedTypes"
 import styles from "./CommandColumn.scss"
 import Button from "../Button"
 
@@ -9,7 +9,7 @@ type Props = {
   setReasonInput: Dispatch<SetStateAction<string>>;
   reasonInput: string;
   addReasonToMove: () => void;
-  moves: Move[][];
+  moves: MovesListType;
   incomingMessage: string;
   isWhite: boolean;
   setIsWhite: Dispatch<SetStateAction<boolean>>;

@@ -1,9 +1,9 @@
 import React from 'react'
-import { Move } from "../../sharedTypes"
+import { Move, MovesListType } from "../../sharedTypes"
 import styles from "./MovesList.scss"
 
 type Props = {
-  turns: Move[][]
+  turns: MovesListType
 }
 
 const MovesList = ({ turns }: Props) => {
