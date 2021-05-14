@@ -9,7 +9,7 @@ type Props = {
   movePiece: (
     piece: PieceName,
     targetSquare: string,
-    currentLocation: {rank: number, file: string},
+    currentLocation: string,
     isTaking: boolean
   ) => void;
   isWhite: boolean;
