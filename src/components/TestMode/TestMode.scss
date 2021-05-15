@@ -1,3 +1,26 @@
+@use '/src/sharedStyles/colors.scss';
+@use '/src/sharedStyles/spacing.scss';
+
 .container {
-  outline: 1px solid pink;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.columnsContainer {
+  display: flex;
+}
+
+.sideColumn {
+  width: 100%;
+  margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: colors.$white;
+  padding: spacing.$side-margin;
+  border: spacing.$border solid colors.$border;
+  border-radius: spacing.$border-radius;
 }
