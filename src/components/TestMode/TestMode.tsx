@@ -1,19 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import chess from 'chess'
+import _ from "lodash"
 
 import Board from '../Board'
 import MovesList from '../MovesList'
 import styles from "./TestMode.scss"
-import { MovesListType, Line } from "../../sharedTypes"
+import { Line } from "../../sharedTypes"
 
-const TestMode = () => {
+type Props = {
+  lines: Line[]
+}
+
+const TestMode = ({ lines }: Props) => {
   const gameClient = chess.create()
   const [board, setBoard] = useState(gameClient.game.board)
-  const [line, setLine] = useState<Line>()
+  const [currentLine, setCurrentLine] = useState<Line>(_.sample(lines))
 
   return(
     <div className={styles.container}>
-      <MovesList turns={line.moves}></MovesList>
+      {
+        currentLine ?
+        (
+          <MovesList turns={currentLine.moves}></MovesList>
+        ) : (
+          <p>No lines found. Please record one in Free mode</p>
+        )
+      }
     </div>
   )
 }
