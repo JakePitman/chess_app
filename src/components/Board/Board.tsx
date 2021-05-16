@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, Dispatch, SetStateAction} from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
@@ -6,19 +6,36 @@ import styles from './Board.scss'
 import Rank from '../Rank'
 import PieceName from "../../sharedTypes/PieceName"
 import { BoardInfoProvider } from '../../contexts/BoardInfoContext';
+import movePieceFactory from "../../helpers/movePiece"
 
 type Props = {
-  movePiece: (
-    piece: PieceName,
-    targetSquare: string,
-    currentLocation: {rank: number, file: string},
-    isTaking: boolean
-  ) => void
-  board: any;
+  automaticMoves?: string[];
+  client: any;
   isWhite: boolean;
+  setCommandColumnMessage: Dispatch<SetStateAction<string>>;
+  addMoveToList?: (move: string) => void;
 }
 
-const Board = ({ movePiece, board, isWhite }: Props) => {
+const Board = ({ automaticMoves, client, isWhite, setCommandColumnMessage, addMoveToList }: Props) => {
+  const [board, setBoard] = useState(client.game.board)
+
+  useEffect(() => {
+    if (automaticMoves && automaticMoves.length > 0) {
+      client.move(automaticMoves[0])
+      setBoard({...client.game.board})
+    }
+  }, [automaticMoves?.length])
+
+  const movePiece = movePieceFactory(
+    client,
+    (moveNotation: string) => {
+      client.move(moveNotation)
+      addMoveToList && addMoveToList(moveNotation)
+    },
+    setCommandColumnMessage,
+    setBoard
+  )
+
   return (
     <BoardInfoProvider value={board}>
       <DndProvider backend={HTML5Backend}>

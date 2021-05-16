@@ -5,12 +5,10 @@ import Board from '../Board'
 import MovesList from '../MovesList'
 import CommandColumn from '../CommandColumn'
 import styles from "./FreeMode.scss"
-import { Move, MovesListType } from "../../sharedTypes"
-import movePiece from "../../helpers/movePiece"
+import { MovesListType } from "../../sharedTypes"
 
 const FreeMode = () => { 
   const gameClient = chess.create()
-  const [board, setBoard] = useState(gameClient.game.board)
   const [reasonInput, setReasonInput] = useState('')
   const [moves, setMoves] = useState<MovesListType>([])
   const [commandColumnMessage, setCommandColumnMessage] = useState<string>(null)
@@ -45,17 +43,10 @@ const FreeMode = () => {
             <MovesList turns={moves}></MovesList>
           </div>
           <Board 
-            movePiece={movePiece(
-              gameClient,
-              (moveNotation: string) => {
-                gameClient.move(moveNotation),
-                addMoveToList(moveNotation)
-              },
-              setCommandColumnMessage,
-              setBoard
-            )}
-            board={board}
+            client={gameClient}
             isWhite={isWhite}
+            setCommandColumnMessage={setCommandColumnMessage}
+            addMoveToList={addMoveToList}
           ></Board>
           <div className={styles.sideColumn}>
             <CommandColumn 
