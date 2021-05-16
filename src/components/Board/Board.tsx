@@ -13,7 +13,7 @@ type Props = {
   client: any;
   isWhite: boolean;
   setCommandColumnMessage: Dispatch<SetStateAction<string>>;
-  addMoveToList?: (move: string) => void;
+  addMoveToList: (move: string) => void;
 }
 
 const Board = ({ automaticMoves, client, isWhite, setCommandColumnMessage, addMoveToList }: Props) => {
@@ -23,6 +23,7 @@ const Board = ({ automaticMoves, client, isWhite, setCommandColumnMessage, addMo
     if (automaticMoves && automaticMoves.length > 0) {
       client.move(automaticMoves[0])
       setBoard({...client.game.board})
+      addMoveToList(automaticMoves[0])
     }
   }, [automaticMoves?.length])
 
@@ -30,7 +31,7 @@ const Board = ({ automaticMoves, client, isWhite, setCommandColumnMessage, addMo
     client,
     (moveNotation: string) => {
       client.move(moveNotation)
-      addMoveToList && addMoveToList(moveNotation)
+      addMoveToList(moveNotation)
     },
     setCommandColumnMessage,
     setBoard
