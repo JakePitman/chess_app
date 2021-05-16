@@ -4,8 +4,9 @@ import _ from 'lodash'
 
 import Board from '../Board'
 import MovesList from '../MovesList'
-import styles from "./TestMode.scss"
+import CommandColumn from './CommandColumn'
 import { Line, MovesListType } from "../../sharedTypes"
+import styles from "./TestMode.scss"
 
 type Props = {
   lines: Line[];
@@ -49,6 +50,9 @@ const TestMode = ({ lines }: Props) => {
           setCommandColumnMessage={setCommandColumnMessage}
           addMoveToList={addMoveToList}
         />
+        <div className={styles.sideColumn}>
+          <CommandColumn/>
+        </div>
       </div>
     </div>
   )
