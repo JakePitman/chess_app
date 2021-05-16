@@ -3,7 +3,7 @@ import chess from 'chess'
 
 import Board from '../Board'
 import MovesList from '../MovesList'
-import CommandColumn from '../CommandColumn'
+import CommandColumn from './CommandColumn'
 import styles from "./FreeMode.scss"
 import { MovesListType } from "../../sharedTypes"
 
