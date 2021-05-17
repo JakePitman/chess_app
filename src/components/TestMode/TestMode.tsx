@@ -29,7 +29,11 @@ const TestMode = ({ lines }: Props) => {
   useEffect(() => {
     gameClientRef.current = chess.create()
     setMoves([])
-    setRemainingAutomaticMoves(flattenMoves(currentLine.moves))
+    // Gets a number between 0 & the number of moves (not inclusive)
+    const startingPoint = Math.floor(Math.random() * (currentLine.moves.length - 1) + 1)
+    setRemainingAutomaticMoves(flattenMoves(
+      currentLine.moves.slice(0, startingPoint)
+    ))
   }, [currentLine])
 
   if (remainingAutomaticMoves.length > 0) {
