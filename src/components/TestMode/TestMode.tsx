@@ -17,7 +17,7 @@ const TestMode = ({ lines }: Props) => {
   const [commandColumnMessage, setCommandColumnMessage] = useState("")
   const [currentLine, setCurrentLine] = useState<Line>(_.sample(lines))
   const [remainingAutomaticMoves, setRemainingAutomaticMoves] = useState<string[]>([])
-  const [moves, setMoves] = useState<MovesListType>([])
+  const [movesMade, setMovesMade] = useState<MovesListType>([])
 
   const flattenMoves = (movesObjects: MovesListType) => (
     _.flattenDeep(movesObjects.map(
@@ -28,7 +28,7 @@ const TestMode = ({ lines }: Props) => {
 
   useEffect(() => {
     gameClientRef.current = chess.create()
-    setMoves([])
+    setMovesMade([])
     // Gets a number between 0 & the number of moves (not inclusive)
     const startingPoint = Math.floor(Math.random() * (currentLine.moves.length - 1) + 1)
     setRemainingAutomaticMoves(flattenMoves(
@@ -44,7 +44,7 @@ const TestMode = ({ lines }: Props) => {
   }
 
   const addMoveToList = ( move: string ) => {
-    setMoves(prevMoves => { 
+    setMovesMade(prevMoves => { 
       const lastTurn = prevMoves[prevMoves.length -1]
       return lastTurn && lastTurn[0] && !lastTurn[1] ? 
         [...prevMoves.slice(0, prevMoves.length - 1), [lastTurn[0], {notation: move}]] :
@@ -63,7 +63,7 @@ const TestMode = ({ lines }: Props) => {
     <div className={styles.container}>
       <div className={styles.columnsContainer}>
         <div className={styles.sideColumn}>
-          <MovesList turns={moves}></MovesList>
+          <MovesList turns={movesMade}></MovesList>
         </div>
         <Board 
           automaticMoves={remainingAutomaticMoves}
