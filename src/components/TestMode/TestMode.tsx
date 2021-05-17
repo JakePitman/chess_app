@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import chess from 'chess'
 import _ from 'lodash'
 
@@ -16,9 +16,21 @@ const TestMode = ({ lines }: Props) => {
   const gameClientRef = useRef(chess.create())
   const [commandColumnMessage, setCommandColumnMessage] = useState("")
   const [currentLine, setCurrentLine] = useState<Line>(_.sample(lines))
-  const currentLineMoves = _.flattenDeep(currentLine?.moves.map(turn => (turn[1] ? [ turn[0].notation, turn[1].notation ] : [turn[0].notation])))
-  const [remainingAutomaticMoves, setRemainingAutomaticMoves] = useState<string[]>(currentLineMoves)
+  const [remainingAutomaticMoves, setRemainingAutomaticMoves] = useState<string[]>([])
   const [moves, setMoves] = useState<MovesListType>([])
+
+  const flattenMoves = (movesObjects: MovesListType) => (
+    _.flattenDeep(movesObjects.map(
+      turn => (turn[1] ? [ turn[0].notation, turn[1].notation ] : [turn[0].notation])
+      )
+    )
+  )
+
+  useEffect(() => {
+    gameClientRef.current = chess.create()
+    setMoves([])
+    setRemainingAutomaticMoves(flattenMoves(currentLine.moves))
+  }, [currentLine])
 
   if (remainingAutomaticMoves.length > 0) {
     setTimeout(() => {
@@ -36,6 +48,12 @@ const TestMode = ({ lines }: Props) => {
     });
   }
 
+  const setRandomLine = () => {
+    const otherLines = lines.filter(line => (
+      flattenMoves(line.moves).toString() !== flattenMoves(currentLine.moves).toString()
+    ))
+    setCurrentLine(_.sample(otherLines))
+  }
 
   return(
     <div className={styles.container}>
@@ -51,7 +69,7 @@ const TestMode = ({ lines }: Props) => {
           addMoveToList={addMoveToList}
         />
         <div className={styles.sideColumn}>
-          <CommandColumn/>
+          <CommandColumn setRandomLine={setRandomLine}/>
         </div>
       </div>
     </div>
