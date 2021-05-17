@@ -17,6 +17,10 @@ const TestMode = ({ lines }: Props) => {
   const [commandColumnMessage, setCommandColumnMessage] = useState("")
   const [currentLine, setCurrentLine] = useState<Line>(_.sample(lines))
   const [remainingAutomaticMoves, setRemainingAutomaticMoves] = useState<string[]>([])
+  // TODO: figure out when to run next move logic
+  // wait for player if it's their move
+  // make computer move if not...........
+  const [remainingMovesToMake, setRemainingMovesToMake] = useState<MovesListType>([])
   const [movesMade, setMovesMade] = useState<MovesListType>([])
 
   const flattenMoves = (movesObjects: MovesListType) => (
@@ -34,6 +38,9 @@ const TestMode = ({ lines }: Props) => {
     setRemainingAutomaticMoves(flattenMoves(
       currentLine.moves.slice(0, startingPoint)
     ))
+    setRemainingMovesToMake(
+      currentLine.moves.slice(startingPoint, currentLine.moves.length)
+    )
   }, [currentLine])
 
   if (remainingAutomaticMoves.length > 0) {
