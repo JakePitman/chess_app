@@ -14,12 +14,15 @@ type Props = {
 
 const TestMode = ({ lines }: Props) => {
   const gameClientRef = useRef(chess.create())
+  const [gameClient, setGameClient] = useState()
   const [commandColumnMessage, setCommandColumnMessage] = useState("")
   const [currentLine, setCurrentLine] = useState<Line>(_.sample(lines))
   const [remainingAutomaticMoves, setRemainingAutomaticMoves] = useState<string[]>([])
   // TODO: figure out when to run next move logic
   // wait for player if it's their move
   // make computer move if not...........
+  // maybe set move to null, and delete turn when both moves are null:
+  //  if (!isWhite && remainingMovesToMake[0][0] !== null) {movePiece()}
   const [remainingMovesToMake, setRemainingMovesToMake] = useState<MovesListType>([])
   const [movesMade, setMovesMade] = useState<MovesListType>([])
 
@@ -31,6 +34,8 @@ const TestMode = ({ lines }: Props) => {
   )
 
   useEffect(() => {
+    // Ensure no state changes trigger automatic moves on old client
+    setGameClient(null)
     gameClientRef.current = chess.create()
     setMovesMade([])
     // Gets a number between 0 & the number of moves (not inclusive)
@@ -42,6 +47,10 @@ const TestMode = ({ lines }: Props) => {
       currentLine.moves.slice(startingPoint, currentLine.moves.length)
     )
   }, [currentLine])
+
+  useEffect(() => {
+    setGameClient(gameClientRef.current)
+  }, [gameClientRef.current])
 
   if (remainingAutomaticMoves.length > 0) {
     setTimeout(() => {
@@ -67,23 +76,26 @@ const TestMode = ({ lines }: Props) => {
   }
 
   return(
-    <div className={styles.container}>
-      <div className={styles.columnsContainer}>
-        <div className={styles.sideColumn}>
-          <MovesList turns={movesMade}></MovesList>
-        </div>
-        <Board 
-          automaticMoves={remainingAutomaticMoves}
-          client={gameClientRef.current}
-          isWhite={currentLine.playercolor === "white"}
-          setCommandColumnMessage={setCommandColumnMessage}
-          addMoveToList={addMoveToList}
-        />
-        <div className={styles.sideColumn}>
-          <CommandColumn setRandomLine={setRandomLine}/>
+    gameClient ?
+      <div className={styles.container}>
+        <div className={styles.columnsContainer}>
+          <div className={styles.sideColumn}>
+            <MovesList turns={movesMade}></MovesList>
+          </div>
+          <Board 
+            automaticMoves={remainingAutomaticMoves}
+            client={gameClient}
+            isWhite={currentLine.playercolor === "white"}
+            setCommandColumnMessage={setCommandColumnMessage}
+            addMoveToList={addMoveToList}
+          />
+          <div className={styles.sideColumn}>
+            <CommandColumn setRandomLine={setRandomLine}/>
+          </div>
         </div>
       </div>
-    </div>
+      :
+      <></>
   )
 }
 
