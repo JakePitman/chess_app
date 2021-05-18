@@ -28,9 +28,8 @@ const TestMode = ({ lines }: Props) => {
 
   const flattenMoves = (movesObjects: MovesListType) => (
     _.flattenDeep(movesObjects.map(
-      turn => (turn[1] ? [ turn[0].notation, turn[1].notation ] : [turn[0].notation])
-      )
-    )
+      turn => turn[1] ? [ turn[0].notation, turn[1].notation ] : [turn[0].notation] 
+    ))
   )
 
   useEffect(() => {
@@ -44,7 +43,7 @@ const TestMode = ({ lines }: Props) => {
       currentLine.moves.slice(0, startingPoint)
     ))
     setRemainingMovesToMake(
-      currentLine.moves.slice(startingPoint, currentLine.moves.length)
+      _.cloneDeep(currentLine.moves.slice(startingPoint, currentLine.moves.length))
     )
   }, [currentLine])
 
@@ -74,6 +73,23 @@ const TestMode = ({ lines }: Props) => {
     ))
     setCurrentLine(_.sample(otherLines))
   }
+
+  // Make an extra move for white at the end of automatic moves
+  // when player is black, leaving it on black's turn to move
+  useEffect(() => {
+    if (
+      remainingAutomaticMoves.length === 0 &&
+      gameClient &&
+      currentLine.playercolor === "black" &&
+      remainingMovesToMake[0][0]
+    ) {
+      const moveForWhite = remainingMovesToMake[0][0]
+      const remainingMovesDup = [...remainingMovesToMake]
+      remainingMovesDup[0][0] = null
+      setRemainingMovesToMake(remainingMovesDup)
+      setRemainingAutomaticMoves([moveForWhite.notation])
+    }
+  }, [remainingAutomaticMoves.length])
 
   return(
     gameClient ?
