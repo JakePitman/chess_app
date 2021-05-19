@@ -9,11 +9,29 @@ const pieceNameToNotation = {
   "knight": "N",
 }
 
+const moveIfAvailable = (
+  move: string,
+  onlyAcceptableMove: string,
+  makeMove: (move: string) => void,
+  setCommandColumnMessage: Dispatch<React.SetStateAction<string>>,
+  shouldRaiseError: boolean = false
+) => {
+  if (onlyAcceptableMove) {
+    onlyAcceptableMove === move ?
+      makeMove(move) :
+      setCommandColumnMessage("Wrong move!")
+    if (shouldRaiseError) {throw Error}
+  } else {
+    makeMove(move)
+  }
+}
+
 const movePiece = (
   gameClient: any,
   makeMove: (moveNotation: string) => void,
   setCommandColumnMessage: Dispatch<React.SetStateAction<string>>,
-  setBoard: Dispatch<React.SetStateAction<string>>
+  setBoard: Dispatch<React.SetStateAction<string>>,
+  onlyAcceptableMove?: string
 ) => {
   return (
     piece: PieceName,
@@ -28,16 +46,18 @@ const movePiece = (
         const move = isTaking ?
           file + targetSquare :
           targetSquare
-        makeMove(move)
+        moveIfAvailable(move, onlyAcceptableMove, makeMove, setCommandColumnMessage)
       } else if ( piece === "king" ) {
         const moveNotation = "K" + targetSquare
         try { 
-          makeMove(moveNotation)
+          moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, true)
         } catch {
           if (targetSquare === "g1" || targetSquare === "g8") {
-            makeMove("0-0")
+            const moveNotation = "0-0"
+            moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, true)
           } else if (targetSquare === "c1" || targetSquare === "c8") {
-            makeMove("0-0-0")
+            const moveNotation = "0-0-0"
+            moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage)
           } else {
             throw Error("Invalid King move")
           }
@@ -46,15 +66,15 @@ const movePiece = (
         const pieceNotation = pieceNameToNotation[piece]
         const moveNotation = pieceNotation + targetSquare
         try {
-          makeMove(moveNotation)
+          moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, true)
         // Passing rank & file together isn't supported (eg. Nb1C3)
         } catch(e) {
           try {
-            const move = pieceNotation + file + targetSquare
-            makeMove(move)
+            const moveNotation = pieceNotation + file + targetSquare
+            moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, true)
           } catch(e) {
-            const move = pieceNotation + rank + targetSquare
-            makeMove(move)
+            const moveNotation = pieceNotation + rank + targetSquare
+            moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage)
           }
         }
       }
