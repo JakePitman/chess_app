@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from "react"
-import { PieceName } from "../sharedTypes"
+import { PieceName, MovesListType } from "../sharedTypes"
 
 const pieceNameToNotation = {
   "king": "K",
@@ -9,18 +9,27 @@ const pieceNameToNotation = {
   "knight": "N",
 }
 
+// Checks if there is an available move, and only moves if it matches
+// Can raise an error in cases such as King movement, where notation
+//   may fail & need to be tried again
 const moveIfAvailable = (
   move: string,
   onlyAcceptableMove: string,
   makeMove: (move: string) => void,
   setCommandColumnMessage: Dispatch<React.SetStateAction<string>>,
+  updateRemainingMovesToMake: () => void,
   shouldRaiseError: boolean = false
 ) => {
+  // Test mode
   if (onlyAcceptableMove) {
-    onlyAcceptableMove === move ?
-      makeMove(move) :
+    if (onlyAcceptableMove === move) {
+      makeMove(move) 
+      updateRemainingMovesToMake()
+    } else {
       setCommandColumnMessage("Wrong move!")
+    }
     if (shouldRaiseError) {throw Error}
+  // Free mode
   } else {
     makeMove(move)
   }
@@ -31,7 +40,8 @@ const movePiece = (
   makeMove: (moveNotation: string) => void,
   setCommandColumnMessage: Dispatch<React.SetStateAction<string>>,
   setBoard: Dispatch<React.SetStateAction<string>>,
-  onlyAcceptableMove?: string
+  updateRemainingMovesToMake: () => void,
+  onlyAcceptableMove?: string,
 ) => {
   return (
     piece: PieceName,
@@ -46,18 +56,18 @@ const movePiece = (
         const move = isTaking ?
           file + targetSquare :
           targetSquare
-        moveIfAvailable(move, onlyAcceptableMove, makeMove, setCommandColumnMessage)
+        moveIfAvailable(move, onlyAcceptableMove, makeMove, setCommandColumnMessage, updateRemainingMovesToMake)
       } else if ( piece === "king" ) {
         const moveNotation = "K" + targetSquare
         try { 
-          moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, true)
+          moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, updateRemainingMovesToMake, true)
         } catch {
           if (targetSquare === "g1" || targetSquare === "g8") {
             const moveNotation = "0-0"
-            moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, true)
+            moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, updateRemainingMovesToMake, true)
           } else if (targetSquare === "c1" || targetSquare === "c8") {
             const moveNotation = "0-0-0"
-            moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage)
+            moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, updateRemainingMovesToMake)
           } else {
             throw Error("Invalid King move")
           }
@@ -66,15 +76,15 @@ const movePiece = (
         const pieceNotation = pieceNameToNotation[piece]
         const moveNotation = pieceNotation + targetSquare
         try {
-          moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, true)
+          moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, updateRemainingMovesToMake, true)
         // Passing rank & file together isn't supported (eg. Nb1C3)
         } catch(e) {
           try {
             const moveNotation = pieceNotation + file + targetSquare
-            moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, true)
+            moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, updateRemainingMovesToMake, true)
           } catch(e) {
             const moveNotation = pieceNotation + rank + targetSquare
-            moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage)
+            moveIfAvailable(moveNotation, onlyAcceptableMove, makeMove, setCommandColumnMessage, updateRemainingMovesToMake)
           }
         }
       }

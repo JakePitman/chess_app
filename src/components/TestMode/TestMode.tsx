@@ -91,6 +91,15 @@ const TestMode = ({ lines }: Props) => {
     }
   }, [remainingAutomaticMoves.length])
 
+  const determineNewRemainingMovesToMake = () => {
+    if (remainingMovesToMake[0][0]) {
+      const dup = _.cloneDeep(remainingMovesToMake)
+      dup[0][0] = null
+      return dup
+    }
+    return remainingMovesToMake.slice(1, remainingMovesToMake.length)
+  }
+
   return(
     gameClient ?
       <div className={styles.container}>
@@ -104,9 +113,17 @@ const TestMode = ({ lines }: Props) => {
             isWhite={currentLine.playercolor === "white"}
             setCommandColumnMessage={setCommandColumnMessage}
             addMoveToList={addMoveToList}
+            onlyAcceptableMove={
+              currentLine.playercolor === "white" ?
+              remainingMovesToMake[0][0] :
+              remainingMovesToMake[0][1]
+            }
+            updateRemainingMoves={() => setRemainingMovesToMake(
+              determineNewRemainingMovesToMake()
+            )}
           />
           <div className={styles.sideColumn}>
-            <CommandColumn setRandomLine={setRandomLine}/>
+            <CommandColumn setRandomLine={setRandomLine} />
           </div>
         </div>
       </div>

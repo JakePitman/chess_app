@@ -7,6 +7,7 @@ import Rank from '../Rank'
 import PieceName from "../../sharedTypes/PieceName"
 import { BoardInfoProvider } from '../../contexts/BoardInfoContext';
 import movePieceFactory from "../../helpers/movePiece"
+import { Move, MovesListType } from "../../sharedTypes"
 
 type Props = {
   automaticMoves?: string[];
@@ -14,9 +15,19 @@ type Props = {
   isWhite: boolean;
   setCommandColumnMessage: Dispatch<SetStateAction<string>>;
   addMoveToList: (move: string) => void;
+  onlyAcceptableMove: Move,
+  updateRemainingMoves: () => void;
 }
 
-const Board = ({ automaticMoves, client, isWhite, setCommandColumnMessage, addMoveToList }: Props) => {
+const Board = ({ 
+  automaticMoves,
+  client,
+  isWhite,
+  setCommandColumnMessage,
+  addMoveToList,
+  onlyAcceptableMove,
+  updateRemainingMoves
+}: Props) => {
   const [board, setBoard] = useState(client.game.board)
 
   useEffect(() => {
@@ -34,7 +45,9 @@ const Board = ({ automaticMoves, client, isWhite, setCommandColumnMessage, addMo
       addMoveToList(moveNotation)
     },
     setCommandColumnMessage,
-    setBoard
+    setBoard,
+    updateRemainingMoves,
+    onlyAcceptableMove?.notation,
   )
 
   return (
