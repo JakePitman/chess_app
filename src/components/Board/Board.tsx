@@ -4,10 +4,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import styles from './Board.scss'
 import Rank from '../Rank'
-import PieceName from "../../sharedTypes/PieceName"
 import { BoardInfoProvider } from '../../contexts/BoardInfoContext';
 import movePieceFactory from "../../helpers/movePiece"
-import { Move, MovesListType } from "../../sharedTypes"
+import { Move } from "../../sharedTypes"
 
 type Props = {
   automaticMoves?: string[];

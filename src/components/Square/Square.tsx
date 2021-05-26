@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect, useLayoutEffect } from 'react'
-import { ItemTypes } from '../../itemTypes'
+import React, { useState, useContext, useLayoutEffect } from 'react'
 import { useDrop } from 'react-dnd'
 
 import styles from './Square.scss'
