@@ -13,12 +13,14 @@ type Props = {
   movePiece: (
     piece: PieceName,
     targetSquare: string,
-    currentLocation: string,
+    currentLocation: {rank: number, file: string},
     isTaking: boolean
   ) => void
+  isWhite: boolean
+  OAM?: string
 }
 
-const isWhite = (rankNumber: number, fileNumber: number) => {
+const isLightSquare = (rankNumber: number, fileNumber: number) => {
   if (rankNumber % 2 === 0) {
     return fileNumber % 2 !== 0
   } else {
@@ -31,7 +33,82 @@ type PieceInfo = null | {
   type: PieceName
 }
 
-const Square = ({ rankNumber, fileNumber, fileLetter, movePiece }: Props) => { 
+const isTargetOfOAM = (squareNotation: string, OAM: string, isWhite: boolean) => {
+  let OAMtarget
+  if (OAM === "0-0" && isWhite) {
+    OAMtarget = "g1"
+  } else if (OAM === "0-0" && !isWhite) {
+    OAMtarget = "g8"
+  } else if (OAM === "0-0-0" && isWhite) {
+    OAMtarget = "c1"
+  } else if (OAM === "0-0-0" && !isWhite) {
+    OAMtarget = "c8"
+  } else {
+    OAMtarget = OAM.slice(OAM.length - 2)
+  }
+  return squareNotation === OAMtarget
+}
+
+const pieceNameToNotation = {
+  "king": "K",
+  "queen": "Q",
+  "rook": "R",
+  "bishop": "B",
+  "knight": "N",
+}
+
+const isOAMPiece = (draggingPieceName: PieceName, previousSquare: {rank: number, file: string}, OAM: string) => {
+  if (draggingPieceName === "king" && (OAM === "0-0" || OAM === "0-0-0")) { return true }
+  const splitOAM = OAM.split('')
+  if (draggingPieceName === "pawn") {
+    // eg. "dxe5"
+    if (splitOAM.includes("x")) {
+      const currentFile = previousSquare.file // d
+      const nextFile = splitOAM[2] // e
+      if (
+        (
+          (String.fromCharCode(currentFile.charCodeAt(0) + 1) === nextFile) ||
+          (String.fromCharCode(currentFile.charCodeAt(0) - 1) === nextFile)
+        ) &&
+        (
+          (splitOAM[3] === `${previousSquare.rank + 1}`) ||
+          (splitOAM[3] === `${previousSquare.rank - 1}`)
+        ) &&
+        splitOAM[0] === previousSquare.file
+      ) {
+        return true
+      }
+    }
+    // eg. "e5"
+    return (
+      splitOAM[0] === previousSquare.file &&
+      (
+        splitOAM[1] === `${previousSquare.rank + 1}` ||
+        splitOAM[1] === `${previousSquare.rank - 1}` ||
+        splitOAM[1] === `${previousSquare.rank - 2}` ||
+        splitOAM[1] === `${previousSquare.rank - 2}`
+      )
+    )
+  }
+  const draggingPieceNotation = pieceNameToNotation[draggingPieceName]
+  const pieceFromOAM = splitOAM[0]
+  // eg. Ngxf5, but not Ng3
+  const OAMPieceLocationIndicator = splitOAM.filter(e => e !== "x").length > 3 ? splitOAM[1] : null
+  if (OAMPieceLocationIndicator) {
+    const pieceWithRank = `${draggingPieceNotation}${previousSquare.rank}`
+    const pieceWithFile = `${draggingPieceNotation}${previousSquare.file}`
+    const OAMPieceWithIndicator = `${pieceFromOAM}${OAMPieceLocationIndicator}`
+    return (pieceWithRank === OAMPieceWithIndicator) || (pieceWithFile === OAMPieceWithIndicator)
+  }
+  return pieceFromOAM === draggingPieceNotation
+}
+
+const canMove = (currentSquare: string, pieceName: PieceName, previousSquare: {rank: number, file: string}, OAM: string, isWhite: boolean) => {
+  if (!OAM) { return true }
+  return isTargetOfOAM(currentSquare, OAM, isWhite) && isOAMPiece(pieceName, previousSquare, OAM)
+}
+
+const Square = ({ rankNumber, fileNumber, fileLetter, movePiece, OAM, isWhite }: Props) => { 
   const board = useContext(BoardInfoContext)
   const getPieceInfo = () => {
     return board.squares.find(square =>
@@ -47,31 +124,33 @@ const Square = ({ rankNumber, fileNumber, fileLetter, movePiece }: Props) => {
 
   const squareNotation = `${fileLetter}${rankNumber}`
 
-  const [{ isOver }, drop] = useDrop(() => ({
+  const [ {isOver }, drop] = useDrop(() => ({
     accept: ['king', 'queen', 'rook', 'bishop', 'knight', 'pawn'],
-    drop: (item: {pieceName: PieceName, square: string}, monitor) => {
+    drop: (item: {pieceName: PieceName, square: {rank: number, file: string}}, monitor) => {
       const isTaking = !!getPieceInfo()
-      movePiece(
-        item.pieceName,
-        squareNotation,
-        item.square,
-        !!getPieceInfo()
-      )
-      if (isTaking) {
-        // Hack: set to null first, so Piece rerenders
-        setPieceInfo(null)
-        setPieceInfo(getPieceInfo())
+      if (canMove(squareNotation, item.pieceName, item.square, OAM, isWhite)) {
+        movePiece(
+          item.pieceName,
+          squareNotation,
+          item.square,
+          !!getPieceInfo()
+        )
+        if (isTaking) {
+          // Hack: set to null first, so Piece rerenders
+          setPieceInfo(null)
+          setPieceInfo(getPieceInfo())
+        }
       }
     },
     collect: monitor => ({
       isOver: !!monitor.isOver(),
     }),
-  }), [])
+  }))
 
   return (
     <div 
       className={
-        isWhite(rankNumber, fileNumber) ? styles.white : styles.black
+        isLightSquare(rankNumber, fileNumber) ? styles.white : styles.black
       }
       ref={drop}
     >

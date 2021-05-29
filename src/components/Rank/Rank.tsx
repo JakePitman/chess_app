@@ -13,6 +13,7 @@ type Props = {
     isTaking: boolean
   ) => void;
   isWhite: boolean;
+  OAM?: string;
 }
 
 const FILE_LETTERS = {
@@ -26,7 +27,7 @@ const FILE_LETTERS = {
   "8": "h",
 }
 
-const Rank = ({rankNumber, movePiece, isWhite}: Props) => { 
+const Rank = ({rankNumber, movePiece, isWhite, OAM}: Props) => { 
   return (
     <div className={styles.mainContainer}>
       {
@@ -43,6 +44,8 @@ const Rank = ({rankNumber, movePiece, isWhite}: Props) => {
               fileLetter={fileLetter}
               movePiece={movePiece}
               key={`square-${fileLetter}${rankNumber}`}
+              isWhite={isWhite}
+              OAM={OAM}
             /> 
           )
         })
