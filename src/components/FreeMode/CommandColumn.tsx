@@ -1,7 +1,7 @@
 import React, { useState, SetStateAction, Dispatch } from 'react'
 import axios from "axios"
 
-import { Move } from "../../sharedTypes"
+import { Move, MovesListType } from "../../sharedTypes"
 import styles from "./CommandColumn.scss"
 import Button from "../Button"
 
@@ -9,8 +9,10 @@ type Props = {
   setReasonInput: Dispatch<SetStateAction<string>>;
   reasonInput: string;
   addReasonToMove: () => void;
-  moves: Move[][];
+  moves: MovesListType;
   incomingMessage: string;
+  isWhite: boolean;
+  setIsWhite: Dispatch<SetStateAction<boolean>>;
 }
 
 const CommandColumn = ({
@@ -18,7 +20,9 @@ const CommandColumn = ({
   reasonInput,
   addReasonToMove,
   moves,
-  incomingMessage
+  incomingMessage,
+  isWhite,
+  setIsWhite,
 }: Props) => {
   const [titleInput, setTitleInput] = useState<string>('')
   const [message, setMessage] = useState<string>('')
@@ -34,6 +38,7 @@ const CommandColumn = ({
             placeholder="Add a title"
           />
         </div>
+        <Button text={isWhite ? "WHITE" : "BLACK"} onClick={() => setIsWhite(!isWhite)}></Button>
         <div>
           <p className={styles.reasonHeader}>Add reason to last move</p>
           <textarea 
@@ -65,6 +70,7 @@ const CommandColumn = ({
               "http://localhost:3000/lines",
               {
                 name: titleInput,
+                playercolor: isWhite ? "white" : "black",
                 moves: JSON.stringify(moves)
               }
             ).then(

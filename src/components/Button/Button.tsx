@@ -9,11 +9,11 @@ type Props = {
 
 const Button = ({ text, onClick }: Props) => {
   return(
-      <button onClick={onClick} className={styles.button}>
+      <div onClick={onClick} className={styles.button}>
         <div className={styles.innerBorder}>
           {text}
         </div>
-      </button>
+      </div>
   )
 }
 

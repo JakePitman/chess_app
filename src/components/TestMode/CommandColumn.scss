@@ -1,0 +1,61 @@
+@use '/src/sharedStyles/colors.scss';
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.inputHeader {
+  width: 100%;
+  color: colors.$white;
+  background: colors.$border;
+  padding: 5px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.inputField {
+  width: 100%;
+  color: colors.$border;
+  background: colors.$white;
+  border: none;
+  padding: 5px;
+  outline: 2px solid colors.$border;
+}
+
+.titleHeader {
+  @extend .inputHeader;
+}
+
+.titleInput {
+  @extend .inputField;
+}
+
+.reasonHeader {
+  @extend .inputHeader;
+}
+
+.reasonInput {
+  @extend .inputField;
+  height: 100px;
+}
+
+.button {
+  border: none;
+  color: colors.$white;
+  background: colors.$border;
+  padding: 5px;
+  font-size: 30px;
+}
+
+.message {
+  outline: 3px solid colors.$border;
+  color: colors.$border;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
