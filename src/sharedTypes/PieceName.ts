@@ -1,9 +1,3 @@
-type PieceName = 
-  "rook" |
-  "king" |
-  "queen" |
-  "knight" |
-  "bishop" |
-  "pawn"
+type PieceName = "rook" | "king" | "queen" | "knight" | "bishop" | "pawn";
 
-export default PieceName
+export default PieceName;

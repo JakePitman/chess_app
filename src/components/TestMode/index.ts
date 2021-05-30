@@ -1,3 +1,3 @@
-import TestMode from './TestMode'
+import TestMode from "./TestMode";
 
-export default TestMode
+export default TestMode;

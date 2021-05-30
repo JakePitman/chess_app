@@ -1,9 +1,9 @@
-import MovesListType from "./MovesList"
+import MovesListType from "./MovesList";
 
 type Line = {
-  name: string,
-  playercolor: string,
-  moves: MovesListType
-}
+  name: string;
+  playercolor: string;
+  moves: MovesListType;
+};
 
-export default Line
+export default Line;

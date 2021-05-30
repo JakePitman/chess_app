@@ -1,3 +1,3 @@
-import MovesList from "./MovesList"
+import MovesList from "./MovesList";
 
-export default MovesList
+export default MovesList;

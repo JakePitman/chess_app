@@ -1,31 +1,29 @@
-import React from 'react'
-import { Move, MovesListType } from "../../sharedTypes"
-import styles from "./MovesList.scss"
+import React from "react";
+import { Move, MovesListType } from "../../sharedTypes";
+import styles from "./MovesList.scss";
 
 type Props = {
-  turns: MovesListType
-}
+  turns: MovesListType;
+};
 
 const MovesList = ({ turns }: Props) => {
-  return(
+  return (
     <>
       <div className={styles.title}>Moves</div>
       <div className={styles.notations}>
-        {
-          turns.map((turn, i) => { 
-            return ( 
-              <div className={styles.turn} key={i}>
-                <p>{i + 1}. {turn[0].notation}</p>
-                {
-                  turn[1] && <p>, {turn[1].notation}</p>
-                }
-              </div>
-            )
-          })
-        }
+        {turns.map((turn, i) => {
+          return (
+            <div className={styles.turn} key={i}>
+              <p>
+                {i + 1}. {turn[0].notation}
+              </p>
+              {turn[1] && <p>, {turn[1].notation}</p>}
+            </div>
+          );
+        })}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default MovesList
+export default MovesList;
