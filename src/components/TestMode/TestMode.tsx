@@ -39,8 +39,6 @@ const TestMode = ({ lines }: Props) => {
     setMovesMade([])
     // Gets a number between 0 & the number of moves (not inclusive)
     const startingPoint = Math.floor(Math.random() * (currentLine.moves.length - 1) + 1)
-    // TODO: Set to 6 for black when debugging automatic moves capture problem in Board.tsx
-    // const startingPoint = 6
     setRemainingAutomaticMoves(flattenMoves(
       currentLine.moves.slice(0, startingPoint)
     ))
@@ -57,7 +55,7 @@ const TestMode = ({ lines }: Props) => {
     setTimeout(() => {
       // Re-renders Board with next automatic move
       setRemainingAutomaticMoves([...(remainingAutomaticMoves.slice(1, remainingAutomaticMoves.length))])
-    }, 300)
+    }, 200)
   }
 
   const addMoveToList = ( move: string ) => {
