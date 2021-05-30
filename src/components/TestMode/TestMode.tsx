@@ -133,6 +133,7 @@ const TestMode = ({ lines }: Props) => {
               : remainingMovesToMake[0][1]
           }
           updateRemainingMoves={() =>
+            remainingMovesToMake &&
             setRemainingMovesToMake(determineNewRemainingMovesToMake())
           }
         />

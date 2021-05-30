@@ -34,6 +34,7 @@ const Board = ({
     (moveNotation: string) => {
       client.move(moveNotation);
       addMoveToList(moveNotation);
+      updateRemainingMoves();
     },
     setCommandColumnMessage,
     setBoard,
