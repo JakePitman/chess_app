@@ -95,7 +95,7 @@ const isOAMPiece = (
       splitOAM[0] === previousSquare.file &&
       (splitOAM[1] === `${previousSquare.rank + 1}` ||
         splitOAM[1] === `${previousSquare.rank - 1}` ||
-        splitOAM[1] === `${previousSquare.rank - 2}` ||
+        splitOAM[1] === `${previousSquare.rank + 2}` ||
         splitOAM[1] === `${previousSquare.rank - 2}`)
     );
   }
