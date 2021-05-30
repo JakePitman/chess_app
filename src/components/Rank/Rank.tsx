@@ -14,6 +14,10 @@ type Props = {
   ) => void;
   isWhite: boolean;
   OAM?: string;
+  automaticMove?: string;
+  client: any;
+  addMoveToList: (move: string) => void;
+  setBoard: React.Dispatch<any>;
 }
 
 const FILE_LETTERS = {
@@ -27,7 +31,7 @@ const FILE_LETTERS = {
   "8": "h",
 }
 
-const Rank = ({rankNumber, movePiece, isWhite, OAM}: Props) => { 
+const Rank = ({rankNumber, movePiece, isWhite, OAM, automaticMove, client, addMoveToList, setBoard}: Props) => { 
   return (
     <div className={styles.mainContainer}>
       {
@@ -46,6 +50,10 @@ const Rank = ({rankNumber, movePiece, isWhite, OAM}: Props) => {
               key={`square-${fileLetter}${rankNumber}`}
               isWhite={isWhite}
               OAM={OAM}
+              automaticMove={automaticMove}
+              client={client}
+              addMoveToList={addMoveToList}
+              setBoard={setBoard}
             /> 
           )
         })

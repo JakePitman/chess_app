@@ -1,5 +1,6 @@
-import React, { useState, useContext, useLayoutEffect } from 'react'
+import React, { useState, useContext, useEffect, useLayoutEffect } from 'react'
 import { useDrop } from 'react-dnd'
+import _ from 'lodash'
 
 import styles from './Square.scss'
 import BoardInfoContext from '../../contexts/BoardInfoContext'
@@ -18,6 +19,10 @@ type Props = {
   ) => void
   isWhite: boolean
   OAM?: string
+  automaticMove?: string
+  client: any;
+  addMoveToList: (move: string) => void;
+  setBoard: React.Dispatch<any>;
 }
 
 const isLightSquare = (rankNumber: number, fileNumber: number) => {
@@ -108,7 +113,10 @@ const canMove = (currentSquare: string, pieceName: PieceName, previousSquare: {r
   return isTargetOfOAM(currentSquare, OAM, isWhite) && isOAMPiece(pieceName, previousSquare, OAM)
 }
 
-const Square = ({ rankNumber, fileNumber, fileLetter, movePiece, OAM, isWhite }: Props) => { 
+const Square = ({ rankNumber, fileNumber, fileLetter, movePiece, OAM, isWhite, automaticMove, client, addMoveToList, setBoard }: Props) => { 
+
+  const squareNotation = `${fileLetter}${rankNumber}`
+
   const board = useContext(BoardInfoContext)
   const getPieceInfo = () => {
     return board.squares.find(square =>
@@ -122,7 +130,21 @@ const Square = ({ rankNumber, fileNumber, fileLetter, movePiece, OAM, isWhite }:
     setPieceInfo(newInfo)
   }, [board])
 
-  const squareNotation = `${fileLetter}${rankNumber}`
+  useEffect(() => {
+    if(automaticMove && isTargetOfOAM(squareNotation, automaticMove, isWhite)) {
+      client.move(automaticMove)
+      setBoard({...client.game.board})
+      addMoveToList(automaticMove)
+      //TODO: Figure out why this isn't working as it does in drop ref
+      //    May need to happen in another useEffectHook
+      // HACK: setTimeout so that when taking, piece is updated to piece that took,
+      //       instead of remaining as piece that was taken
+      setTimeout(() => {
+        setPieceInfo(null)
+        setPieceInfo(_.cloneDeep(getPieceInfo()))
+      }, 100)
+    }
+  }, [automaticMove])
 
   const [ {isOver }, drop] = useDrop(() => ({
     accept: ['king', 'queen', 'rook', 'bishop', 'knight', 'pawn'],
