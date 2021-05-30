@@ -6,8 +6,8 @@ _This app is a work in progress. Current functionality is listed below_
 - [x] Backend express API setup with GET/POST
 - [x] Add Free Mode
 - [x] Add Test Mode
-- [ ] Add List Mode
 ---
+- [ ] Add List Mode
 - [ ] Automated script to setup db on other machines
 - [ ] Theme switcher
 ### Free Mode
