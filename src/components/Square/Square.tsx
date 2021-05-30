@@ -178,31 +178,36 @@ const Square = ({
     }
   }, [automaticMove]);
 
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: ["king", "queen", "rook", "bishop", "knight", "pawn"],
-    drop: (
-      item: { pieceName: PieceName; square: { rank: number; file: string } },
-      monitor
-    ) => {
-      const isTaking = !!getPieceInfo();
-      if (canMove(squareNotation, item.pieceName, item.square, OAM, isWhite)) {
-        movePiece(
-          item.pieceName,
-          squareNotation,
-          item.square,
-          !!getPieceInfo()
-        );
-        if (isTaking) {
-          // Hack: set to null first, so Piece rerenders
-          setPieceInfo(null);
-          setPieceInfo(getPieceInfo());
+  const [{ isOver }, drop] = useDrop(
+    () => ({
+      accept: ["king", "queen", "rook", "bishop", "knight", "pawn"],
+      drop: (
+        item: { pieceName: PieceName; square: { rank: number; file: string } },
+        monitor
+      ) => {
+        const isTaking = !!getPieceInfo();
+        if (
+          canMove(squareNotation, item.pieceName, item.square, OAM, isWhite)
+        ) {
+          movePiece(
+            item.pieceName,
+            squareNotation,
+            item.square,
+            !!getPieceInfo()
+          );
+          if (isTaking) {
+            // Hack: set to null first, so Piece rerenders
+            setPieceInfo(null);
+            setPieceInfo(getPieceInfo());
+          }
         }
-      }
-    },
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
+      },
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
     }),
-  }));
+    [OAM]
+  );
 
   return (
     <div
