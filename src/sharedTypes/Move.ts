@@ -1,6 +1,6 @@
 type Move = {
   notation: string;
   reason?: string;
-}
+};
 
-export default Move
+export default Move;

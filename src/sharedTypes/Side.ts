@@ -1,3 +1,3 @@
-type Side = "white" | "black"
+type Side = "white" | "black";
 
-export default Side
+export default Side;

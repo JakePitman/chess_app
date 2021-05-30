@@ -1,3 +1,3 @@
-import FreeMode from "./FreeMode"
+import FreeMode from "./FreeMode";
 
-export default FreeMode
+export default FreeMode;

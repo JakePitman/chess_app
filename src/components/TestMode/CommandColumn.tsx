@@ -1,24 +1,24 @@
-import React, { useState, SetStateAction, Dispatch } from 'react'
-import axios from "axios"
+import React, { useState, SetStateAction, Dispatch } from "react";
+import axios from "axios";
 
-import { Move, MovesListType } from "../../sharedTypes"
-import styles from "./CommandColumn.scss"
-import Button from "../Button"
+import { Move, MovesListType } from "../../sharedTypes";
+import styles from "./CommandColumn.scss";
+import Button from "../Button";
 
 type Props = {
-  setRandomLine: () => void
-}
+  setRandomLine: () => void;
+};
 
 const CommandColumn = ({ setRandomLine }: Props) => {
-  const [message, setMessage] = useState<string>('')
+  const [message, setMessage] = useState<string>("");
 
-  return(
+  return (
     <div className={styles.container}>
       <p>TEST MODE</p>
-      <Button text="New line" onClick={setRandomLine}/>
+      <Button text="New line" onClick={setRandomLine} />
       <p className={styles.message}>{message}</p>
     </div>
-  )
-}
+  );
+};
 
-export default CommandColumn
+export default CommandColumn;
