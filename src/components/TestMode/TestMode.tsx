@@ -182,7 +182,10 @@ const TestMode = ({ lines }: Props) => {
           }
         />
         <div className={styles.sideColumn}>
-          <CommandColumn setRandomLine={setRandomLine} />
+          <CommandColumn
+            setRandomLine={setRandomLine}
+            lineTitle={currentLine.name}
+          />
         </div>
       </div>
     </div>

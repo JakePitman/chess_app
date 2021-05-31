@@ -7,14 +7,15 @@ import Button from "../Button";
 
 type Props = {
   setRandomLine: () => void;
+  lineTitle: string;
 };
 
-const CommandColumn = ({ setRandomLine }: Props) => {
+const CommandColumn = ({ setRandomLine, lineTitle }: Props) => {
   const [message, setMessage] = useState<string>("");
 
   return (
     <div className={styles.container}>
-      <p>TEST MODE</p>
+      <p className={styles.inputHeader}>{lineTitle}</p>
       <Button text="New line" onClick={setRandomLine} />
       <p className={styles.message}>{message}</p>
     </div>
