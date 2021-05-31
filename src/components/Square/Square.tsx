@@ -145,6 +145,12 @@ const Square = ({
   setBoard,
 }: Props) => {
   const squareNotation = `${fileLetter}${rankNumber}`;
+  // First set of automatic moves are mapped to format "MOVE%PLAYER_COLOR"
+  // to trigger rerenders in this component, even when two consecutive
+  // automatic moves are the same (eg. 3. dxc5, dxc5)
+  const automaticMoveNotation = automaticMove?.includes("%")
+    ? automaticMove.split("%")[0]
+    : automaticMove;
 
   const board = useContext(BoardInfoContext);
   const getPieceInfo = () => {
@@ -161,12 +167,12 @@ const Square = ({
 
   useEffect(() => {
     if (
-      automaticMove &&
-      isTargetOfOAM(squareNotation, automaticMove, isWhite)
+      automaticMoveNotation &&
+      isTargetOfOAM(squareNotation, automaticMoveNotation, isWhite)
     ) {
-      client.move(automaticMove);
+      client.move(automaticMoveNotation);
       setBoard({ ...client.game.board });
-      addMoveToList(automaticMove);
+      addMoveToList(automaticMoveNotation);
       setTimeout(() => {
         setPieceInfo(null);
         setPieceInfo(_.cloneDeep(getPieceInfo()));

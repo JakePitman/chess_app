@@ -50,7 +50,13 @@ const TestMode = ({ lines }: Props) => {
       Math.random() * (currentLine.moves.length - 1) + 1
     );
     setRemainingAutomaticMoves(
-      flattenMoves(currentLine.moves.slice(0, startingPoint))
+      flattenMoves(currentLine.moves.slice(0, startingPoint)).map((move, i) => {
+        const playercolor = i % 2 === 0 ? "white" : "black";
+        // Attach player color to move in case of consecutive repeated notation,
+        //   eg. 3. cxd5, cxd5 from the Slav exchange variation
+        // "cxd5" -> "cxd5" won't rerender, but "cxd5%white" -> "cxd5%black" will.
+        return `${move}%${playercolor}`;
+      })
     );
     setRemainingMovesToMake(
       _.cloneDeep(
@@ -158,9 +164,11 @@ const TestMode = ({ lines }: Props) => {
           setCommandColumnMessage={setCommandColumnMessage}
           addMoveToList={addMoveToList}
           OAM={
-            currentLine.playercolor === "white"
-              ? remainingMovesToMake[0][0]
-              : remainingMovesToMake[0][1]
+            remainingMovesToMake[0]
+              ? currentLine.playercolor === "white"
+                ? remainingMovesToMake[0][0]
+                : remainingMovesToMake[0][1]
+              : null
           }
           updateRemainingMoves={() =>
             remainingMovesToMake &&
