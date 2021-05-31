@@ -34,10 +34,13 @@ const TestMode = ({ lines }: Props) => {
     );
 
   useEffect(() => {
-    // TODO:
-    //   Find out what RMTM looks like when black & white have finished, respectively
-    //   Set random new line under those conditions
-    console.log("RMTM changed in TestMode: ", remainingMovesToMake);
+    if (
+      automaticMovesCompleted &&
+      remainingMovesToMake.length <= 1 &&
+      remainingMovesToMake[0][0] == null
+    ) {
+      setRandomLine();
+    }
   }, [remainingMovesToMake]);
 
   useEffect(() => {
@@ -45,9 +48,9 @@ const TestMode = ({ lines }: Props) => {
     setGameClient(null);
     gameClientRef.current = chess.create();
     setMovesMade([]);
-    // Gets a number between 0 & the number of moves (not inclusive)
+    // Gets a number between 0 & one less than the number of moves (not inclusive)
     const startingPoint = Math.floor(
-      Math.random() * (currentLine.moves.length - 1) + 1
+      Math.random() * (currentLine.moves.length - 2) + 1
     );
     setRemainingAutomaticMoves(
       flattenMoves(currentLine.moves.slice(0, startingPoint)).map((move, i) => {

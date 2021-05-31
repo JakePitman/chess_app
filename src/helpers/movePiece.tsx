@@ -13,8 +13,7 @@ const movePiece = (
   gameClient: any,
   makeMove: (moveNotation: string) => void,
   setCommandColumnMessage: Dispatch<React.SetStateAction<string>>,
-  setBoard: Dispatch<React.SetStateAction<string>>,
-  addRemainingMoveToMakeToAutomaticMoves: () => void
+  setBoard: Dispatch<React.SetStateAction<string>>
 ) => {
   return (
     piece: PieceName,
