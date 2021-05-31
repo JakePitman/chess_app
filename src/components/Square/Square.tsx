@@ -95,7 +95,7 @@ const isOAMPiece = (
       splitOAM[0] === previousSquare.file &&
       (splitOAM[1] === `${previousSquare.rank + 1}` ||
         splitOAM[1] === `${previousSquare.rank - 1}` ||
-        splitOAM[1] === `${previousSquare.rank - 2}` ||
+        splitOAM[1] === `${previousSquare.rank + 2}` ||
         splitOAM[1] === `${previousSquare.rank - 2}`)
     );
   }
@@ -145,6 +145,12 @@ const Square = ({
   setBoard,
 }: Props) => {
   const squareNotation = `${fileLetter}${rankNumber}`;
+  // First set of automatic moves are mapped to format "MOVE%PLAYER_COLOR"
+  // to trigger rerenders in this component, even when two consecutive
+  // automatic moves are the same (eg. 3. dxc5, dxc5)
+  const automaticMoveNotation = automaticMove?.includes("%")
+    ? automaticMove.split("%")[0]
+    : automaticMove;
 
   const board = useContext(BoardInfoContext);
   const getPieceInfo = () => {
@@ -161,16 +167,12 @@ const Square = ({
 
   useEffect(() => {
     if (
-      automaticMove &&
-      isTargetOfOAM(squareNotation, automaticMove, isWhite)
+      automaticMoveNotation &&
+      isTargetOfOAM(squareNotation, automaticMoveNotation, isWhite)
     ) {
-      client.move(automaticMove);
+      client.move(automaticMoveNotation);
       setBoard({ ...client.game.board });
-      addMoveToList(automaticMove);
-      //TODO: Figure out why this isn't working as it does in drop ref
-      //    May need to happen in another useEffectHook
-      // HACK: setTimeout so that when taking, piece is updated to piece that took,
-      //       instead of remaining as piece that was taken
+      addMoveToList(automaticMoveNotation);
       setTimeout(() => {
         setPieceInfo(null);
         setPieceInfo(_.cloneDeep(getPieceInfo()));
@@ -178,31 +180,36 @@ const Square = ({
     }
   }, [automaticMove]);
 
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: ["king", "queen", "rook", "bishop", "knight", "pawn"],
-    drop: (
-      item: { pieceName: PieceName; square: { rank: number; file: string } },
-      monitor
-    ) => {
-      const isTaking = !!getPieceInfo();
-      if (canMove(squareNotation, item.pieceName, item.square, OAM, isWhite)) {
-        movePiece(
-          item.pieceName,
-          squareNotation,
-          item.square,
-          !!getPieceInfo()
-        );
-        if (isTaking) {
-          // Hack: set to null first, so Piece rerenders
-          setPieceInfo(null);
-          setPieceInfo(getPieceInfo());
+  const [{ isOver }, drop] = useDrop(
+    () => ({
+      accept: ["king", "queen", "rook", "bishop", "knight", "pawn"],
+      drop: (
+        item: { pieceName: PieceName; square: { rank: number; file: string } },
+        monitor
+      ) => {
+        const isTaking = !!getPieceInfo();
+        if (
+          canMove(squareNotation, item.pieceName, item.square, OAM, isWhite)
+        ) {
+          movePiece(
+            item.pieceName,
+            squareNotation,
+            item.square,
+            !!getPieceInfo()
+          );
+          if (isTaking) {
+            // Hack: set to null first, so Piece rerenders
+            setPieceInfo(null);
+            setPieceInfo(getPieceInfo());
+          }
         }
-      }
-    },
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
+      },
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
     }),
-  }));
+    [OAM]
+  );
 
   return (
     <div

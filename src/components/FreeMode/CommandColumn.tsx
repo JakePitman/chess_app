@@ -64,7 +64,12 @@ const CommandColumn = ({
       <Button
         text="SAVE MOVES"
         onClick={() => {
-          if (titleInput.length <= 0) {
+          const lastMoveWasBlack = !!moves[moves.length - 1][1];
+          if (isWhite && lastMoveWasBlack) {
+            setMessage("Please finish on a white move");
+          } else if (!isWhite && !lastMoveWasBlack) {
+            setMessage("Please finish on a black move");
+          } else if (titleInput.length <= 0) {
             setMessage("Please enter a title");
           } else if (moves.length <= 0) {
             setMessage("Please make some moves");
@@ -75,7 +80,10 @@ const CommandColumn = ({
                 playercolor: isWhite ? "white" : "black",
                 moves: JSON.stringify(moves),
               })
-              .then((res) => console.log("RES: ", res))
+              .then((res) => {
+                console.log("RES: ", res);
+                setMessage("Line added successfully");
+              })
               .catch((e) => {
                 console.log(e);
               });

@@ -20,14 +20,11 @@ const TestMode = ({ lines }: Props) => {
   const [remainingAutomaticMoves, setRemainingAutomaticMoves] = useState<
     string[]
   >([]);
-  // TODO: figure out when to run next move logic
-  // wait for player if it's their move
-  // make computer move if not...........
-  // maybe set move to null, and delete turn when both moves are null:
-  //  if (!isWhite && remainingMovesToMake[0][0] !== null) {movePiece()}
   const [remainingMovesToMake, setRemainingMovesToMake] =
     useState<MovesListType>([]);
   const [movesMade, setMovesMade] = useState<MovesListType>([]);
+  const [automaticMovesCompleted, setAutomaticMovesCompleted] =
+    useState<boolean>(false);
 
   const flattenMoves = (movesObjects: MovesListType) =>
     _.flattenDeep(
@@ -37,22 +34,39 @@ const TestMode = ({ lines }: Props) => {
     );
 
   useEffect(() => {
+    if (
+      automaticMovesCompleted &&
+      remainingMovesToMake.length <= 1 &&
+      remainingMovesToMake[0][0] == null
+    ) {
+      setRandomLine();
+    }
+  }, [remainingMovesToMake]);
+
+  useEffect(() => {
     // Ensure no state changes trigger automatic moves on old client
     setGameClient(null);
     gameClientRef.current = chess.create();
     setMovesMade([]);
-    // Gets a number between 0 & the number of moves (not inclusive)
+    // Gets a number between 0 & one less than the number of moves (not inclusive)
     const startingPoint = Math.floor(
-      Math.random() * (currentLine.moves.length - 1) + 1
+      Math.random() * (currentLine.moves.length - 2) + 1
     );
     setRemainingAutomaticMoves(
-      flattenMoves(currentLine.moves.slice(0, startingPoint))
+      flattenMoves(currentLine.moves.slice(0, startingPoint)).map((move, i) => {
+        const playercolor = i % 2 === 0 ? "white" : "black";
+        // Attach player color to move in case of consecutive repeated notation,
+        //   eg. 3. cxd5, cxd5 from the Slav exchange variation
+        // "cxd5" -> "cxd5" won't rerender, but "cxd5%white" -> "cxd5%black" will.
+        return `${move}%${playercolor}`;
+      })
     );
     setRemainingMovesToMake(
       _.cloneDeep(
         currentLine.moves.slice(startingPoint, currentLine.moves.length)
       )
     );
+    setAutomaticMovesCompleted(false);
   }, [currentLine]);
 
   useEffect(() => {
@@ -89,20 +103,24 @@ const TestMode = ({ lines }: Props) => {
     setCurrentLine(_.sample(otherLines));
   };
 
-  // Make an extra move for white at the end of automatic moves
-  // when player is black, leaving it on black's turn to move
   useEffect(() => {
+    // Happens when an automatic move is completed in response to an automatic
+    //    move made in response to a player move
+    if (automaticMovesCompleted && remainingAutomaticMoves.length === 0) {
+      setRemainingMovesToMake(determineNewRemainingMovesToMake());
+    }
     if (
       remainingAutomaticMoves.length === 0 &&
       gameClient &&
-      currentLine.playercolor === "black" &&
-      remainingMovesToMake[0][0]
+      !automaticMovesCompleted
     ) {
-      const moveForWhite = remainingMovesToMake[0][0];
-      const remainingMovesDup = [...remainingMovesToMake];
-      remainingMovesDup[0][0] = null;
-      setRemainingMovesToMake(remainingMovesDup);
-      setRemainingAutomaticMoves([moveForWhite.notation]);
+      // Make an extra move for white at the end of automatic moves
+      // when player is black, leaving it on black's turn to move
+      if (currentLine.playercolor === "black" && remainingMovesToMake[0][0]) {
+        const moveForWhite = remainingMovesToMake[0][0];
+        setRemainingAutomaticMoves([moveForWhite.notation]);
+      }
+      setAutomaticMovesCompleted(true);
     }
   }, [remainingAutomaticMoves.length]);
 
@@ -113,6 +131,27 @@ const TestMode = ({ lines }: Props) => {
       return dup;
     }
     return remainingMovesToMake.slice(1, remainingMovesToMake.length);
+  };
+
+  const addRemainingMoveToMakeToAutomaticMoves = () => {
+    if (remainingMovesToMake.length <= 0) {
+      return;
+    }
+    if (currentLine.playercolor === "white") {
+      remainingMovesToMake[0][1] &&
+        setTimeout(
+          () =>
+            setRemainingAutomaticMoves([remainingMovesToMake[0][1].notation]),
+          200
+        );
+    } else {
+      remainingMovesToMake[1] &&
+        setTimeout(
+          () =>
+            setRemainingAutomaticMoves([remainingMovesToMake[1][0].notation]),
+          200
+        );
+    }
   };
 
   return gameClient ? (
@@ -128,12 +167,18 @@ const TestMode = ({ lines }: Props) => {
           setCommandColumnMessage={setCommandColumnMessage}
           addMoveToList={addMoveToList}
           OAM={
-            currentLine.playercolor === "white"
-              ? remainingMovesToMake[0][0]
-              : remainingMovesToMake[0][1]
+            remainingMovesToMake[0]
+              ? currentLine.playercolor === "white"
+                ? remainingMovesToMake[0][0]
+                : remainingMovesToMake[0][1]
+              : null
           }
           updateRemainingMoves={() =>
+            remainingMovesToMake &&
             setRemainingMovesToMake(determineNewRemainingMovesToMake())
+          }
+          addRemainingMoveToMakeToAutomaticMoves={
+            addRemainingMoveToMakeToAutomaticMoves
           }
         />
         <div className={styles.sideColumn}>
