@@ -16,6 +16,7 @@ type Props = {
   addMoveToList: (move: string) => void;
   OAM: Move;
   updateRemainingMoves: () => void;
+  addRemainingMoveToMakeToAutomaticMoves: () => void;
 };
 
 const Board = ({
@@ -26,6 +27,7 @@ const Board = ({
   addMoveToList,
   OAM,
   updateRemainingMoves,
+  addRemainingMoveToMakeToAutomaticMoves,
 }: Props) => {
   const [board, setBoard] = useState(client.game.board);
 
@@ -35,10 +37,10 @@ const Board = ({
       client.move(moveNotation);
       addMoveToList(moveNotation);
       updateRemainingMoves();
+      addRemainingMoveToMakeToAutomaticMoves();
     },
     setCommandColumnMessage,
-    setBoard,
-    updateRemainingMoves
+    setBoard
   );
 
   return (

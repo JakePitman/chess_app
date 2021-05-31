@@ -14,7 +14,7 @@ const movePiece = (
   makeMove: (moveNotation: string) => void,
   setCommandColumnMessage: Dispatch<React.SetStateAction<string>>,
   setBoard: Dispatch<React.SetStateAction<string>>,
-  updateRemainingMovesToMake: () => void
+  addRemainingMoveToMakeToAutomaticMoves: () => void
 ) => {
   return (
     piece: PieceName,

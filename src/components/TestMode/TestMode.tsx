@@ -20,14 +20,11 @@ const TestMode = ({ lines }: Props) => {
   const [remainingAutomaticMoves, setRemainingAutomaticMoves] = useState<
     string[]
   >([]);
-  // TODO: figure out when to run next move logic
-  // wait for player if it's their move
-  // make computer move if not...........
-  // maybe set move to null, and delete turn when both moves are null:
-  //  if (!isWhite && remainingMovesToMake[0][0] !== null) {movePiece()}
   const [remainingMovesToMake, setRemainingMovesToMake] =
     useState<MovesListType>([]);
   const [movesMade, setMovesMade] = useState<MovesListType>([]);
+  const [automaticMovesCompleted, setAutomaticMovesCompleted] =
+    useState<boolean>(false);
 
   const flattenMoves = (movesObjects: MovesListType) =>
     _.flattenDeep(
@@ -35,6 +32,13 @@ const TestMode = ({ lines }: Props) => {
         turn[1] ? [turn[0].notation, turn[1].notation] : [turn[0].notation]
       )
     );
+
+  useEffect(() => {
+    // TODO:
+    //   Find out what RMTM looks like when black & white have finished, respectively
+    //   Set random new line under those conditions
+    console.log("RMTM changed in TestMode: ", remainingMovesToMake);
+  }, [remainingMovesToMake]);
 
   useEffect(() => {
     // Ensure no state changes trigger automatic moves on old client
@@ -53,6 +57,7 @@ const TestMode = ({ lines }: Props) => {
         currentLine.moves.slice(startingPoint, currentLine.moves.length)
       )
     );
+    setAutomaticMovesCompleted(false);
   }, [currentLine]);
 
   useEffect(() => {
@@ -89,20 +94,24 @@ const TestMode = ({ lines }: Props) => {
     setCurrentLine(_.sample(otherLines));
   };
 
-  // Make an extra move for white at the end of automatic moves
-  // when player is black, leaving it on black's turn to move
   useEffect(() => {
+    // Happens when an automatic move is completed in response to an automatic
+    //    move made in response to a player move
+    if (automaticMovesCompleted && remainingAutomaticMoves.length === 0) {
+      setRemainingMovesToMake(determineNewRemainingMovesToMake());
+    }
     if (
       remainingAutomaticMoves.length === 0 &&
       gameClient &&
-      currentLine.playercolor === "black" &&
-      remainingMovesToMake[0][0]
+      !automaticMovesCompleted
     ) {
-      const moveForWhite = remainingMovesToMake[0][0];
-      const remainingMovesDup = [...remainingMovesToMake];
-      remainingMovesDup[0][0] = null;
-      setRemainingMovesToMake(remainingMovesDup);
-      setRemainingAutomaticMoves([moveForWhite.notation]);
+      // Make an extra move for white at the end of automatic moves
+      // when player is black, leaving it on black's turn to move
+      if (currentLine.playercolor === "black" && remainingMovesToMake[0][0]) {
+        const moveForWhite = remainingMovesToMake[0][0];
+        setRemainingAutomaticMoves([moveForWhite.notation]);
+      }
+      setAutomaticMovesCompleted(true);
     }
   }, [remainingAutomaticMoves.length]);
 
@@ -113,6 +122,27 @@ const TestMode = ({ lines }: Props) => {
       return dup;
     }
     return remainingMovesToMake.slice(1, remainingMovesToMake.length);
+  };
+
+  const addRemainingMoveToMakeToAutomaticMoves = () => {
+    if (remainingMovesToMake.length <= 0) {
+      return;
+    }
+    if (currentLine.playercolor === "white") {
+      remainingMovesToMake[0][1] &&
+        setTimeout(
+          () =>
+            setRemainingAutomaticMoves([remainingMovesToMake[0][1].notation]),
+          200
+        );
+    } else {
+      remainingMovesToMake[1] &&
+        setTimeout(
+          () =>
+            setRemainingAutomaticMoves([remainingMovesToMake[1][0].notation]),
+          200
+        );
+    }
   };
 
   return gameClient ? (
@@ -135,6 +165,9 @@ const TestMode = ({ lines }: Props) => {
           updateRemainingMoves={() =>
             remainingMovesToMake &&
             setRemainingMovesToMake(determineNewRemainingMovesToMake())
+          }
+          addRemainingMoveToMakeToAutomaticMoves={
+            addRemainingMoveToMakeToAutomaticMoves
           }
         />
         <div className={styles.sideColumn}>

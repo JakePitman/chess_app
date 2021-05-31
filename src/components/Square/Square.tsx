@@ -167,10 +167,6 @@ const Square = ({
       client.move(automaticMove);
       setBoard({ ...client.game.board });
       addMoveToList(automaticMove);
-      //TODO: Figure out why this isn't working as it does in drop ref
-      //    May need to happen in another useEffectHook
-      // HACK: setTimeout so that when taking, piece is updated to piece that took,
-      //       instead of remaining as piece that was taken
       setTimeout(() => {
         setPieceInfo(null);
         setPieceInfo(_.cloneDeep(getPieceInfo()));
