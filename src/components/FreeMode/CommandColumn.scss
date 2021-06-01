@@ -10,8 +10,8 @@
 
 .inputHeader {
   width: 100%;
-  color: colors.$white;
-  background: colors.$border;
+  color: colors.$near-black;
+  background: colors.$accent-blue;
   padding: 5px;
   text-align: center;
   margin-bottom: 10px;
@@ -19,11 +19,11 @@
 
 .inputField {
   width: 100%;
-  color: colors.$border;
-  background: colors.$white;
+  color: colors.$accent-blue;
+  background: colors.$near-black;
   border: none;
   padding: 5px;
-  outline: 2px solid colors.$border;
+  outline: 2px solid colors.$accent-blue;
 }
 
 .titleHeader {
@@ -43,17 +43,9 @@
   height: 100px;
 }
 
-.button {
-  border: none;
-  color: colors.$white;
-  background: colors.$border;
-  padding: 5px;
-  font-size: 30px;
-}
-
 .message {
-  outline: 3px solid colors.$border;
-  color: colors.$border;
+  outline: 3px solid colors.$accent-blue;
+  color: colors.$accent-blue;
   height: 100px;
   display: flex;
   justify-content: center;

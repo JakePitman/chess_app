@@ -14,13 +14,13 @@
 }
 
 .sideColumn {
+  background: colors.$near-black;
   width: 100%;
   margin: 0 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: colors.$white;
   padding: spacing.$side-margin;
-  border: spacing.$border solid colors.$border;
+  border: spacing.$border solid colors.$accent-blue;
   border-radius: spacing.$border-radius;
 }

@@ -1,27 +1,10 @@
 import React from "react";
 import { useDrag } from "react-dnd";
 
+import whiteBishop from "./images/white-bishop.png";
+
 import styles from "./Piece.scss";
 import { PieceName, Side } from "../../sharedTypes";
-
-const PIECES = {
-  white: {
-    king: "\u2654",
-    queen: "\u2655",
-    rook: "\u2656",
-    bishop: "\u2657",
-    knight: "\u2658",
-    pawn: "\u2659",
-  },
-  black: {
-    king: "\u265A",
-    queen: "\u265B",
-    rook: "\u265C",
-    bishop: "\u265D",
-    knight: "\u265E",
-    pawn: "\u265F",
-  },
-};
 
 type Props = {
   pieceInfo: { side: { name: Side }; type: PieceName };
@@ -42,10 +25,14 @@ const Piece = ({ pieceInfo, location }: Props) => {
     }),
   }));
 
-  return (
-    <div className={isDragging ? styles.dragging : styles.piece} ref={drag}>
-      {PIECES[side.name][type]}
+  return type && side.name ? (
+    <div className={isDragging ? styles.dragging : styles.container} ref={drag}>
+      <div
+        className={styles.piece + " " + styles[`${side.name}-${type}`]}
+      ></div>
     </div>
+  ) : (
+    <></>
   );
 };
 
