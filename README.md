@@ -6,14 +6,8 @@
 
 ## Free Mode
 
-> Make moves for both sides
+> Make moves for both sides, enter a title, pick the side you want to play as, and save
 > ![free-movement](./assets/free-mode-movement.gif)
-> Choose the side that you want to practise this line as in Test Mode before saving
-> ![free-switch](./assets/free-mode-switch.gif)
-> Enter a title and save it to the database
-> ![free-save](./assets/free-mode-save.gif)
-
----
 
 ## Test Mode
 
