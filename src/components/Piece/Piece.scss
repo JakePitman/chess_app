@@ -1,13 +1,11 @@
-.piece {
+.container {
   width: 100%;
   height: 100%;
   font-size: 80px;
-  // text-align: center;
   cursor: grab;
-  // overflow: hidden;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .dragging {
@@ -15,6 +13,13 @@
 
   opacity: 0;
   cursor: grabbing;
+}
+
+.piece {
+  height: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .white-king {

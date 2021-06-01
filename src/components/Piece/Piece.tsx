@@ -26,14 +26,11 @@ const Piece = ({ pieceInfo, location }: Props) => {
   }));
 
   return type && side.name ? (
-    <div
-      className={
-        (isDragging ? styles.dragging : styles.piece) +
-        " " +
-        styles[`${side.name}-${type}`]
-      }
-      ref={drag}
-    ></div>
+    <div className={isDragging ? styles.dragging : styles.container} ref={drag}>
+      <div
+        className={styles.piece + " " + styles[`${side.name}-${type}`]}
+      ></div>
+    </div>
   ) : (
     <></>
   );
