@@ -1,11 +1,43 @@
+@use '/src/sharedStyles/colors.scss';
+@use '/src/sharedStyles/spacing.scss';
+
 .container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 }
 
+.outerButtonContainer {
+  width: 150px;
+  height: 150px;
+  margin: 0 30px;
+  padding: 10px;
+  background: #ffffff;
+  border: 5px solid colors.$accent-blue;
+  border-radius: spacing.$border-radius;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
 .buttonContainer {
-  width: 400px;
-  margin: 10px 0;
+  height: 80%;
+  width: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.free {
+  background-image: url("./images/free.png");
+}
+
+.test {
+  background-image: url("./images/test.png");
+}
+
+.list {
+  background-image: url("./images/list.png");
 }
