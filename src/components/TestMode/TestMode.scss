@@ -19,8 +19,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: colors.$white;
+  background: colors.$near-black;
   padding: spacing.$side-margin;
-  border: spacing.$border solid colors.$border;
+  border: spacing.$border solid colors.$accent-blue;
   border-radius: spacing.$border-radius;
 }
