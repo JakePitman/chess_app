@@ -3,17 +3,17 @@
 .square {
   width: 100px;
   height: 100px;
-  position: relative
+  position: relative;
 }
 
 .white {
   @extend .square;
-  background: colors.$white;
+  background: colors.$board-white;
 }
 
 .black {
   @extend .square;
-  background: colors.$black;
+  background: colors.$board-black;
 }
 
 .hoverCircle {

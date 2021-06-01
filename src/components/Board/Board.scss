@@ -2,7 +2,12 @@
 @use '/src/sharedStyles/spacing.scss';
 
 .mainContainer {
-  border: spacing.$border solid colors.$border;
+  border: spacing.$border solid colors.$accent-blue;
   border-radius: spacing.$border-radius;
   height: min-content;
+}
+
+.innerContainer {
+  border: 10px solid colors.$board-black;
+  border-radius: spacing.$border-radius;
 }

@@ -2,28 +2,28 @@
 
 .button {
   width: 100%;
-  color: colors.$white;
-  background: colors.$border;
+  color: colors.$accent-blue;
+  background: colors.$near-black;
   padding: 3px;
   text-align: center;
   margin-bottom: 10px;
   font-size: 20px;
   cursor: pointer;
-  outline: 2px solid colors.$border;
+  outline: 2px solid colors.$accent-blue;
 
   &:hover {
-    color: colors.$border;
+    color: colors.$near-black;
   }
   transition: all 0.2s;
 }
 
 .innerBorder {
   padding: 5px;
-  outline: 2px solid colors.$white;
-  background: colors.$border;
+  outline: 2px solid colors.$accent-blue;
+  background: colors.$near-black;
   &:hover {
-    outline: 2px solid colors.$border;
-    background: colors.$white;
+    outline: 2px solid colors.$near-black;
+    background: colors.$accent-blue;
   }
   transition: all 0.2s;
 }
