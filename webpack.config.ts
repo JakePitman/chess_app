@@ -44,6 +44,14 @@ module.exports = {
         ],
       },
       {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: "file-loader",
+          },
+        ],
+      },
+      {
         test: /\.m?[jt]s[x]$/,
         exclude: /(node_modules|bower_components)/,
         use: {
