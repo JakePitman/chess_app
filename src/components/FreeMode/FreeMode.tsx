@@ -7,7 +7,11 @@ import CommandColumn from "./CommandColumn";
 import styles from "./FreeMode.scss";
 import { MovesListType } from "../../sharedTypes";
 
-const FreeMode = () => {
+type Props = {
+  returnToMenu: () => void;
+};
+
+const FreeMode = ({ returnToMenu }: Props) => {
   const gameClient = chess.create();
   const [reasonInput, setReasonInput] = useState("");
   const [moves, setMoves] = useState<MovesListType>([]);
@@ -62,6 +66,7 @@ const FreeMode = () => {
             incomingMessage={commandColumnMessage}
             isWhite={isWhite}
             setIsWhite={setIsWhite}
+            returnToMenu={returnToMenu}
           />
         </div>
       </div>

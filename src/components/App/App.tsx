@@ -21,7 +21,7 @@ const App = () => {
 
   const modes = {
     menu: <Menu setMode={setMode} />,
-    free: <FreeMode />,
+    free: <FreeMode returnToMenu={() => setMode("menu")} />,
     test: <TestMode lines={lines} />,
     list: <div>List</div>,
   };
