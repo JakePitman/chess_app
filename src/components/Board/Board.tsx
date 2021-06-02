@@ -14,9 +14,9 @@ type Props = {
   isWhite: boolean;
   setCommandColumnMessage: Dispatch<SetStateAction<string>>;
   addMoveToList: (move: string) => void;
-  OAM: Move;
-  updateRemainingMoves: () => void;
-  addRemainingMoveToMakeToAutomaticMoves: () => void;
+  OAM?: Move;
+  updateRemainingMoves?: () => void;
+  addRemainingMoveToMakeToAutomaticMoves?: () => void;
 };
 
 const Board = ({
