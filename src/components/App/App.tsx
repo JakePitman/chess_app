@@ -14,14 +14,22 @@ const App = () => {
   const [mode, setMode] = useState<Mode>("menu");
   const [lines, setLines] = useState<Line[] | null>(null);
 
-  !lines &&
+  const updateLinesFromDB = () => {
     axios.get("http://localhost:3000/lines").then((res) => {
       setLines(res.data);
     });
+  };
+
+  !lines && updateLinesFromDB();
 
   const modes = {
     menu: <Menu setMode={setMode} />,
-    free: <FreeMode />,
+    free: (
+      <FreeMode
+        returnToMenu={() => setMode("menu")}
+        updateLinesFromDB={updateLinesFromDB}
+      />
+    ),
     test: <TestMode lines={lines} />,
     list: <div>List</div>,
   };
