@@ -23,7 +23,7 @@ const App = () => {
   !lines && updateLinesFromDB();
 
   const modes = {
-    menu: <Menu setMode={setMode} />,
+    menu: <Menu setMode={setMode} linesCount={lines?.length} />,
     free: (
       <FreeMode
         returnToMenu={() => setMode("menu")}

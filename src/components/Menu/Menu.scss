@@ -32,6 +32,17 @@
       width: 85%;
     }
   }
+
+  &.disabled {
+    cursor: default;
+    background: #505050;
+    &:hover {
+      .buttonContainer {
+        height: 80%;
+        width: 80%;
+      }
+    }
+  }
 }
 
 .tooltip {

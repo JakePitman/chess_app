@@ -8,32 +8,57 @@ type Mode = "menu" | "free" | "test" | "list";
 
 type Props = {
   setMode: Dispatch<SetStateAction<Mode>>;
+  linesCount: number | null;
 };
 
-const Menu = ({ setMode }: Props) => {
+type MenuButtonProps = {
+  handleClick: () => void;
+  tooltipMsg: string;
+  style: any;
+  disabled?: boolean;
+};
+
+const MenuButton = ({
+  handleClick,
+  tooltipMsg,
+  style,
+  disabled = false,
+}: MenuButtonProps) => {
+  return (
+    <div
+      className={
+        styles.outerButtonContainer + (disabled ? ` ${styles.disabled}` : "")
+      }
+      onClick={disabled ? null : handleClick}
+    >
+      <div className={styles.tooltip}>{disabled ? "X" : tooltipMsg}</div>
+      <div className={styles.buttonContainer + " " + style} />
+    </div>
+  );
+};
+
+const Menu = ({ setMode, linesCount }: Props) => {
+  const testModeDisabled = linesCount < 2;
+  const listModeDisabled = linesCount < 1;
   return (
     <div className={styles.container}>
-      <div
-        className={styles.outerButtonContainer}
-        onClick={() => setMode("free")}
-      >
-        <div className={styles.tooltip}>Free</div>
-        <div className={styles.buttonContainer + " " + styles.free} />
-      </div>
-      <div
-        className={styles.outerButtonContainer}
-        onClick={() => setMode("test")}
-      >
-        <div className={styles.tooltip}>Test</div>
-        <div className={styles.buttonContainer + " " + styles.test} />
-      </div>
-      <div
-        className={styles.outerButtonContainer}
-        onClick={() => setMode("list")}
-      >
-        <div className={styles.tooltip}>List</div>
-        <div className={styles.buttonContainer + " " + styles.list} />
-      </div>
+      <MenuButton
+        handleClick={() => setMode("free")}
+        tooltipMsg={"Free"}
+        style={styles.free}
+      />
+      <MenuButton
+        handleClick={() => setMode("test")}
+        tooltipMsg={"Test"}
+        style={styles.test}
+        disabled={testModeDisabled}
+      />
+      <MenuButton
+        handleClick={() => setMode("list")}
+        tooltipMsg={"List"}
+        style={styles.list}
+        disabled={listModeDisabled}
+      />
     </div>
   );
 };
