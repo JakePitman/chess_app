@@ -9,9 +9,10 @@ import { MovesListType } from "../../sharedTypes";
 
 type Props = {
   returnToMenu: () => void;
+  updateLinesFromDB: () => void;
 };
 
-const FreeMode = ({ returnToMenu }: Props) => {
+const FreeMode = ({ returnToMenu, updateLinesFromDB }: Props) => {
   const gameClient = chess.create();
   const [reasonInput, setReasonInput] = useState("");
   const [moves, setMoves] = useState<MovesListType>([]);
@@ -67,6 +68,7 @@ const FreeMode = ({ returnToMenu }: Props) => {
             isWhite={isWhite}
             setIsWhite={setIsWhite}
             returnToMenu={returnToMenu}
+            updateLinesFromDB={updateLinesFromDB}
           />
         </div>
       </div>

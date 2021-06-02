@@ -14,6 +14,7 @@ type Props = {
   isWhite: boolean;
   setIsWhite: Dispatch<SetStateAction<boolean>>;
   returnToMenu: () => void;
+  updateLinesFromDB: () => void;
 };
 
 const CommandColumn = ({
@@ -25,6 +26,7 @@ const CommandColumn = ({
   isWhite,
   setIsWhite,
   returnToMenu,
+  updateLinesFromDB,
 }: Props) => {
   const [titleInput, setTitleInput] = useState<string>("");
   const [message, setMessage] = useState<string>("");
@@ -85,6 +87,7 @@ const CommandColumn = ({
               .then((res) => {
                 console.log("RES: ", res);
                 setMessage("Line added successfully");
+                updateLinesFromDB();
                 setTimeout(() => returnToMenu(), 500);
               })
               .catch((e) => {
