@@ -12,7 +12,7 @@ type Props = {
   automaticMoves?: string[];
   client: any;
   isWhite: boolean;
-  setCommandColumnMessage: Dispatch<SetStateAction<string>>;
+  setCommandColumnMessage?: Dispatch<SetStateAction<string>>;
   addMoveToList: (move: string) => void;
   OAM?: Move;
   updateRemainingMoves?: () => void;
