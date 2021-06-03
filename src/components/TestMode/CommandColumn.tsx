@@ -1,7 +1,5 @@
 import React, { useState, SetStateAction, Dispatch } from "react";
-import axios from "axios";
 
-import { Move, MovesListType } from "../../sharedTypes";
 import styles from "./CommandColumn.scss";
 import Button from "../Button";
 

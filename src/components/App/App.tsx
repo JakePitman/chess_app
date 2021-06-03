@@ -32,7 +32,7 @@ const App = () => {
       />
     ),
     test: <TestMode lines={lines} />,
-    list: <ListMode lines={lines} />,
+    list: <ListMode lines={lines} updateLinesFromDB={updateLinesFromDB} />,
   };
 
   return (
