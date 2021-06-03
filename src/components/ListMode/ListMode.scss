@@ -36,12 +36,26 @@
 
 .lineRow {
   border: 1px solid colors.$accent-blue;
+  border-radius: spacing.$border-radius;
   width: 100%;
   padding: 5px;
   display: flex;
   margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .lineTitle {
   color: colors.$accent-blue;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: 1px solid colors.$accent-blue;
+  border-radius: spacing.$border-radius;
+
+  &.selected {
+    background: colors.$accent-blue;
+  }
 }

@@ -8,12 +8,16 @@ import MovesList from "../MovesList";
 
 type LineProps = {
   title: string;
+  selected: boolean;
 };
 
-const LineRow = ({ title }: LineProps) => {
+const LineRow = ({ title, selected }: LineProps) => {
   return (
     <div className={styles.lineRow}>
       <p className={styles.lineTitle}>{title}</p>;
+      <div
+        className={styles.checkbox + ` ${selected && styles.selected}`}
+      ></div>
     </div>
   );
 };
@@ -46,7 +50,7 @@ const ListMode = ({ lines }: Props) => {
         <div className={styles.sideColumn}>
           <p className={styles.title}>Lines</p>
           {lines.map((line) => (
-            <LineRow title={line.name} />
+            <LineRow title={line.name} selected={line.selected} />
           ))}
         </div>
       </div>
