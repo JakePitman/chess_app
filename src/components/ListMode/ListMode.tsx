@@ -14,36 +14,44 @@ type LineProps = {
   updateLinesFromDB: () => void;
 };
 
+const handlePUT = (
+  title: string,
+  selected: boolean,
+  updateLinesFromDB: () => void
+) => {
+  axios
+    .put("http://localhost:3000/line", {
+      name: title,
+      selected: !selected,
+    })
+    .then((res) => {
+      console.log({ res });
+      updateLinesFromDB();
+    })
+    .catch((err) => console.log({ err }));
+};
+
+const handleDELETE = (id: number, updateLinesFromDB: () => void) => {
+  axios
+    .delete(`http://localhost:3000/line/${id}`)
+    .then((res) => {
+      console.log({ res });
+      updateLinesFromDB();
+    })
+    .catch((err) => console.log({ err }));
+};
+
 const LineRow = ({ title, selected, id, updateLinesFromDB }: LineProps) => {
   return (
     <div className={styles.lineRow}>
       <div
         className={styles.checkbox + ` ${selected && styles.selected}`}
-        onClick={() =>
-          axios
-            .put("http://localhost:3000/line", {
-              name: title,
-              selected: !selected,
-            })
-            .then((res) => {
-              console.log({ res });
-              updateLinesFromDB();
-            })
-            .catch((err) => console.log({ err }))
-        }
+        onClick={() => handlePUT(title, selected, updateLinesFromDB)}
       />
       <p className={styles.lineTitle}>{title}</p>
       <p
         className={styles.deleteButton}
-        onClick={() =>
-          axios
-            .delete(`http://localhost:3000/line/${id}`)
-            .then((res) => {
-              console.log({ res });
-              updateLinesFromDB();
-            })
-            .catch((err) => console.log({ err }))
-        }
+        onClick={() => handleDELETE(id, updateLinesFromDB)}
       >
         x
       </p>
