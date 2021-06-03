@@ -1,0 +1,85 @@
+@use '/src/sharedStyles/colors.scss';
+@use '/src/sharedStyles/spacing.scss';
+
+.appContainer {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.columnsContainer {
+  display: flex;
+}
+
+.sideColumn {
+  background: colors.$near-black;
+  width: 100%;
+  margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: spacing.$side-margin;
+  border: spacing.$border solid colors.$accent-blue;
+  border-radius: spacing.$border-radius;
+}
+
+.title {
+  background: colors.$accent-blue;
+  color: colors.$near-black;
+  width: 100%;
+  padding: 5px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.rowGroupSeparator {
+  height: 10px;
+}
+
+.lineRow {
+  border: 1px solid colors.$accent-blue;
+  border-radius: spacing.$border-radius;
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+
+  &.whiteRow {
+    background: colors.$board-white;
+  }
+  &.blackRow {
+    background: colors.$board-black;
+  }
+}
+
+.lineTitle {
+  color: colors.$near-black;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: 1px solid colors.$near-black;
+  border-radius: spacing.$border-radius;
+  background: colors.$near-black;
+
+  &.selected {
+    background: colors.$accent-blue;
+  }
+}
+
+.deleteButton {
+  color: red;
+  border: 1px solid red;
+  font-weight: bold;
+  background: colors.$near-black;
+  border-radius: spacing.$border-radius;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  cursor: pointer;
+}

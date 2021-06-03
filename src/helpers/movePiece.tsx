@@ -58,9 +58,9 @@ const movePiece = (
           }
         }
       }
-      setCommandColumnMessage("");
+      setCommandColumnMessage && setCommandColumnMessage("");
     } catch {
-      setCommandColumnMessage("Invalid move");
+      setCommandColumnMessage && setCommandColumnMessage("Invalid move");
     }
     setBoard({ ...gameClient.game.board });
   };

@@ -4,6 +4,7 @@ import axios from "axios";
 import Menu from "../Menu";
 import FreeMode from "../FreeMode";
 import TestMode from "../TestMode";
+import ListMode from "../ListMode";
 import Button from "../Button";
 import { Line } from "../../sharedTypes";
 import styles from "./App.scss";
@@ -31,7 +32,7 @@ const App = () => {
       />
     ),
     test: <TestMode lines={lines} />,
-    list: <div>List</div>,
+    list: <ListMode lines={lines} updateLinesFromDB={updateLinesFromDB} />,
   };
 
   return (

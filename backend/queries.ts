@@ -8,7 +8,7 @@ const pool = new Pool({
   port: 5432,
 });
 const getLines = (request, response) => {
-  pool.query("SELECT * FROM lines", (error, results) => {
+  pool.query("SELECT * FROM lines ORDER BY name", (error, results) => {
     if (error) {
       throw error;
     }
@@ -42,6 +42,21 @@ const createLine = (request, response) => {
   );
 };
 
+const toggleLine = (request, response) => {
+  const { name, selected } = request.body;
+
+  pool.query(
+    "UPDATE lines SET selected = $2 WHERE name = $1",
+    [name, selected],
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).send(`Line '${name}' updated with : ${selected}`);
+    }
+  );
+};
+
 const deleteLine = (request, response) => {
   const id = parseInt(request.params.id);
 
@@ -49,7 +64,7 @@ const deleteLine = (request, response) => {
     if (error) {
       throw error;
     }
-    response.status(200).send(`Line deleted with ID: ${id}`);
+    response.status(200).send(`Line deleted with id: ${id}`);
   });
 };
 
@@ -58,4 +73,5 @@ module.exports = {
   getLineById,
   createLine,
   deleteLine,
+  toggleLine,
 };
