@@ -26,7 +26,13 @@ const App = () => {
   const selectedLines = lines?.filter((line) => line.selected);
 
   const modes = {
-    menu: <Menu setMode={setMode} linesCount={lines?.length} />,
+    menu: (
+      <Menu
+        setMode={setMode}
+        linesCount={lines?.length}
+        selectedLinesCount={selectedLines?.length}
+      />
+    ),
     free: (
       <FreeMode
         returnToMenu={() => setMode("menu")}

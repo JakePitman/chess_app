@@ -100,7 +100,11 @@ const TestMode = ({ lines }: Props) => {
         flattenMoves(line.moves).toString() !==
         flattenMoves(currentLine.moves).toString()
     );
-    setCurrentLine(_.sample(otherLines));
+    if (otherLines.length === 0) {
+      setCurrentLine(_.cloneDeep(currentLine));
+    } else {
+      setCurrentLine(_.sample(otherLines));
+    }
   };
 
   useEffect(() => {
