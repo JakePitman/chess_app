@@ -27,8 +27,13 @@
   width: 100%;
 }
 
+.notations {
+  width: 100%;
+}
+
 .turn {
   display: flex;
   flex-direction: row;
   width: 100%;
+  color: colors.$accent-blue;
 }
