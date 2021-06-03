@@ -16,7 +16,6 @@ type LineProps = {
 const LineRow = ({ title, selected, updateLinesFromDB }: LineProps) => {
   return (
     <div className={styles.lineRow}>
-      <p className={styles.lineTitle}>{title}</p>
       <div
         className={styles.checkbox + ` ${selected && styles.selected}`}
         onClick={() =>
@@ -31,7 +30,9 @@ const LineRow = ({ title, selected, updateLinesFromDB }: LineProps) => {
             })
             .catch((err) => console.log({ err }))
         }
-      ></div>
+      />
+      <p className={styles.lineTitle}>{title}</p>
+      <p className={styles.deleteButton}>x</p>
     </div>
   );
 };

@@ -59,3 +59,13 @@
     background: colors.$accent-blue;
   }
 }
+
+.deleteButton {
+  color: red;
+  border: 1px solid red;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  cursor: pointer;
+}
