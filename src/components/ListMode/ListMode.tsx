@@ -10,10 +10,11 @@ import MovesList from "../MovesList";
 type LineProps = {
   title: string;
   selected: boolean;
+  id: number;
   updateLinesFromDB: () => void;
 };
 
-const LineRow = ({ title, selected, updateLinesFromDB }: LineProps) => {
+const LineRow = ({ title, selected, id, updateLinesFromDB }: LineProps) => {
   return (
     <div className={styles.lineRow}>
       <div
@@ -32,7 +33,20 @@ const LineRow = ({ title, selected, updateLinesFromDB }: LineProps) => {
         }
       />
       <p className={styles.lineTitle}>{title}</p>
-      <p className={styles.deleteButton}>x</p>
+      <p
+        className={styles.deleteButton}
+        onClick={() =>
+          axios
+            .delete(`http://localhost:3000/line/${id}`)
+            .then((res) => {
+              console.log({ res });
+              updateLinesFromDB();
+            })
+            .catch((err) => console.log({ err }))
+        }
+      >
+        x
+      </p>
     </div>
   );
 };
@@ -69,6 +83,7 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
             <LineRow
               title={line.name}
               selected={line.selected}
+              id={line.id}
               updateLinesFromDB={updateLinesFromDB}
             />
           ))}

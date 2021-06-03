@@ -64,7 +64,7 @@ const deleteLine = (request, response) => {
     if (error) {
       throw error;
     }
-    response.status(200).send(`Line deleted with ID: ${id}`);
+    response.status(200).send(`Line deleted with id: ${id}`);
   });
 };
 
