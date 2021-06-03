@@ -7,13 +7,6 @@ import { Line, MovesListType } from "../../sharedTypes";
 import Board from "../Board";
 import MovesList from "../MovesList";
 
-type LineProps = {
-  title: string;
-  selected: boolean;
-  id: number;
-  updateLinesFromDB: () => void;
-};
-
 const handlePUT = (
   title: string,
   selected: boolean,
@@ -41,9 +34,27 @@ const handleDELETE = (id: number, updateLinesFromDB: () => void) => {
     .catch((err) => console.log({ err }));
 };
 
-const LineRow = ({ title, selected, id, updateLinesFromDB }: LineProps) => {
+type LineRowProps = {
+  title: string;
+  selected: boolean;
+  id: number;
+  updateLinesFromDB: () => void;
+  isWhiteLine: boolean;
+};
+
+const LineRow = ({
+  title,
+  selected,
+  id,
+  updateLinesFromDB,
+  isWhiteLine,
+}: LineRowProps) => {
   return (
-    <div className={styles.lineRow}>
+    <div
+      className={
+        styles.lineRow + ` ${isWhiteLine ? styles.whiteRow : styles.blackRow}`
+      }
+    >
       <div
         className={styles.checkbox + ` ${selected && styles.selected}`}
         onClick={() => handlePUT(title, selected, updateLinesFromDB)}
@@ -87,14 +98,34 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
         <Board client={gameClient} isWhite addMoveToList={addMoveToList} />
         <div className={styles.sideColumn}>
           <p className={styles.title}>Lines</p>
-          {lines.map((line) => (
-            <LineRow
-              title={line.name}
-              selected={line.selected}
-              id={line.id}
-              updateLinesFromDB={updateLinesFromDB}
-            />
-          ))}
+          <div className={styles.rowGroupSeparator} />
+          {lines.map((line) => {
+            return (
+              line.playercolor === "white" && (
+                <LineRow
+                  title={line.name}
+                  selected={line.selected}
+                  id={line.id}
+                  updateLinesFromDB={updateLinesFromDB}
+                  isWhiteLine
+                />
+              )
+            );
+          })}
+          <div className={styles.rowGroupSeparator} />
+          {lines.map((line) => {
+            return (
+              line.playercolor === "black" && (
+                <LineRow
+                  title={line.name}
+                  selected={line.selected}
+                  id={line.id}
+                  updateLinesFromDB={updateLinesFromDB}
+                  isWhiteLine={false}
+                />
+              )
+            );
+          })}
         </div>
       </div>
     </div>

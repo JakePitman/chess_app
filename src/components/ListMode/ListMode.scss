@@ -34,6 +34,10 @@
   margin-bottom: 10px;
 }
 
+.rowGroupSeparator {
+  height: 10px;
+}
+
 .lineRow {
   border: 1px solid colors.$accent-blue;
   border-radius: spacing.$border-radius;
@@ -43,17 +47,25 @@
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
+
+  &.whiteRow {
+    background: colors.$board-white;
+  }
+  &.blackRow {
+    background: colors.$board-black;
+  }
 }
 
 .lineTitle {
-  color: colors.$accent-blue;
+  color: colors.$near-black;
 }
 
 .checkbox {
   width: 20px;
   height: 20px;
-  border: 1px solid colors.$accent-blue;
+  border: 1px solid colors.$near-black;
   border-radius: spacing.$border-radius;
+  background: colors.$near-black;
 
   &.selected {
     background: colors.$accent-blue;
@@ -63,7 +75,9 @@
 .deleteButton {
   color: red;
   border: 1px solid red;
-  border-radius: 50%;
+  font-weight: bold;
+  background: colors.$near-black;
+  border-radius: spacing.$border-radius;
   width: 20px;
   height: 20px;
   text-align: center;
