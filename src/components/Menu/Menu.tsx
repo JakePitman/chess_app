@@ -9,6 +9,7 @@ type Mode = "menu" | "free" | "test" | "list";
 type Props = {
   setMode: Dispatch<SetStateAction<Mode>>;
   linesCount: number | null;
+  selectedLinesCount: number | null;
 };
 
 type MenuButtonProps = {
@@ -37,8 +38,8 @@ const MenuButton = ({
   );
 };
 
-const Menu = ({ setMode, linesCount }: Props) => {
-  const testModeDisabled = linesCount < 2;
+const Menu = ({ setMode, linesCount, selectedLinesCount }: Props) => {
+  const testModeDisabled = selectedLinesCount < 1;
   const listModeDisabled = linesCount < 1;
   return (
     <div className={styles.container}>
