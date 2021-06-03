@@ -23,6 +23,8 @@ const App = () => {
 
   !lines && updateLinesFromDB();
 
+  const selectedLines = lines?.filter((line) => line.selected);
+
   const modes = {
     menu: <Menu setMode={setMode} linesCount={lines?.length} />,
     free: (
@@ -31,7 +33,7 @@ const App = () => {
         updateLinesFromDB={updateLinesFromDB}
       />
     ),
-    test: <TestMode lines={lines} />,
+    test: <TestMode lines={selectedLines} />,
     list: <ListMode lines={lines} updateLinesFromDB={updateLinesFromDB} />,
   };
 
