@@ -43,7 +43,7 @@ const CommandColumn = ({
         />
       </div>
       <Button
-        text={isWhite ? "WHITE" : "BLACK"}
+        text={isWhite ? "WHITE ↔" : "BLACK ↔"}
         onClick={() => setIsWhite(!isWhite)}
       ></Button>
       <div>
