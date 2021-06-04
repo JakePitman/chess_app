@@ -110,6 +110,13 @@
   width: 100%;
   text-align: center;
   margin-right: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    color: colors.$near-black;
+    background: colors.$accent-blue;
+  }
 }
 
 .controlSlider {

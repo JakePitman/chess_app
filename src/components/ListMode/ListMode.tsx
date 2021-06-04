@@ -133,6 +133,8 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
   const [moves, setMoves] = useState<MovesListType>([]);
   const [selectedFilter, setSelectedFilter] =
     useState<"all" | "selected" | "deselected">("all");
+  const [isWhite, setIsWhite] = useState<boolean>(true);
+
   const addMoveToList = (move: string) => {
     setMoves((prevMoves) => {
       const lastTurn = prevMoves[prevMoves.length - 1];
@@ -150,7 +152,11 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
         <div className={styles.sideColumn}>
           <MovesList turns={moves}></MovesList>
         </div>
-        <Board client={gameClient} isWhite addMoveToList={addMoveToList} />
+        <Board
+          client={gameClient}
+          isWhite={isWhite}
+          addMoveToList={addMoveToList}
+        />
         <div className={styles.sideColumn}>
           <p className={styles.sideColumnTitle}>Lines</p>
           <div className={styles.sideColumnContent}>
@@ -159,7 +165,12 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
               {renderRows(lines, "black", selectedFilter, updateLinesFromDB)}
             </div>
             <div className={styles.controls}>
-              <div className={styles.controlButton}>Toggle</div>
+              <div
+                className={styles.controlButton}
+                onClick={() => setIsWhite(!isWhite)}
+              >
+                {isWhite ? "White" : "Black"} ↔
+              </div>
               <div className={styles.controlButton}>Reset</div>
               <SelectedFilterSliderOption
                 text="All"
