@@ -97,6 +97,32 @@ const renderRows = (
   );
 };
 
+type SelectedFilterSliderOptionProps = {
+  text: string;
+  isActive: boolean;
+  onClick: () => void;
+};
+
+const SelectedFilterSliderOption = ({
+  text,
+  isActive,
+  onClick,
+}: SelectedFilterSliderOptionProps) => {
+  return (
+    <div className={styles.controlSlider}>
+      <div
+        className={
+          styles.controlSliderOption +
+          ` ${isActive && styles.activeSliderOption}`
+        }
+        onClick={onClick}
+      >
+        {text}
+      </div>
+    </div>
+  );
+};
+
 type Props = {
   lines: Line[];
   updateLinesFromDB: () => void;
@@ -126,9 +152,38 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
         </div>
         <Board client={gameClient} isWhite addMoveToList={addMoveToList} />
         <div className={styles.sideColumn}>
-          <p className={styles.title}>Lines</p>
-          {renderRows(lines, "white", selectedFilter, updateLinesFromDB)}
-          {renderRows(lines, "black", selectedFilter, updateLinesFromDB)}
+          <p className={styles.sideColumnTitle}>Lines</p>
+          <div className={styles.sideColumnContent}>
+            <div className={styles.lineRowsContainer}>
+              {renderRows(lines, "white", selectedFilter, updateLinesFromDB)}
+              {renderRows(lines, "black", selectedFilter, updateLinesFromDB)}
+            </div>
+            <div className={styles.controls}>
+              <div className={styles.controlButton}>Toggle</div>
+              <div className={styles.controlButton}>Reset</div>
+              <SelectedFilterSliderOption
+                text="All"
+                isActive={selectedFilter === "all"}
+                onClick={() => {
+                  setSelectedFilter("all");
+                }}
+              />
+              <SelectedFilterSliderOption
+                text="Selected"
+                isActive={selectedFilter === "selected"}
+                onClick={() => {
+                  setSelectedFilter("selected");
+                }}
+              />
+              <SelectedFilterSliderOption
+                text="Deselected"
+                isActive={selectedFilter === "deselected"}
+                onClick={() => {
+                  setSelectedFilter("deselected");
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

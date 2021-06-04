@@ -25,13 +25,26 @@
   border-radius: spacing.$border-radius;
 }
 
-.title {
+.sideColumnContent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sideColumnTitle {
   background: colors.$accent-blue;
   color: colors.$near-black;
   width: 100%;
   padding: 5px;
   text-align: center;
   margin-bottom: 10px;
+}
+
+.lineRowsContainer {
+  width: 100%;
 }
 
 .rowGroupSeparator {
@@ -41,7 +54,6 @@
 .lineRow {
   border: 1px solid colors.$accent-blue;
   border-radius: spacing.$border-radius;
-  width: 100%;
   padding: 5px;
   display: flex;
   margin-bottom: 10px;
@@ -82,4 +94,42 @@
   height: 20px;
   text-align: center;
   cursor: pointer;
+}
+
+.controls {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.controlButton {
+  color: colors.$accent-blue;
+  padding: 5px;
+  border: 1px solid colors.$accent-blue;
+  width: 100%;
+  text-align: center;
+  margin-right: 8px;
+}
+
+.controlSlider {
+  background: colors.$accent-blue;
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid colors.$accent-blue;
+}
+
+.controlSliderOption {
+  background: colors.$near-black;
+  color: colors.$accent-blue;
+  padding: 5px;
+  width: 80px;
+  text-align: center;
+  cursor: pointer;
+
+  &.activeSliderOption {
+    color: colors.$near-black;
+    background: colors.$accent-blue;
+    cursor: default;
+  }
 }
