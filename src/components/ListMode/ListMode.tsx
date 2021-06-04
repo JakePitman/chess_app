@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import chess from "chess";
 import axios from "axios";
+import _ from "lodash";
 
 import styles from "./ListMode.scss";
 import { Line, MovesListType } from "../../sharedTypes";
@@ -146,6 +147,26 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
         : [...prevMoves, [{ notation: move }]];
     });
   };
+
+  const flattenMoves = (movesObjects: MovesListType) =>
+    _.flattenDeep(
+      movesObjects.map((turn) =>
+        turn[1] ? [turn[0].notation, turn[1].notation] : [turn[0].notation]
+      )
+    );
+
+  const flattenedMovesMade = flattenMoves(moves).toString();
+  const linesFilteredByMovesMade =
+    moves.length > 0
+      ? lines.filter((line) => {
+          const currentLineFlattened = flattenMoves(line.moves).toString();
+          return (
+            currentLineFlattened.slice(0, flattenedMovesMade.length) ===
+            flattenedMovesMade
+          );
+        })
+      : null;
+
   return (
     <div className={styles.appContainer}>
       <div className={styles.columnsContainer}>
@@ -161,8 +182,18 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
           <p className={styles.sideColumnTitle}>Lines</p>
           <div className={styles.sideColumnContent}>
             <div className={styles.lineRowsContainer}>
-              {renderRows(lines, "white", selectedFilter, updateLinesFromDB)}
-              {renderRows(lines, "black", selectedFilter, updateLinesFromDB)}
+              {renderRows(
+                linesFilteredByMovesMade ? linesFilteredByMovesMade : lines,
+                "white",
+                selectedFilter,
+                updateLinesFromDB
+              )}
+              {renderRows(
+                linesFilteredByMovesMade ? linesFilteredByMovesMade : lines,
+                "black",
+                selectedFilter,
+                updateLinesFromDB
+              )}
             </div>
             <div className={styles.controls}>
               <div
