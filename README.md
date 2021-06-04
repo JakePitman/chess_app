@@ -22,6 +22,15 @@
 
 ---
 
+## List Mode
+
+> Filter by selected status
+> ![list-filter-selected](./assets/list-mode-selected-filter-demo.gif)
+> Filter by moves
+> ![list-filter-moves](./assets/list-mode-moves-filter-demo.gif)
+
+---
+
 ## TODOS
 
 ### App

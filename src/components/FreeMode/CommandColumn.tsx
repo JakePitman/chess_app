@@ -43,26 +43,27 @@ const CommandColumn = ({
         />
       </div>
       <Button
-        text={isWhite ? "WHITE" : "BLACK"}
+        text={isWhite ? "WHITE ↔" : "BLACK ↔"}
         onClick={() => setIsWhite(!isWhite)}
       ></Button>
       <div>
-        <p className={styles.reasonHeader}>Add reason to last move</p>
+        {/* <p className={styles.reasonHeader}>Add reason to last move</p> */}
+        <Button
+          text="Add reason to last move"
+          onClick={() => {
+            if (moves.length <= 0) {
+              setMessage("No moves made yet");
+              setReasonInput("");
+            } else {
+              addReasonToMove();
+            }
+          }}
+        ></Button>
         <textarea
           className={styles.reasonInput}
           onChange={(e) => setReasonInput(e.target.value)}
           value={reasonInput}
-          placeholder="Add reason to last move"
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) {
-              if (moves.length <= 0) {
-                setMessage("No moves made yet");
-                setReasonInput("");
-              } else {
-                addReasonToMove();
-              }
-            }
-          }}
+          placeholder="Enter reason here"
         />
       </div>
       <Button
