@@ -73,13 +73,17 @@ const LineRow = ({
 const renderRows = (
   lines: Line[],
   filterColor: "white" | "black",
+  selectedFilter: "all" | "selected" | "deselected",
   updateLinesFromDB: () => void
 ) => {
   return (
     <>
       <div className={styles.rowGroupSeparator} />
       {lines.map((line) => {
-        return line.playercolor === filterColor ? (
+        return line.playercolor === filterColor &&
+          (selectedFilter === "all" ||
+            (selectedFilter === "selected" && line.selected) ||
+            (selectedFilter === "deselected" && !line.selected)) ? (
           <LineRow
             title={line.name}
             selected={line.selected}
@@ -101,6 +105,8 @@ type Props = {
 const ListMode = ({ lines, updateLinesFromDB }: Props) => {
   const [gameClient, setGameClient] = useState(chess.create());
   const [moves, setMoves] = useState<MovesListType>([]);
+  const [selectedFilter, setSelectedFilter] =
+    useState<"all" | "selected" | "deselected">("all");
   const addMoveToList = (move: string) => {
     setMoves((prevMoves) => {
       const lastTurn = prevMoves[prevMoves.length - 1];
@@ -121,8 +127,8 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
         <Board client={gameClient} isWhite addMoveToList={addMoveToList} />
         <div className={styles.sideColumn}>
           <p className={styles.title}>Lines</p>
-          {renderRows(lines, "white", updateLinesFromDB)}
-          {renderRows(lines, "black", updateLinesFromDB)}
+          {renderRows(lines, "white", selectedFilter, updateLinesFromDB)}
+          {renderRows(lines, "black", selectedFilter, updateLinesFromDB)}
         </div>
       </div>
     </div>
