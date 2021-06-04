@@ -70,6 +70,29 @@ const LineRow = ({
   );
 };
 
+const renderRows = (
+  lines: Line[],
+  filterColor: "white" | "black",
+  updateLinesFromDB: () => void
+) => {
+  return (
+    <>
+      <div className={styles.rowGroupSeparator} />
+      {lines.map((line) => {
+        return line.playercolor === filterColor ? (
+          <LineRow
+            title={line.name}
+            selected={line.selected}
+            id={line.id}
+            updateLinesFromDB={updateLinesFromDB}
+            isWhiteLine={line.playercolor === "white"}
+          />
+        ) : null;
+      })}
+    </>
+  );
+};
+
 type Props = {
   lines: Line[];
   updateLinesFromDB: () => void;
@@ -98,34 +121,8 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
         <Board client={gameClient} isWhite addMoveToList={addMoveToList} />
         <div className={styles.sideColumn}>
           <p className={styles.title}>Lines</p>
-          <div className={styles.rowGroupSeparator} />
-          {lines.map((line) => {
-            return (
-              line.playercolor === "white" && (
-                <LineRow
-                  title={line.name}
-                  selected={line.selected}
-                  id={line.id}
-                  updateLinesFromDB={updateLinesFromDB}
-                  isWhiteLine
-                />
-              )
-            );
-          })}
-          <div className={styles.rowGroupSeparator} />
-          {lines.map((line) => {
-            return (
-              line.playercolor === "black" && (
-                <LineRow
-                  title={line.name}
-                  selected={line.selected}
-                  id={line.id}
-                  updateLinesFromDB={updateLinesFromDB}
-                  isWhiteLine={false}
-                />
-              )
-            );
-          })}
+          {renderRows(lines, "white", updateLinesFromDB)}
+          {renderRows(lines, "black", updateLinesFromDB)}
         </div>
       </div>
     </div>
