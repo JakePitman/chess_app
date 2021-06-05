@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
 import { useDrop } from "react-dnd";
 import _ from "lodash";
 
@@ -162,8 +162,7 @@ const Square = ({
   };
   const [pieceInfo, setPieceInfo] = useState<PieceInfo>(null);
 
-  // useLayoutEffect(() => {
-  useEffect(() => {
+  useLayoutEffect(() => {
     const newInfo = getPieceInfo();
     setPieceInfo(newInfo);
   }, [board]);
