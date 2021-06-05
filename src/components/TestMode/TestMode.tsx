@@ -25,6 +25,8 @@ const TestMode = ({ lines }: Props) => {
   const [movesMade, setMovesMade] = useState<MovesListType>([]);
   const [automaticMovesCompleted, setAutomaticMovesCompleted] =
     useState<boolean>(false);
+  const [startingPoint, setStartingPoint] =
+    useState<number | "random">("random");
 
   const flattenMoves = (movesObjects: MovesListType) =>
     _.flattenDeep(
@@ -49,21 +51,25 @@ const TestMode = ({ lines }: Props) => {
     gameClientRef.current = chess.create();
     setMovesMade([]);
     // Gets a number between 0 & one less than the number of moves (not inclusive)
-    const startingPoint = Math.floor(
+    const randomStartingPoint = Math.floor(
       Math.random() * (currentLine.moves.length - 2) + 1
     );
+    const chosenStartingPoint =
+      startingPoint === "random" ? randomStartingPoint : startingPoint;
     setRemainingAutomaticMoves(
-      flattenMoves(currentLine.moves.slice(0, startingPoint)).map((move, i) => {
-        const playercolor = i % 2 === 0 ? "white" : "black";
-        // Attach player color to move in case of consecutive repeated notation,
-        //   eg. 3. cxd5, cxd5 from the Slav exchange variation
-        // "cxd5" -> "cxd5" won't rerender, but "cxd5%white" -> "cxd5%black" will.
-        return `${move}%${playercolor}`;
-      })
+      flattenMoves(currentLine.moves.slice(0, chosenStartingPoint)).map(
+        (move, i) => {
+          const playercolor = i % 2 === 0 ? "white" : "black";
+          // Attach player color to move in case of consecutive repeated notation,
+          //   eg. 3. cxd5, cxd5 from the Slav exchange variation
+          // "cxd5" -> "cxd5" won't rerender, but "cxd5%white" -> "cxd5%black" will.
+          return `${move}%${playercolor}`;
+        }
+      )
     );
     setRemainingMovesToMake(
       _.cloneDeep(
-        currentLine.moves.slice(startingPoint, currentLine.moves.length)
+        currentLine.moves.slice(chosenStartingPoint, currentLine.moves.length)
       )
     );
     setAutomaticMovesCompleted(false);
@@ -158,6 +164,12 @@ const TestMode = ({ lines }: Props) => {
     }
   };
 
+  const lowestLineLength = () =>
+    lines.reduce((lowestLength, currentLine) => {
+      const currentLength = currentLine.moves.length;
+      return currentLength < lowestLength ? currentLength : lowestLength;
+    }, lines[0].moves.length);
+
   return gameClient ? (
     <div className={styles.container}>
       <div className={styles.columnsContainer}>
@@ -189,6 +201,9 @@ const TestMode = ({ lines }: Props) => {
           <CommandColumn
             setRandomLine={setRandomLine}
             lineTitle={currentLine.name}
+            startingPoint={startingPoint}
+            setStartingPoint={setStartingPoint}
+            maximumStartingPoint={lowestLineLength() - 2}
           />
         </div>
       </div>
