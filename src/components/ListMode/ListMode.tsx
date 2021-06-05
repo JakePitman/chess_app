@@ -91,6 +91,7 @@ const renderRows = (
             id={line.id}
             updateLinesFromDB={updateLinesFromDB}
             isWhiteLine={line.playercolor === "white"}
+            key={line.name}
           />
         ) : null;
       })}
