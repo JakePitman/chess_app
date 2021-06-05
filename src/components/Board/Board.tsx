@@ -32,7 +32,6 @@ const Board = ({
   const [board, setBoard] = useState(client.game.board);
 
   const movePiece = movePieceFactory(
-    client,
     (moveNotation: string) => {
       client.move(moveNotation);
       addMoveToList(moveNotation);
