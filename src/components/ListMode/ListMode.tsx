@@ -202,7 +202,15 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
               >
                 {isWhite ? "White" : "Black"} ↔
               </div>
-              <div className={styles.controlButton}>Reset</div>
+              <div
+                className={styles.controlButton}
+                onClick={() => {
+                  setMoves([]);
+                  setGameClient(chess.create());
+                }}
+              >
+                Reset
+              </div>
               <SelectedFilterSliderOption
                 text="All"
                 isActive={selectedFilter === "all"}
