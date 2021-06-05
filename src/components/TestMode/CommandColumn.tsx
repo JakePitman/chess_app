@@ -6,6 +6,8 @@ import Button from "../Button";
 type Props = {
   setRandomLine: () => void;
   lineTitle: string;
+  startingPoint: number | "random";
+  setStartingPoint: Dispatch<SetStateAction<number | "random">>;
 };
 
 const CommandColumn = ({ setRandomLine, lineTitle }: Props) => {
