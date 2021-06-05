@@ -53,6 +53,7 @@ const StartingPointMenu = ({
           setStartingPoint={setStartingPoint}
           closeMenu={closeMenu}
           isSelected={currentStartingPoint === i + 1}
+          key={i + 1}
         />
       ))}
       <StartingPointMenuOption
@@ -60,6 +61,7 @@ const StartingPointMenu = ({
         setStartingPoint={setStartingPoint}
         closeMenu={closeMenu}
         isSelected={currentStartingPoint === "random"}
+        key={"random"}
       />
     </div>
   );
@@ -70,6 +72,7 @@ type Props = {
   lineTitle: string;
   startingPoint: number | "random";
   setStartingPoint: Dispatch<SetStateAction<number | "random">>;
+  maximumStartingPoint: number;
 };
 
 const CommandColumn = ({
@@ -77,6 +80,7 @@ const CommandColumn = ({
   lineTitle,
   startingPoint,
   setStartingPoint,
+  maximumStartingPoint,
 }: Props) => {
   const [message, setMessage] = useState<string>("");
   const [startingPointPopupActive, setStartingPointPopupActive] =
@@ -86,7 +90,7 @@ const CommandColumn = ({
     <div className={styles.container}>
       {startingPointPopupActive ? (
         <StartingPointMenu
-          maximumStartingPoint={40}
+          maximumStartingPoint={maximumStartingPoint}
           setStartingPoint={setStartingPoint}
           closeMenu={() => setStartingPointPopupActive(false)}
           currentStartingPoint={startingPoint}

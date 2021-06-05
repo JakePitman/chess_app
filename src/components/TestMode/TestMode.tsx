@@ -164,6 +164,12 @@ const TestMode = ({ lines }: Props) => {
     }
   };
 
+  const lowestLineLength = () =>
+    lines.reduce((lowestLength, currentLine) => {
+      const currentLength = currentLine.moves.length;
+      return currentLength < lowestLength ? currentLength : lowestLength;
+    }, lines[0].moves.length);
+
   return gameClient ? (
     <div className={styles.container}>
       <div className={styles.columnsContainer}>
@@ -197,6 +203,7 @@ const TestMode = ({ lines }: Props) => {
             lineTitle={currentLine.name}
             startingPoint={startingPoint}
             setStartingPoint={setStartingPoint}
+            maximumStartingPoint={lowestLineLength() - 2}
           />
         </div>
       </div>
