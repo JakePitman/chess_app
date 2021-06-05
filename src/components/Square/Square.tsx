@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useDrop } from "react-dnd";
 import _ from "lodash";
 
@@ -162,7 +162,8 @@ const Square = ({
   };
   const [pieceInfo, setPieceInfo] = useState<PieceInfo>(null);
 
-  useLayoutEffect(() => {
+  // useLayoutEffect(() => {
+  useEffect(() => {
     const newInfo = getPieceInfo();
     setPieceInfo(newInfo);
   }, [board]);
@@ -211,7 +212,7 @@ const Square = ({
         isOver: !!monitor.isOver(),
       }),
     }),
-    [OAM, client]
+    [OAM, client, pieceInfo]
   );
 
   return (
