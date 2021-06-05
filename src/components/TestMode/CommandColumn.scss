@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
 }
 
 .inputHeader {
@@ -58,4 +59,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.startingPointMenuContainer {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  overflow: scroll;
+}
+
+.startingPointMenuOption {
+  width: 25%;
+  color: colors.$accent-blue;
+  border: 1px solid colors.$accent-blue;
+  text-align: center;
+  padding: 5px;
+  margin: 10px;
+  cursor: pointer;
+
+  &.selectedStartingPointOption {
+    color: colors.$near-black;
+    background: colors.$accent-blue;
+  }
 }
