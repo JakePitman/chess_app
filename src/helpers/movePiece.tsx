@@ -10,12 +10,12 @@ const pieceNameToNotation = {
 };
 
 const movePiece = (
-  gameClient: any,
   makeMove: (moveNotation: string) => void,
   setCommandColumnMessage: Dispatch<React.SetStateAction<string>>,
   setBoard: Dispatch<React.SetStateAction<string>>
 ) => {
   return (
+    gameClient: any,
     piece: PieceName,
     targetSquare: string,
     currentLocation: { rank: number; file: string },

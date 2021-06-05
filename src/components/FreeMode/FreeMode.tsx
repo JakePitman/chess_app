@@ -13,7 +13,7 @@ type Props = {
 };
 
 const FreeMode = ({ returnToMenu, updateLinesFromDB }: Props) => {
-  const gameClient = chess.create();
+  const [gameClient, setGameClient] = useState<any>(chess.create());
   const [reasonInput, setReasonInput] = useState("");
   const [moves, setMoves] = useState<MovesListType>([]);
   const [commandColumnMessage, setCommandColumnMessage] =

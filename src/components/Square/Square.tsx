@@ -12,6 +12,7 @@ type Props = {
   fileNumber: number;
   fileLetter: string;
   movePiece: (
+    client: any,
     piece: PieceName,
     targetSquare: string,
     currentLocation: { rank: number; file: string },
@@ -145,6 +146,7 @@ const Square = ({
   setBoard,
 }: Props) => {
   const squareNotation = `${fileLetter}${rankNumber}`;
+
   // First set of automatic moves are mapped to format "MOVE%PLAYER_COLOR"
   // to trigger rerenders in this component, even when two consecutive
   // automatic moves are the same (eg. 3. dxc5, dxc5)
@@ -192,6 +194,7 @@ const Square = ({
           canMove(squareNotation, item.pieceName, item.square, OAM, isWhite)
         ) {
           movePiece(
+            client,
             item.pieceName,
             squareNotation,
             item.square,
@@ -208,7 +211,7 @@ const Square = ({
         isOver: !!monitor.isOver(),
       }),
     }),
-    [OAM]
+    [OAM, client, pieceInfo]
   );
 
   return (

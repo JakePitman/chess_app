@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -31,8 +31,11 @@ const Board = ({
 }: Props) => {
   const [board, setBoard] = useState(client.game.board);
 
+  useEffect(() => {
+    setBoard(client.game.board);
+  }, [client]);
+
   const movePiece = movePieceFactory(
-    client,
     (moveNotation: string) => {
       client.move(moveNotation);
       addMoveToList(moveNotation);
