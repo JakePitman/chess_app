@@ -99,8 +99,14 @@
 .controls {
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   padding: 5px 0;
+}
+
+.controlsRow {
+  display: flex;
+  margin-top: 8px;
 }
 
 .controlButton {

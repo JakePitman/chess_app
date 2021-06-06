@@ -197,42 +197,56 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
               )}
             </div>
             <div className={styles.controls}>
-              <div
-                className={styles.controlButton}
-                onClick={() => setIsWhite(!isWhite)}
-              >
-                {isWhite ? "White" : "Black"} ↔
+              <div className={styles.controlsRow}>
+                <div className={styles.controlButton} onClick={() => {}}>
+                  Select all
+                </div>
+                <div
+                  style={{ margin: "0" }}
+                  className={styles.controlButton}
+                  onClick={() => {}}
+                >
+                  Deselect all
+                </div>
               </div>
-              <div
-                className={styles.controlButton}
-                onClick={() => {
-                  setMoves([]);
-                  setGameClient(chess.create());
-                }}
-              >
-                Reset
+              <div className={styles.controlsRow}>
+                <div
+                  className={styles.controlButton}
+                  onClick={() => setIsWhite(!isWhite)}
+                >
+                  {isWhite ? "White" : "Black"} ↔
+                </div>
+                <div
+                  className={styles.controlButton}
+                  onClick={() => {
+                    setMoves([]);
+                    setGameClient(chess.create());
+                  }}
+                >
+                  Reset
+                </div>
+                <SelectedFilterSliderOption
+                  text="All"
+                  isActive={selectedFilter === "all"}
+                  onClick={() => {
+                    setSelectedFilter("all");
+                  }}
+                />
+                <SelectedFilterSliderOption
+                  text="Selected"
+                  isActive={selectedFilter === "selected"}
+                  onClick={() => {
+                    setSelectedFilter("selected");
+                  }}
+                />
+                <SelectedFilterSliderOption
+                  text="Deselected"
+                  isActive={selectedFilter === "deselected"}
+                  onClick={() => {
+                    setSelectedFilter("deselected");
+                  }}
+                />
               </div>
-              <SelectedFilterSliderOption
-                text="All"
-                isActive={selectedFilter === "all"}
-                onClick={() => {
-                  setSelectedFilter("all");
-                }}
-              />
-              <SelectedFilterSliderOption
-                text="Selected"
-                isActive={selectedFilter === "selected"}
-                onClick={() => {
-                  setSelectedFilter("selected");
-                }}
-              />
-              <SelectedFilterSliderOption
-                text="Deselected"
-                isActive={selectedFilter === "deselected"}
-                onClick={() => {
-                  setSelectedFilter("deselected");
-                }}
-              />
             </div>
           </div>
         </div>
