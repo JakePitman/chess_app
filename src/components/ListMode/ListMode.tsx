@@ -25,6 +25,18 @@ const handlePUT = (
     .catch((err) => console.log({ err }));
 };
 
+const handlePUTAll = (selected: boolean, updateLinesFromDB: () => void) => {
+  axios
+    .put("http://localhost:3000/lines", {
+      selected: selected,
+    })
+    .then((res) => {
+      console.log({ res });
+      updateLinesFromDB();
+    })
+    .catch((err) => console.log({ err }));
+};
+
 const handleDELETE = (id: number, updateLinesFromDB: () => void) => {
   axios
     .delete(`http://localhost:3000/line/${id}`)
@@ -198,13 +210,20 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
             </div>
             <div className={styles.controls}>
               <div className={styles.controlsRow}>
-                <div className={styles.controlButton} onClick={() => {}}>
+                <div
+                  className={styles.controlButton}
+                  onClick={() => {
+                    handlePUTAll(true, updateLinesFromDB);
+                  }}
+                >
                   Select all
                 </div>
                 <div
                   style={{ margin: "0" }}
                   className={styles.controlButton}
-                  onClick={() => {}}
+                  onClick={() => {
+                    handlePUTAll(false, updateLinesFromDB);
+                  }}
                 >
                   Deselect all
                 </div>

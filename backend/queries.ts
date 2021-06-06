@@ -57,6 +57,16 @@ const toggleLine = (request, response) => {
   );
 };
 
+const toggleAllLines = (request, response) => {
+  const { selected } = request.body;
+  pool.query("UPDATE lines SET selected = $1", [selected], (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).send(`Lines all set to selected: ${selected}`);
+  });
+};
+
 const deleteLine = (request, response) => {
   const id = parseInt(request.params.id);
 
@@ -74,4 +84,5 @@ module.exports = {
   createLine,
   deleteLine,
   toggleLine,
+  toggleAllLines,
 };

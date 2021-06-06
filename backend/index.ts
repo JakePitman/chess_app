@@ -22,6 +22,7 @@ app.get("/line/:id", db.getLineById);
 app.post("/lines", db.createLine);
 app.delete("/line/:id", db.deleteLine);
 app.put("/line", db.toggleLine);
+app.put("/lines", db.toggleAllLines);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`);
