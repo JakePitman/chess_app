@@ -25,6 +25,37 @@ const handlePUT = (
     .catch((err) => console.log({ err }));
 };
 
+const handlePUTAll = (selected: boolean, updateLinesFromDB: () => void) => {
+  axios
+    .put("http://localhost:3000/lines", {
+      selected: selected,
+    })
+    .then((res) => {
+      console.log({ res });
+      updateLinesFromDB();
+    })
+    .catch((err) => console.log({ err }));
+};
+
+const handlePUTSelected = (
+  selected: boolean,
+  lines: Line[],
+  updateLinesFromDB: () => void
+) => {
+  lines.forEach((line) => {
+    axios
+      .put("http://localhost:3000/line", {
+        name: line.name,
+        selected: selected,
+      })
+      .then((res) => {
+        console.log({ res });
+        updateLinesFromDB();
+      })
+      .catch((err) => console.log({ err }));
+  });
+};
+
 const handleDELETE = (id: number, updateLinesFromDB: () => void) => {
   axios
     .delete(`http://localhost:3000/line/${id}`)
@@ -74,17 +105,13 @@ const LineRow = ({
 const renderRows = (
   lines: Line[],
   filterColor: "white" | "black",
-  selectedFilter: "all" | "selected" | "deselected",
   updateLinesFromDB: () => void
 ) => {
   return (
     <>
       <div className={styles.rowGroupSeparator} />
       {lines.map((line) => {
-        return line.playercolor === filterColor &&
-          (selectedFilter === "all" ||
-            (selectedFilter === "selected" && line.selected) ||
-            (selectedFilter === "deselected" && !line.selected)) ? (
+        return line.playercolor === filterColor ? (
           <LineRow
             title={line.name}
             selected={line.selected}
@@ -168,6 +195,18 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
         })
       : null;
 
+  const currentFilteredLines = (
+    linesFilteredByMovesMade ? linesFilteredByMovesMade : lines
+  ).filter((line) => {
+    if (selectedFilter === "all") {
+      return true;
+    }
+    return (selectedFilter === "selected" && line.selected) ||
+      (selectedFilter === "deselected" && !line.selected)
+      ? true
+      : false;
+  });
+
   return (
     <div className={styles.appContainer}>
       <div className={styles.columnsContainer}>
@@ -183,56 +222,91 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
           <p className={styles.sideColumnTitle}>Lines</p>
           <div className={styles.sideColumnContent}>
             <div className={styles.lineRowsContainer}>
-              {renderRows(
-                linesFilteredByMovesMade ? linesFilteredByMovesMade : lines,
-                "white",
-                selectedFilter,
-                updateLinesFromDB
-              )}
-              {renderRows(
-                linesFilteredByMovesMade ? linesFilteredByMovesMade : lines,
-                "black",
-                selectedFilter,
-                updateLinesFromDB
-              )}
+              {renderRows(currentFilteredLines, "white", updateLinesFromDB)}
+              {renderRows(currentFilteredLines, "black", updateLinesFromDB)}
             </div>
             <div className={styles.controls}>
-              <div
-                className={styles.controlButton}
-                onClick={() => setIsWhite(!isWhite)}
-              >
-                {isWhite ? "White" : "Black"} ↔
+              <div className={styles.controlsRow}>
+                <div
+                  className={styles.controlButton}
+                  onClick={() => {
+                    handlePUTAll(true, updateLinesFromDB);
+                  }}
+                >
+                  Select all
+                </div>
+                <div
+                  className={styles.controlButton}
+                  onClick={() => {
+                    handlePUTAll(false, updateLinesFromDB);
+                  }}
+                >
+                  Deselect all
+                </div>
+                <div
+                  className={styles.controlButton}
+                  onClick={() => {
+                    handlePUTSelected(
+                      true,
+                      currentFilteredLines,
+                      updateLinesFromDB
+                    );
+                  }}
+                >
+                  Select filtered
+                </div>
+                <div
+                  style={{ margin: "0" }}
+                  className={styles.controlButton}
+                  onClick={() => {
+                    handlePUTSelected(
+                      false,
+                      currentFilteredLines,
+                      updateLinesFromDB
+                    );
+                  }}
+                >
+                  Desel filtered
+                </div>
               </div>
-              <div
-                className={styles.controlButton}
-                onClick={() => {
-                  setMoves([]);
-                  setGameClient(chess.create());
-                }}
-              >
-                Reset
+              <div className={styles.controlsRow}>
+                <div
+                  className={styles.controlButton}
+                  onClick={() => setIsWhite(!isWhite)}
+                >
+                  {isWhite ? "White" : "Black"} ↔
+                </div>
+                <div
+                  className={styles.controlButton}
+                  onClick={() => {
+                    setMoves([]);
+                    setGameClient(chess.create());
+                  }}
+                >
+                  Reset
+                </div>
+                <SelectedFilterSliderOption
+                  text="All"
+                  isActive={selectedFilter === "all"}
+                  onClick={() => {
+                    setSelectedFilter("all");
+                  }}
+                />
+                <SelectedFilterSliderOption
+                  text="Selected"
+                  isActive={selectedFilter === "selected"}
+                  onClick={() => {
+                    setSelectedFilter("selected");
+                  }}
+                />
+                <SelectedFilterSliderOption
+                  text="Deselected"
+                  isActive={selectedFilter === "deselected"}
+                  onClick={() => {
+                    setSelectedFilter("deselected");
+                  }}
+                />
               </div>
-              <SelectedFilterSliderOption
-                text="All"
-                isActive={selectedFilter === "all"}
-                onClick={() => {
-                  setSelectedFilter("all");
-                }}
-              />
-              <SelectedFilterSliderOption
-                text="Selected"
-                isActive={selectedFilter === "selected"}
-                onClick={() => {
-                  setSelectedFilter("selected");
-                }}
-              />
-              <SelectedFilterSliderOption
-                text="Deselected"
-                isActive={selectedFilter === "deselected"}
-                onClick={() => {
-                  setSelectedFilter("deselected");
-                }}
-              />
             </div>
           </div>
         </div>
