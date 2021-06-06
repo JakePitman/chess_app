@@ -37,6 +37,25 @@ const handlePUTAll = (selected: boolean, updateLinesFromDB: () => void) => {
     .catch((err) => console.log({ err }));
 };
 
+const handlePUTSelected = (
+  selected: boolean,
+  lines: Line[],
+  updateLinesFromDB: () => void
+) => {
+  lines.forEach((line) => {
+    axios
+      .put("http://localhost:3000/line", {
+        name: line.name,
+        selected: selected,
+      })
+      .then((res) => {
+        console.log({ res });
+        updateLinesFromDB();
+      })
+      .catch((err) => console.log({ err }));
+  });
+};
+
 const handleDELETE = (id: number, updateLinesFromDB: () => void) => {
   axios
     .delete(`http://localhost:3000/line/${id}`)
@@ -217,13 +236,37 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
                   Select all
                 </div>
                 <div
-                  style={{ margin: "0" }}
                   className={styles.controlButton}
                   onClick={() => {
                     handlePUTAll(false, updateLinesFromDB);
                   }}
                 >
                   Deselect all
+                </div>
+                <div
+                  className={styles.controlButton}
+                  onClick={() => {
+                    handlePUTSelected(
+                      true,
+                      currentFilteredLines,
+                      updateLinesFromDB
+                    );
+                  }}
+                >
+                  Select filtered
+                </div>
+                <div
+                  style={{ margin: "0" }}
+                  className={styles.controlButton}
+                  onClick={() => {
+                    handlePUTSelected(
+                      false,
+                      currentFilteredLines,
+                      updateLinesFromDB
+                    );
+                  }}
+                >
+                  Desel filtered
                 </div>
               </div>
               <div className={styles.controlsRow}>
