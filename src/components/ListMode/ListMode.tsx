@@ -86,17 +86,13 @@ const LineRow = ({
 const renderRows = (
   lines: Line[],
   filterColor: "white" | "black",
-  selectedFilter: "all" | "selected" | "deselected",
   updateLinesFromDB: () => void
 ) => {
   return (
     <>
       <div className={styles.rowGroupSeparator} />
       {lines.map((line) => {
-        return line.playercolor === filterColor &&
-          (selectedFilter === "all" ||
-            (selectedFilter === "selected" && line.selected) ||
-            (selectedFilter === "deselected" && !line.selected)) ? (
+        return line.playercolor === filterColor ? (
           <LineRow
             title={line.name}
             selected={line.selected}
@@ -180,6 +176,18 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
         })
       : null;
 
+  const currentFilteredLines = (
+    linesFilteredByMovesMade ? linesFilteredByMovesMade : lines
+  ).filter((line) => {
+    if (selectedFilter === "all") {
+      return true;
+    }
+    return (selectedFilter === "selected" && line.selected) ||
+      (selectedFilter === "deselected" && !line.selected)
+      ? true
+      : false;
+  });
+
   return (
     <div className={styles.appContainer}>
       <div className={styles.columnsContainer}>
@@ -195,18 +203,8 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
           <p className={styles.sideColumnTitle}>Lines</p>
           <div className={styles.sideColumnContent}>
             <div className={styles.lineRowsContainer}>
-              {renderRows(
-                linesFilteredByMovesMade ? linesFilteredByMovesMade : lines,
-                "white",
-                selectedFilter,
-                updateLinesFromDB
-              )}
-              {renderRows(
-                linesFilteredByMovesMade ? linesFilteredByMovesMade : lines,
-                "black",
-                selectedFilter,
-                updateLinesFromDB
-              )}
+              {renderRows(currentFilteredLines, "white", updateLinesFromDB)}
+              {renderRows(currentFilteredLines, "black", updateLinesFromDB)}
             </div>
             <div className={styles.controls}>
               <div className={styles.controlsRow}>
