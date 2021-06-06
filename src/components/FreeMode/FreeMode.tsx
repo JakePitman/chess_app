@@ -20,6 +20,11 @@ const FreeMode = ({ returnToMenu, updateLinesFromDB }: Props) => {
     useState<string>(null);
   const [isWhite, setIsWhite] = useState<boolean>(true);
 
+  const resetBoard = () => {
+    setMoves([]);
+    setGameClient(chess.create());
+  };
+
   const addMoveToList = (move: string) => {
     setMoves((prevMoves) => {
       const lastTurn = prevMoves[prevMoves.length - 1];
@@ -69,6 +74,7 @@ const FreeMode = ({ returnToMenu, updateLinesFromDB }: Props) => {
             setIsWhite={setIsWhite}
             returnToMenu={returnToMenu}
             updateLinesFromDB={updateLinesFromDB}
+            resetBoard={resetBoard}
           />
         </div>
       </div>

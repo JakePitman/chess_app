@@ -15,6 +15,7 @@ type Props = {
   setIsWhite: Dispatch<SetStateAction<boolean>>;
   returnToMenu: () => void;
   updateLinesFromDB: () => void;
+  resetBoard: () => void;
 };
 
 const CommandColumn = ({
@@ -27,6 +28,7 @@ const CommandColumn = ({
   setIsWhite,
   returnToMenu,
   updateLinesFromDB,
+  resetBoard,
 }: Props) => {
   const [titleInput, setTitleInput] = useState<string>("");
   const [message, setMessage] = useState<string>("");
@@ -90,8 +92,10 @@ const CommandColumn = ({
               .then((res) => {
                 console.log("RES: ", res);
                 setMessage("Line added successfully");
+                setTitleInput("");
+                setReasonInput("");
                 updateLinesFromDB();
-                setTimeout(() => returnToMenu(), 500);
+                resetBoard();
               })
               .catch((e) => {
                 setMessage("POST failure. Check console");
