@@ -103,6 +103,14 @@ const CommandColumn = ({
               });
           }
         }}
+      />{" "}
+      <Button
+        text="RESET BOARD"
+        onClick={() => {
+          setTitleInput("");
+          setReasonInput("");
+          resetBoard();
+        }}
       />
       <p className={styles.message}>
         {incomingMessage ? incomingMessage : message}
