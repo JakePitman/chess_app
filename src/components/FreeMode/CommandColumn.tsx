@@ -15,6 +15,7 @@ type Props = {
   setIsWhite: Dispatch<SetStateAction<boolean>>;
   returnToMenu: () => void;
   updateLinesFromDB: () => void;
+  resetBoard: () => void;
 };
 
 const CommandColumn = ({
@@ -27,6 +28,7 @@ const CommandColumn = ({
   setIsWhite,
   returnToMenu,
   updateLinesFromDB,
+  resetBoard,
 }: Props) => {
   const [titleInput, setTitleInput] = useState<string>("");
   const [message, setMessage] = useState<string>("");
@@ -74,6 +76,8 @@ const CommandColumn = ({
             setMessage("Please finish on a white move");
           } else if (!isWhite && !lastMoveWasBlack) {
             setMessage("Please finish on a black move");
+          } else if (moves.length < 4) {
+            setMessage("Please make at least 4 moves");
           } else if (titleInput.length <= 0) {
             setMessage("Please enter a title");
           } else if (moves.length <= 0) {
@@ -88,14 +92,24 @@ const CommandColumn = ({
               .then((res) => {
                 console.log("RES: ", res);
                 setMessage("Line added successfully");
+                setTitleInput("");
+                setReasonInput("");
                 updateLinesFromDB();
-                setTimeout(() => returnToMenu(), 500);
+                resetBoard();
               })
               .catch((e) => {
                 setMessage("POST failure. Check console");
                 console.log({ POSTFailure: e });
               });
           }
+        }}
+      />{" "}
+      <Button
+        text="RESET BOARD"
+        onClick={() => {
+          setTitleInput("");
+          setReasonInput("");
+          resetBoard();
         }}
       />
       <p className={styles.message}>
