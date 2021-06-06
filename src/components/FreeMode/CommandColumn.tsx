@@ -74,6 +74,8 @@ const CommandColumn = ({
             setMessage("Please finish on a white move");
           } else if (!isWhite && !lastMoveWasBlack) {
             setMessage("Please finish on a black move");
+          } else if (moves.length < 4) {
+            setMessage("Please make at least 4 moves");
           } else if (titleInput.length <= 0) {
             setMessage("Please enter a title");
           } else if (moves.length <= 0) {
