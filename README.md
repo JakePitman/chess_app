@@ -49,7 +49,7 @@
 ### Test Mode
 
 - [ ] Utilize message board when wrong move or completing line
-- [ ] Show OAM on button press
+- [ ] Show OAM on second "hint" button press
 
 ---
 
