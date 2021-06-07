@@ -24,6 +24,7 @@ type Props = {
   client: any;
   addMoveToList: (move: string) => void;
   setBoard: React.Dispatch<any>;
+  hintActive: boolean;
 };
 
 const isLightSquare = (rankNumber: number, fileNumber: number) => {
@@ -144,6 +145,7 @@ const Square = ({
   client,
   addMoveToList,
   setBoard,
+  hintActive,
 }: Props) => {
   const squareNotation = `${fileLetter}${rankNumber}`;
 
@@ -214,10 +216,33 @@ const Square = ({
     [OAM, client, pieceInfo]
   );
 
+  const isHintSquare = () => {
+    if (
+      (isWhite && pieceInfo?.side.name === "black") ||
+      (!isWhite && pieceInfo?.side.name === "white")
+    ) {
+      return false;
+    }
+    if (pieceInfo?.type === "king" && (OAM === "0-0" || OAM === "0-0-0")) {
+      return true;
+    }
+    return canMove(
+      OAM?.slice(OAM.length - 2),
+      pieceInfo?.type,
+      { rank: rankNumber, file: fileLetter },
+      OAM,
+      isWhite
+    );
+  };
+
   return (
     <div
       className={
-        isLightSquare(rankNumber, fileNumber) ? styles.white : styles.black
+        hintActive && isHintSquare()
+          ? styles.hintSquare
+          : isLightSquare(rankNumber, fileNumber)
+          ? styles.white
+          : styles.black
       }
       ref={drop}
     >

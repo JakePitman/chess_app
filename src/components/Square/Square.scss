@@ -16,6 +16,11 @@
   background: colors.$board-black;
 }
 
+.hintSquare {
+  @extend .square;
+  background: colors.$accent-blue;
+}
+
 .hoverCircle {
   border: 1px solid black;
   width: 90%;
