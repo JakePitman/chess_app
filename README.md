@@ -35,7 +35,6 @@
 
 ### App
 
-- [ ] Add List Mode
 - [ ] Automated script to setup db on other machines
 - [ ] Theme switcher
 
@@ -44,22 +43,16 @@
 ### Free Mode
 
 - [ ] Ensure no duplicate lines exist when making POST req (flatten & `===`)
-- [ ] Message board confirmation/ error message when making POST req
-- [ ] Reset gameClient & board on successful POST request
 
 ---
 
 ### Test Mode
 
 - [ ] Utilize message board when wrong move or completing line
-- [ ] Show hints on button press
 - [ ] Show OAM on button press
 
 ---
 
 ### List Mode
 
-- [ ] List all lines
-- [ ] Option to delete line
 - [ ] Option to play line (automatic moves)
-- [ ] Option to select/deselect lines for test mode (will need to add a `selected` field to db table)
