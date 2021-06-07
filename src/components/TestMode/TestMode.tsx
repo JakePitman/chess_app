@@ -198,6 +198,7 @@ const TestMode = ({ lines }: Props) => {
             addRemainingMoveToMakeToAutomaticMoves
           }
           hintActive={hintActive}
+          setHintActive={setHintActive}
         />
         <div className={styles.sideColumn}>
           <CommandColumn

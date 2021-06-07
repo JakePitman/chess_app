@@ -17,6 +17,7 @@ type Props = {
   OAM?: Move;
   updateRemainingMoves?: () => void;
   addRemainingMoveToMakeToAutomaticMoves?: () => void;
+  setHintActive?: Dispatch<SetStateAction<boolean>>;
   hintActive?: boolean;
 };
 
@@ -29,6 +30,7 @@ const Board = ({
   OAM,
   updateRemainingMoves,
   addRemainingMoveToMakeToAutomaticMoves,
+  setHintActive,
   hintActive = false,
 }: Props) => {
   const [board, setBoard] = useState(client.game.board);
@@ -41,6 +43,7 @@ const Board = ({
     (moveNotation: string) => {
       client.move(moveNotation);
       addMoveToList(moveNotation);
+      setHintActive && setHintActive(false);
       updateRemainingMoves && updateRemainingMoves();
       addRemainingMoveToMakeToAutomaticMoves &&
         addRemainingMoveToMakeToAutomaticMoves();
