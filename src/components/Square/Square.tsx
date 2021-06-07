@@ -216,20 +216,29 @@ const Square = ({
     [OAM, client, pieceInfo]
   );
 
+  const isHintSquare = () => {
+    if (
+      (isWhite && pieceInfo?.side.name === "black") ||
+      (!isWhite && pieceInfo?.side.name === "white")
+    ) {
+      return false;
+    }
+    if (pieceInfo?.type === "king" && (OAM === "0-0" || OAM === "0-0-0")) {
+      return true;
+    }
+    return canMove(
+      OAM?.slice(OAM.length - 2),
+      pieceInfo?.type,
+      { rank: rankNumber, file: fileLetter },
+      OAM,
+      isWhite
+    );
+  };
+
   return (
     <div
       className={
-        hintActive &&
-        (((OAM === "0-0" || OAM === "0-0-0") && pieceInfo?.type === "king") ||
-          (((isWhite && pieceInfo?.side.name === "white") ||
-            (!isWhite && pieceInfo?.side.name === "black")) &&
-            canMove(
-              OAM?.slice(OAM.length - 2),
-              pieceInfo?.type,
-              { rank: rankNumber, file: fileLetter },
-              OAM,
-              isWhite
-            )))
+        hintActive && isHintSquare()
           ? styles.hintSquare
           : isLightSquare(rankNumber, fileNumber)
           ? styles.white
