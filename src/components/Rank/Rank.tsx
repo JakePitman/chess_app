@@ -18,6 +18,7 @@ type Props = {
   client: any;
   addMoveToList: (move: string) => void;
   setBoard: React.Dispatch<any>;
+  hintActive: boolean;
 };
 
 const FILE_LETTERS = {
@@ -40,6 +41,7 @@ const Rank = ({
   client,
   addMoveToList,
   setBoard,
+  hintActive,
 }: Props) => {
   return (
     <div className={styles.mainContainer}>
@@ -59,6 +61,7 @@ const Rank = ({
               client={client}
               addMoveToList={addMoveToList}
               setBoard={setBoard}
+              hintActive={hintActive}
             />
           );
         }

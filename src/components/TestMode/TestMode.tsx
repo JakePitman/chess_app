@@ -27,6 +27,7 @@ const TestMode = ({ lines }: Props) => {
     useState<boolean>(false);
   const [startingPoint, setStartingPoint] =
     useState<number | "random">("random");
+  const [hintActive, setHintActive] = useState<boolean>(false);
 
   const flattenMoves = (movesObjects: MovesListType) =>
     _.flattenDeep(
@@ -196,6 +197,7 @@ const TestMode = ({ lines }: Props) => {
           addRemainingMoveToMakeToAutomaticMoves={
             addRemainingMoveToMakeToAutomaticMoves
           }
+          hintActive={hintActive}
         />
         <div className={styles.sideColumn}>
           <CommandColumn
@@ -204,6 +206,7 @@ const TestMode = ({ lines }: Props) => {
             startingPoint={startingPoint}
             setStartingPoint={setStartingPoint}
             maximumStartingPoint={lowestLineLength() - 2}
+            giveHint={() => setHintActive(true)}
           />
         </div>
       </div>
