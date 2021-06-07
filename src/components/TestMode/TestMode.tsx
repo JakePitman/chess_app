@@ -208,6 +208,14 @@ const TestMode = ({ lines }: Props) => {
             setStartingPoint={setStartingPoint}
             maximumStartingPoint={lowestLineLength() - 2}
             giveHint={() => setHintActive(true)}
+            OAM={
+              remainingMovesToMake[0]
+                ? currentLine.playercolor === "white"
+                  ? remainingMovesToMake[0][0]
+                  : remainingMovesToMake[0][1]
+                : null
+            }
+            hintActive={hintActive}
           />
         </div>
       </div>

@@ -2,7 +2,7 @@ import React, { useState, SetStateAction, Dispatch } from "react";
 
 import styles from "./CommandColumn.scss";
 import Button from "../Button";
-import { MovesListType } from "../../sharedTypes";
+import { Move } from "../../sharedTypes";
 
 const StartingPointMenuOption = ({
   value,
@@ -75,6 +75,8 @@ type Props = {
   setStartingPoint: Dispatch<SetStateAction<number | "random">>;
   maximumStartingPoint: number;
   giveHint: () => void;
+  OAM: Move | null;
+  hintActive: boolean;
 };
 
 const CommandColumn = ({
@@ -84,6 +86,8 @@ const CommandColumn = ({
   setStartingPoint,
   maximumStartingPoint,
   giveHint,
+  OAM,
+  hintActive,
 }: Props) => {
   const [message, setMessage] = useState<string>("");
   const [startingPointPopupActive, setStartingPointPopupActive] =
@@ -109,7 +113,9 @@ const CommandColumn = ({
             }}
           />
           <Button text="Hint" onClick={giveHint} />
-          <p className={styles.message}>{message}</p>
+          <p className={styles.message}>
+            {OAM && hintActive ? OAM.reason : message}
+          </p>
         </>
       )}
     </div>
