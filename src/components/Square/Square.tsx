@@ -65,61 +65,15 @@ const pieceNameToNotation = {
 };
 
 const isOAMPiece = (
-  draggingPieceName: PieceName,
   previousSquare: { rank: number; file: string },
   OAM: Move
 ) => {
-  if (
-    draggingPieceName === "king" &&
-    (OAM.notation === "0-0" || OAM.notation === "0-0-0")
-  ) {
-    return true;
-  }
-  const splitOAM = OAM.notation.split("");
-  if (draggingPieceName === "pawn") {
-    // eg. "dxe5"
-    if (splitOAM.includes("x")) {
-      const currentFile = previousSquare.file; // d
-      const nextFile = splitOAM[2]; // e
-      if (
-        (String.fromCharCode(currentFile.charCodeAt(0) + 1) === nextFile ||
-          String.fromCharCode(currentFile.charCodeAt(0) - 1) === nextFile) &&
-        (splitOAM[3] === `${previousSquare.rank + 1}` ||
-          splitOAM[3] === `${previousSquare.rank - 1}`) &&
-        splitOAM[0] === previousSquare.file
-      ) {
-        return true;
-      }
-    }
-    // eg. "e5"
-    return (
-      splitOAM[0] === previousSquare.file &&
-      (splitOAM[1] === `${previousSquare.rank + 1}` ||
-        splitOAM[1] === `${previousSquare.rank - 1}` ||
-        splitOAM[1] === `${previousSquare.rank + 2}` ||
-        splitOAM[1] === `${previousSquare.rank - 2}`)
-    );
-  }
-  const draggingPieceNotation = pieceNameToNotation[draggingPieceName];
-  const pieceFromOAM = splitOAM[0];
-  // eg. Ngxf5, but not Ng3
-  const OAMPieceLocationIndicator =
-    splitOAM.filter((e) => e !== "x").length > 3 ? splitOAM[1] : null;
-  if (OAMPieceLocationIndicator) {
-    const pieceWithRank = `${draggingPieceNotation}${previousSquare.rank}`;
-    const pieceWithFile = `${draggingPieceNotation}${previousSquare.file}`;
-    const OAMPieceWithIndicator = `${pieceFromOAM}${OAMPieceLocationIndicator}`;
-    return (
-      pieceWithRank === OAMPieceWithIndicator ||
-      pieceWithFile === OAMPieceWithIndicator
-    );
-  }
-  return pieceFromOAM === draggingPieceNotation;
+  const prevSquareNotation = `${previousSquare.file}${previousSquare.rank}`;
+  return prevSquareNotation === OAM.prevSquare;
 };
 
 const canMove = (
   currentSquare: string,
-  pieceName: PieceName,
   previousSquare: { rank: number; file: string },
   OAM: Move,
   isWhite: boolean
@@ -129,7 +83,7 @@ const canMove = (
   }
   return (
     isTargetOfOAM(currentSquare, OAM, isWhite) &&
-    isOAMPiece(pieceName, previousSquare, OAM)
+    isOAMPiece(previousSquare, OAM)
   );
 };
 
@@ -195,9 +149,7 @@ const Square = ({
         monitor
       ) => {
         const isTaking = !!getPieceInfo();
-        if (
-          canMove(squareNotation, item.pieceName, item.square, OAM, isWhite)
-        ) {
+        if (canMove(squareNotation, item.square, OAM, isWhite)) {
           movePiece(
             client,
             item.pieceName,
