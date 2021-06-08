@@ -41,9 +41,9 @@
   opacity: 0.3;
 
   .black & {
-    color: colors.$white;
+    color: colors.$board-white;
   }
   .white & {
-    color: colors.$black;
+    color: colors.$board-black;
   }
 }
