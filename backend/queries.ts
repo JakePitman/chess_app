@@ -1,12 +1,13 @@
 require("dotenv").config();
 const Pool = require("pg").Pool;
 const pool = new Pool({
-  user: "chessrole",
-  host: "localhost",
-  database: "chessapp",
-  password: process.env.DB_PASSWORD,
-  port: 5432,
+  user: process.env.POSTGRES_USERNAME,
+  host: process.env.POSGRES_HOST,
+  database: process.env.POSTGRES_DATABASE,
+  password: process.env.POSTGRES_PASSWORD,
+  port: process.env.POSTGRES_PORT,
 });
+
 const getLines = (request, response) => {
   pool.query("SELECT * FROM lines ORDER BY name", (error, results) => {
     if (error) {
