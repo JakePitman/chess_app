@@ -13,7 +13,7 @@ type Props = {
   client: any;
   isWhite: boolean;
   setCommandColumnMessage?: Dispatch<SetStateAction<string>>;
-  addMoveToList: (move: string) => void;
+  addMoveToList: (move: string, prevSquare: string) => void;
   OAM?: Move;
   updateRemainingMoves?: () => void;
   addRemainingMoveToMakeToAutomaticMoves?: () => void;
@@ -40,9 +40,9 @@ const Board = ({
   }, [client]);
 
   const movePiece = movePieceFactory(
-    (moveNotation: string) => {
+    (moveNotation: string, prevSquare: string) => {
       client.move(moveNotation);
-      addMoveToList(moveNotation);
+      addMoveToList(moveNotation, prevSquare);
       setHintActive && setHintActive(false);
       updateRemainingMoves && updateRemainingMoves();
       addRemainingMoveToMakeToAutomaticMoves &&

@@ -25,15 +25,15 @@ const FreeMode = ({ returnToMenu, updateLinesFromDB }: Props) => {
     setGameClient(chess.create());
   };
 
-  const addMoveToList = (move: string) => {
+  const addMoveToList = (move: string, prevSquare: string) => {
     setMoves((prevMoves) => {
       const lastTurn = prevMoves[prevMoves.length - 1];
       return lastTurn && lastTurn[0] && !lastTurn[1]
         ? [
             ...prevMoves.slice(0, prevMoves.length - 1),
-            [lastTurn[0], { notation: move }],
+            [lastTurn[0], { notation: move, prevSquare: prevSquare }],
           ]
-        : [...prevMoves, [{ notation: move }]];
+        : [...prevMoves, [{ notation: move, prevSquare: prevSquare }]];
     });
   };
 

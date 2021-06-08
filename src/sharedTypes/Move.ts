@@ -1,5 +1,6 @@
 type Move = {
   notation: string;
+  prevSquare: string;
   reason?: string;
 };
 

@@ -10,7 +10,7 @@ const pieceNameToNotation = {
 };
 
 const movePiece = (
-  makeMove: (moveNotation: string) => void,
+  makeMove: (moveNotation: string, prevSquare: string) => void,
   setCommandColumnMessage: Dispatch<React.SetStateAction<string>>,
   setBoard: Dispatch<React.SetStateAction<string>>
 ) => {
@@ -22,22 +22,23 @@ const movePiece = (
     isTaking: boolean
   ) => {
     const { rank, file } = currentLocation;
+    const currentLocationNotation = `${file}${rank}`;
     targetSquare = isTaking ? "x" + targetSquare : targetSquare;
     try {
       if (piece === "pawn") {
         const move = isTaking ? file + targetSquare : targetSquare;
-        makeMove(move);
+        makeMove(move, currentLocationNotation);
       } else if (piece === "king") {
         const moveNotation = "K" + targetSquare;
         try {
-          makeMove(moveNotation);
+          makeMove(moveNotation, currentLocationNotation);
         } catch {
           if (targetSquare === "g1" || targetSquare === "g8") {
             const moveNotation = "0-0";
-            makeMove(moveNotation);
+            makeMove(moveNotation, currentLocationNotation);
           } else if (targetSquare === "c1" || targetSquare === "c8") {
             const moveNotation = "0-0-0";
-            makeMove(moveNotation);
+            makeMove(moveNotation, currentLocationNotation);
           } else {
             throw Error("Invalid King move");
           }
@@ -46,15 +47,15 @@ const movePiece = (
         const pieceNotation = pieceNameToNotation[piece];
         const moveNotation = pieceNotation + targetSquare;
         try {
-          makeMove(moveNotation);
+          makeMove(moveNotation, currentLocationNotation);
           // Passing rank & file together isn't supported (eg. Nb1C3)
         } catch (e) {
           try {
             const moveNotation = pieceNotation + file + targetSquare;
-            makeMove(moveNotation);
+            makeMove(moveNotation, currentLocationNotation);
           } catch (e) {
             const moveNotation = pieceNotation + rank + targetSquare;
-            makeMove(moveNotation);
+            makeMove(moveNotation, currentLocationNotation);
           }
         }
       }
