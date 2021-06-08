@@ -14,10 +14,12 @@ fi
 
 psql -c "DO \$\$
 BEGIN
-CREATE ROLE chessroleautomated WITH login;
+CREATE ROLE ${POSTGRES_USERNAME} WITH login;
 EXCEPTION WHEN duplicate_object THEN RAISE NOTICE '%, skipping', SQLERRM USING ERRCODE = SQLSTATE;
 END
 \$\$;"
+
+psql -c "CREATE DATABASE ${POSTGRES_DATABASE}"
 
 # Connect to the database, run the query, then disconnect
 PGPASSWORD="${POSTGRES_PASSWORD}" psql -t -A \
