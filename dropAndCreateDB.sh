@@ -19,6 +19,7 @@ EXCEPTION WHEN duplicate_object THEN RAISE NOTICE '%, skipping', SQLERRM USING E
 END
 \$\$;"
 
+psql -c "DROP DATABASE ${POSTGRES_DATABASE}"
 psql -c "CREATE DATABASE ${POSTGRES_DATABASE}"
 
 # Connect to the database, run the query, then disconnect
