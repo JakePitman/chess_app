@@ -3,6 +3,7 @@ import React from "react";
 import Square from "../Square";
 import styles from "./Rank.scss";
 import PieceName from "../../sharedTypes/PieceName";
+import { Move } from "../../sharedTypes";
 
 type Props = {
   rankNumber: number;
@@ -13,7 +14,7 @@ type Props = {
     isTaking: boolean
   ) => void;
   isWhite: boolean;
-  OAM?: string;
+  OAM?: Move;
   automaticMove?: string;
   client: any;
   addMoveToList: (move: string) => void;

@@ -5,7 +5,7 @@ import _ from "lodash";
 import styles from "./Square.scss";
 import BoardInfoContext from "../../contexts/BoardInfoContext";
 import Piece from "../Piece";
-import { PieceName, Side } from "../../sharedTypes";
+import { PieceName, Side, Move } from "../../sharedTypes";
 
 type Props = {
   rankNumber: number;
@@ -19,7 +19,7 @@ type Props = {
     isTaking: boolean
   ) => void;
   isWhite: boolean;
-  OAM?: string;
+  OAM?: Move;
   automaticMove?: string;
   client: any;
   addMoveToList: (move: string) => void;
@@ -40,22 +40,18 @@ type PieceInfo = null | {
   type: PieceName;
 };
 
-const isTargetOfOAM = (
-  squareNotation: string,
-  OAM: string,
-  isWhite: boolean
-) => {
+const isTargetOfOAM = (squareNotation: string, OAM: Move, isWhite: boolean) => {
   let OAMtarget;
-  if (OAM === "0-0" && isWhite) {
+  if (OAM?.notation === "0-0" && isWhite) {
     OAMtarget = "g1";
-  } else if (OAM === "0-0" && !isWhite) {
+  } else if (OAM?.notation === "0-0" && !isWhite) {
     OAMtarget = "g8";
-  } else if (OAM === "0-0-0" && isWhite) {
+  } else if (OAM?.notation === "0-0-0" && isWhite) {
     OAMtarget = "c1";
-  } else if (OAM === "0-0-0" && !isWhite) {
+  } else if (OAM?.notation === "0-0-0" && !isWhite) {
     OAMtarget = "c8";
   } else {
-    OAMtarget = OAM.slice(OAM.length - 2);
+    OAMtarget = OAM?.notation.slice(OAM?.notation.length - 2);
   }
   return squareNotation === OAMtarget;
 };
@@ -71,12 +67,15 @@ const pieceNameToNotation = {
 const isOAMPiece = (
   draggingPieceName: PieceName,
   previousSquare: { rank: number; file: string },
-  OAM: string
+  OAM: Move
 ) => {
-  if (draggingPieceName === "king" && (OAM === "0-0" || OAM === "0-0-0")) {
+  if (
+    draggingPieceName === "king" &&
+    (OAM.notation === "0-0" || OAM.notation === "0-0-0")
+  ) {
     return true;
   }
-  const splitOAM = OAM.split("");
+  const splitOAM = OAM.notation.split("");
   if (draggingPieceName === "pawn") {
     // eg. "dxe5"
     if (splitOAM.includes("x")) {
@@ -122,7 +121,7 @@ const canMove = (
   currentSquare: string,
   pieceName: PieceName,
   previousSquare: { rank: number; file: string },
-  OAM: string,
+  OAM: Move,
   isWhite: boolean
 ) => {
   if (!OAM) {
@@ -172,7 +171,11 @@ const Square = ({
   useEffect(() => {
     if (
       automaticMoveNotation &&
-      isTargetOfOAM(squareNotation, automaticMoveNotation, isWhite)
+      isTargetOfOAM(
+        squareNotation,
+        { notation: automaticMoveNotation, prevSquare: "" },
+        isWhite
+      )
     ) {
       client.move(automaticMoveNotation);
       setBoard({ ...client.game.board });
@@ -216,29 +219,10 @@ const Square = ({
     [OAM, client, pieceInfo]
   );
 
-  const isHintSquare = () => {
-    if (
-      (isWhite && pieceInfo?.side.name === "black") ||
-      (!isWhite && pieceInfo?.side.name === "white")
-    ) {
-      return false;
-    }
-    if (pieceInfo?.type === "king" && (OAM === "0-0" || OAM === "0-0-0")) {
-      return true;
-    }
-    return canMove(
-      OAM?.slice(OAM.length - 2),
-      pieceInfo?.type,
-      { rank: rankNumber, file: fileLetter },
-      OAM,
-      isWhite
-    );
-  };
-
   return (
     <div
       className={
-        hintActive && isHintSquare()
+        hintActive && squareNotation === OAM.prevSquare
           ? styles.hintSquare
           : isLightSquare(rankNumber, fileNumber)
           ? styles.white
