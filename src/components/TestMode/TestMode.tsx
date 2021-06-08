@@ -171,6 +171,12 @@ const TestMode = ({ lines }: Props) => {
       return currentLength < lowestLength ? currentLength : lowestLength;
     }, lines[0].moves.length);
 
+  const OAM = remainingMovesToMake[0]
+    ? currentLine.playercolor === "white"
+      ? remainingMovesToMake[0][0]
+      : remainingMovesToMake[0][1]
+    : null;
+
   return gameClient ? (
     <div className={styles.container}>
       <div className={styles.columnsContainer}>
@@ -183,13 +189,7 @@ const TestMode = ({ lines }: Props) => {
           isWhite={currentLine.playercolor === "white"}
           setCommandColumnMessage={setCommandColumnMessage}
           addMoveToList={addMoveToList}
-          OAM={
-            remainingMovesToMake[0]
-              ? currentLine.playercolor === "white"
-                ? remainingMovesToMake[0][0]
-                : remainingMovesToMake[0][1]
-              : null
-          }
+          OAM={OAM}
           updateRemainingMoves={() =>
             remainingMovesToMake &&
             setRemainingMovesToMake(determineNewRemainingMovesToMake())
@@ -208,13 +208,7 @@ const TestMode = ({ lines }: Props) => {
             setStartingPoint={setStartingPoint}
             maximumStartingPoint={lowestLineLength() - 2}
             giveHint={() => setHintActive(true)}
-            OAM={
-              remainingMovesToMake[0]
-                ? currentLine.playercolor === "white"
-                  ? remainingMovesToMake[0][0]
-                  : remainingMovesToMake[0][1]
-                : null
-            }
+            OAM={OAM}
             hintActive={hintActive}
           />
         </div>
