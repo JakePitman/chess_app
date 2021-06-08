@@ -114,7 +114,7 @@ const CommandColumn = ({
           />
           <Button text="Hint" onClick={giveHint} />
           <div className={styles.message}>
-            {OAM.reason && hintActive ? (
+            {OAM?.reason && hintActive ? (
               OAM.reason
                 .split("\n")
                 .map((reason) => <p key={reason}>‣ {reason}</p>)
