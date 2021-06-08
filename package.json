@@ -11,7 +11,8 @@
     "frontend": "webpack serve --open",
     "backend": "node backend/index.ts",
     "test": "jest",
-    "prettier": "prettier --write \"**/*.+(ts|tsx|js|jsx|json|yml|yaml|css|md|vue)\""
+    "prettier": "prettier --write \"**/*.+(ts|tsx|js|jsx|json|yml|yaml|css|md|vue)\"",
+    "setupDb": "./setupDb.sh"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.12.11",
