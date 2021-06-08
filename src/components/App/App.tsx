@@ -55,7 +55,13 @@ const App = () => {
           {modes[mode]}
         </>
       ) : (
-        <div>Failure retrieving lines. Ensure db is running on 3000</div>
+        <div className={styles.dbFailureMessage}>
+          <p>Failure retrieving lines</p>
+          <p>Ensure db is running on 3000 with `yarn run backend`</p>
+          <p>
+            Run `yarn run resetDB` to reset DB, or create for the first time
+          </p>
+        </div>
       )}
     </div>
   );
