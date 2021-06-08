@@ -57,8 +57,9 @@
   color: colors.$accent-blue;
   height: 100px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  padding: 5px 10px;
 }
 
 .startingPointMenuContainer {
