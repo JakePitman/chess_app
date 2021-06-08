@@ -40,7 +40,11 @@ const TestMode = ({ lines }: Props) => {
     if (
       automaticMovesCompleted &&
       remainingMovesToMake.length <= 1 &&
-      remainingMovesToMake[0][0] == null
+      (remainingMovesToMake.length === 0 ||
+        (currentLine.playercolor === "white" &&
+          remainingMovesToMake[0][0] === null) ||
+        (currentLine.playercolor === "black" &&
+          remainingMovesToMake[0][1] === null))
     ) {
       setRandomLine();
     }
