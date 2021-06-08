@@ -12,15 +12,15 @@ if ! command -v psql > /dev/null; then
   exit 1
 fi
 
-psql -c "DO \$\$
+psql -d postgres -c "DO \$\$
 BEGIN
 CREATE ROLE ${POSTGRES_USERNAME} WITH login;
 EXCEPTION WHEN duplicate_object THEN RAISE NOTICE '%, skipping', SQLERRM USING ERRCODE = SQLSTATE;
 END
 \$\$;"
 
-psql -c "DROP DATABASE ${POSTGRES_DATABASE}"
-psql -c "CREATE DATABASE ${POSTGRES_DATABASE}"
+psql -d postgres -c "DROP DATABASE ${POSTGRES_DATABASE}"
+psql -d postgres -c "CREATE DATABASE ${POSTGRES_DATABASE}"
 
 # Connect to the database, run the query, then disconnect
 PGPASSWORD="${POSTGRES_PASSWORD}" psql -t -A \
