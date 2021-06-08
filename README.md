@@ -31,6 +31,28 @@
 
 ---
 
+## Getting set up
+
+### Install dependencies
+
+`yarn`
+
+### Create .envrc file (copy from .exampleEnv and tweak)
+
+### Setup database
+
+`yarn resetDB`
+
+### Run backend
+
+`yarn backend`
+
+### Run frontend
+
+`yarn frontend`
+
+---
+
 ## TODOS
 
 ### App
