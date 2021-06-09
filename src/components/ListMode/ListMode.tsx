@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import chess from "chess";
 import axios from "axios";
 import _ from "lodash";
+import Highlighter from "react-highlight-words";
 
 import styles from "./ListMode.scss";
 import { Line, MovesListType } from "../../sharedTypes";
@@ -72,6 +73,7 @@ type LineRowProps = {
   id: number;
   updateLinesFromDB: () => void;
   isWhiteLine: boolean;
+  searchInputValue: string;
 };
 
 const LineRow = ({
@@ -80,6 +82,7 @@ const LineRow = ({
   id,
   updateLinesFromDB,
   isWhiteLine,
+  searchInputValue,
 }: LineRowProps) => {
   return (
     <div
@@ -91,7 +94,14 @@ const LineRow = ({
         className={styles.checkbox + ` ${selected && styles.selected}`}
         onClick={() => handlePUT(title, selected, updateLinesFromDB)}
       />
-      <p className={styles.lineTitle}>{title}</p>
+      <Highlighter
+        className={styles.lineTitleContainer}
+        highlightClassName={styles.lineTitleHighlighted}
+        unhighlightClassName={styles.lineTitle}
+        searchWords={searchInputValue.toLowerCase().split(" ")}
+        autoEscape={true}
+        textToHighlight={title}
+      />
       <p
         className={styles.deleteButton}
         onClick={() => handleDELETE(id, updateLinesFromDB)}
@@ -105,7 +115,8 @@ const LineRow = ({
 const renderRows = (
   lines: Line[],
   filterColor: "white" | "black",
-  updateLinesFromDB: () => void
+  updateLinesFromDB: () => void,
+  searchInputValue: string
 ) => {
   return (
     <>
@@ -118,6 +129,7 @@ const renderRows = (
             id={line.id}
             updateLinesFromDB={updateLinesFromDB}
             isWhiteLine={line.playercolor === "white"}
+            searchInputValue={searchInputValue}
             key={line.name}
           />
         ) : null;
@@ -237,8 +249,18 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
           <p className={styles.sideColumnTitle}>Lines</p>
           <div className={styles.sideColumnContent}>
             <div className={styles.lineRowsContainer}>
-              {renderRows(currentFilteredLines, "white", updateLinesFromDB)}
-              {renderRows(currentFilteredLines, "black", updateLinesFromDB)}
+              {renderRows(
+                currentFilteredLines,
+                "white",
+                updateLinesFromDB,
+                searchInputValue
+              )}
+              {renderRows(
+                currentFilteredLines,
+                "black",
+                updateLinesFromDB,
+                searchInputValue
+              )}
             </div>
             <div className={styles.controls}>
               <div className={styles.controlsRow}>
