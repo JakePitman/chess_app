@@ -198,15 +198,29 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
 
   const currentFilteredLines = (
     linesFilteredByMovesMade ? linesFilteredByMovesMade : lines
-  ).filter((line) => {
-    if (selectedFilter === "all") {
-      return true;
-    }
-    return (selectedFilter === "selected" && line.selected) ||
-      (selectedFilter === "deselected" && !line.selected)
-      ? true
-      : false;
-  });
+  )
+    .filter((line) => {
+      if (selectedFilter === "all") {
+        return true;
+      }
+      return (selectedFilter === "selected" && line.selected) ||
+        (selectedFilter === "deselected" && !line.selected)
+        ? true
+        : false;
+    })
+    .filter((line) => {
+      const lowercaseLineName = line.name.toLowerCase();
+      const lowercaseSearchValue = searchInputValue.toLowerCase();
+      const splitSearch = lowercaseSearchValue.split(" ");
+      splitSearch;
+      let result = true;
+      splitSearch.forEach((word) => {
+        if (!lowercaseLineName.includes(word)) {
+          result = false;
+        }
+      });
+      return result;
+    });
 
   return (
     <div className={styles.appContainer}>
