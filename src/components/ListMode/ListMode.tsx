@@ -162,6 +162,7 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
   const [moves, setMoves] = useState<MovesListType>([]);
   const [selectedFilter, setSelectedFilter] =
     useState<"all" | "selected" | "deselected">("all");
+  const [searchInputValue, setSearchInputValue] = useState<string>("");
   const [isWhite, setIsWhite] = useState<boolean>(true);
 
   const addMoveToList = (move: string) => {
@@ -230,6 +231,8 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
                 <input
                   placeholder="Search"
                   className={styles.searchInputField}
+                  value={searchInputValue}
+                  onChange={(e) => setSearchInputValue(e.target.value)}
                 />
               </div>
               <div className={styles.controlsRow}>
