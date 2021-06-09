@@ -93,6 +93,7 @@
   border: 1px solid colors.$near-black;
   border-radius: spacing.$border-radius;
   background: colors.$near-black;
+  cursor: pointer;
 
   &.selected {
     background: colors.$accent-blue;
