@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import chess from "chess";
 import axios from "axios";
 import _ from "lodash";
+import Highlighter from "react-highlight-words";
 
 import styles from "./ListMode.scss";
 import { Line, MovesListType } from "../../sharedTypes";
@@ -72,6 +73,7 @@ type LineRowProps = {
   id: number;
   updateLinesFromDB: () => void;
   isWhiteLine: boolean;
+  searchInputValue: string;
 };
 
 const LineRow = ({
@@ -80,6 +82,7 @@ const LineRow = ({
   id,
   updateLinesFromDB,
   isWhiteLine,
+  searchInputValue,
 }: LineRowProps) => {
   return (
     <div
@@ -91,7 +94,14 @@ const LineRow = ({
         className={styles.checkbox + ` ${selected && styles.selected}`}
         onClick={() => handlePUT(title, selected, updateLinesFromDB)}
       />
-      <p className={styles.lineTitle}>{title}</p>
+      <Highlighter
+        className={styles.lineTitleContainer}
+        highlightClassName={styles.lineTitleHighlighted}
+        unhighlightClassName={styles.lineTitle}
+        searchWords={searchInputValue.toLowerCase().split(" ")}
+        autoEscape={true}
+        textToHighlight={title}
+      />
       <p
         className={styles.deleteButton}
         onClick={() => handleDELETE(id, updateLinesFromDB)}
@@ -105,7 +115,8 @@ const LineRow = ({
 const renderRows = (
   lines: Line[],
   filterColor: "white" | "black",
-  updateLinesFromDB: () => void
+  updateLinesFromDB: () => void,
+  searchInputValue: string
 ) => {
   return (
     <>
@@ -118,6 +129,7 @@ const renderRows = (
             id={line.id}
             updateLinesFromDB={updateLinesFromDB}
             isWhiteLine={line.playercolor === "white"}
+            searchInputValue={searchInputValue}
             key={line.name}
           />
         ) : null;
@@ -162,6 +174,7 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
   const [moves, setMoves] = useState<MovesListType>([]);
   const [selectedFilter, setSelectedFilter] =
     useState<"all" | "selected" | "deselected">("all");
+  const [searchInputValue, setSearchInputValue] = useState<string>("");
   const [isWhite, setIsWhite] = useState<boolean>(true);
 
   const addMoveToList = (move: string) => {
@@ -197,15 +210,29 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
 
   const currentFilteredLines = (
     linesFilteredByMovesMade ? linesFilteredByMovesMade : lines
-  ).filter((line) => {
-    if (selectedFilter === "all") {
-      return true;
-    }
-    return (selectedFilter === "selected" && line.selected) ||
-      (selectedFilter === "deselected" && !line.selected)
-      ? true
-      : false;
-  });
+  )
+    .filter((line) => {
+      if (selectedFilter === "all") {
+        return true;
+      }
+      return (selectedFilter === "selected" && line.selected) ||
+        (selectedFilter === "deselected" && !line.selected)
+        ? true
+        : false;
+    })
+    .filter((line) => {
+      const lowercaseLineName = line.name.toLowerCase();
+      const lowercaseSearchValue = searchInputValue.toLowerCase();
+      const splitSearch = lowercaseSearchValue.split(" ");
+      splitSearch;
+      let result = true;
+      splitSearch.forEach((word) => {
+        if (!lowercaseLineName.includes(word)) {
+          result = false;
+        }
+      });
+      return result;
+    });
 
   return (
     <div className={styles.appContainer}>
@@ -222,10 +249,67 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
           <p className={styles.sideColumnTitle}>Lines</p>
           <div className={styles.sideColumnContent}>
             <div className={styles.lineRowsContainer}>
-              {renderRows(currentFilteredLines, "white", updateLinesFromDB)}
-              {renderRows(currentFilteredLines, "black", updateLinesFromDB)}
+              {renderRows(
+                currentFilteredLines,
+                "white",
+                updateLinesFromDB,
+                searchInputValue
+              )}
+              {renderRows(
+                currentFilteredLines,
+                "black",
+                updateLinesFromDB,
+                searchInputValue
+              )}
             </div>
             <div className={styles.controls}>
+              <div className={styles.controlsRow}>
+                <input
+                  placeholder="Search"
+                  className={styles.searchInputField}
+                  value={searchInputValue}
+                  onChange={(e) => setSearchInputValue(e.target.value)}
+                />
+              </div>
+              <div className={styles.controlsRow}>
+                <div
+                  className={styles.controlButton}
+                  onClick={() => setIsWhite(!isWhite)}
+                >
+                  {isWhite ? "White" : "Black"} ↔
+                </div>
+                <div
+                  className={styles.controlButton}
+                  onClick={() => {
+                    setMoves([]);
+                    setSearchInputValue("");
+                    setGameClient(chess.create());
+                  }}
+                >
+                  Reset
+                </div>
+                <SelectedFilterSliderOption
+                  text="All"
+                  isActive={selectedFilter === "all"}
+                  onClick={() => {
+                    setSelectedFilter("all");
+                  }}
+                />
+                <SelectedFilterSliderOption
+                  text="Selected"
+                  isActive={selectedFilter === "selected"}
+                  onClick={() => {
+                    setSelectedFilter("selected");
+                  }}
+                />
+                <SelectedFilterSliderOption
+                  text="Deselected"
+                  isActive={selectedFilter === "deselected"}
+                  onClick={() => {
+                    setSelectedFilter("deselected");
+                  }}
+                />
+              </div>
               <div className={styles.controlsRow}>
                 <div
                   className={styles.controlButton}
@@ -268,44 +352,6 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
                 >
                   Desel filtered
                 </div>
-              </div>
-              <div className={styles.controlsRow}>
-                <div
-                  className={styles.controlButton}
-                  onClick={() => setIsWhite(!isWhite)}
-                >
-                  {isWhite ? "White" : "Black"} ↔
-                </div>
-                <div
-                  className={styles.controlButton}
-                  onClick={() => {
-                    setMoves([]);
-                    setGameClient(chess.create());
-                  }}
-                >
-                  Reset
-                </div>
-                <SelectedFilterSliderOption
-                  text="All"
-                  isActive={selectedFilter === "all"}
-                  onClick={() => {
-                    setSelectedFilter("all");
-                  }}
-                />
-                <SelectedFilterSliderOption
-                  text="Selected"
-                  isActive={selectedFilter === "selected"}
-                  onClick={() => {
-                    setSelectedFilter("selected");
-                  }}
-                />
-                <SelectedFilterSliderOption
-                  text="Deselected"
-                  isActive={selectedFilter === "deselected"}
-                  onClick={() => {
-                    setSelectedFilter("deselected");
-                  }}
-                />
               </div>
             </div>
           </div>

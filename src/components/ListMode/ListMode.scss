@@ -72,10 +72,19 @@
   }
 }
 
+.lineTitleContainer {
+  width: 100%;
+  margin: 0 5px;
+}
+
 .lineTitle {
   color: colors.$near-black;
   width: 100%;
-  padding: 0 5px;
+}
+
+.lineTitleHighlighted {
+  @extend .lineTitle;
+  background: colors.$accent-blue;
 }
 
 .checkbox {
@@ -84,6 +93,7 @@
   border: 1px solid colors.$near-black;
   border-radius: spacing.$border-radius;
   background: colors.$near-black;
+  cursor: pointer;
 
   &.selected {
     background: colors.$accent-blue;
@@ -151,4 +161,13 @@
     background: colors.$accent-blue;
     cursor: default;
   }
+}
+
+.searchInputField {
+  width: 100%;
+  text-align: center;
+  border: 1px solid colors.$accent-blue;
+  background: colors.$near-black;
+  color: colors.$accent-blue;
+  font-size: 20px;
 }
