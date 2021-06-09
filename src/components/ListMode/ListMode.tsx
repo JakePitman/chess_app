@@ -227,6 +227,12 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
             </div>
             <div className={styles.controls}>
               <div className={styles.controlsRow}>
+                <input
+                  placeholder="Search"
+                  className={styles.searchInputField}
+                />
+              </div>
+              <div className={styles.controlsRow}>
                 <div
                   className={styles.controlButton}
                   onClick={() => {
