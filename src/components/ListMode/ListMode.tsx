@@ -325,6 +325,7 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
                   className={styles.controlButton}
                   onClick={() => {
                     setMoves([]);
+                    setSearchInputValue("");
                     setGameClient(chess.create());
                   }}
                 >
