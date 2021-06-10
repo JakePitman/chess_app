@@ -25,8 +25,7 @@ const TestMode = ({ lines }: Props) => {
   const [movesMade, setMovesMade] = useState<MovesListType>([]);
   const [automaticMovesCompleted, setAutomaticMovesCompleted] =
     useState<boolean>(false);
-  const [startingPoint, setStartingPoint] =
-    useState<number | "random">("random");
+  const [startingPoint, setStartingPoint] = useState<number | "random">(1);
   const [hintActive, setHintActive] = useState<boolean>(false);
 
   const flattenMoves = (movesObjects: MovesListType) =>
