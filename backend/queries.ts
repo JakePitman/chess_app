@@ -29,16 +29,18 @@ const getLineById = (request, response) => {
 };
 
 const createLine = (request, response) => {
-  const { name, playercolor, moves } = request.body;
+  const { name, variation, playercolor, moves } = request.body;
 
   pool.query(
-    "INSERT INTO lines (name, playercolor, moves) VALUES ($1, $2, $3)",
-    [name, playercolor, moves],
+    "INSERT INTO lines (name, variation, playercolor, moves) VALUES ($1, $2, $3, $4)",
+    [name, variation, playercolor, moves],
     (error, result) => {
       if (error) {
         throw error;
       }
-      response.status(201).send(`Line added with name: ${result.name}`);
+      response
+        .status(201)
+        .send(`Line added with name: ${result.name}, variation: ${variation}`);
     }
   );
 };
