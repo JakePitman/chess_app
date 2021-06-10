@@ -107,7 +107,7 @@ const LineRow = ({
           unhighlightClassName={styles.lineVariation}
           searchWords={splitSearchValues}
           autoEscape={true}
-          textToHighlight={variation}
+          textToHighlight={variation ? variation : ""}
         />
       </div>
       <p
@@ -136,7 +136,7 @@ const renderRows = (
             updateLinesFromDB={updateLinesFromDB}
             isWhiteLine={line.playercolor === "white"}
             searchInputValue={searchInputValue}
-            key={line.name}
+            key={line.id}
           />
         ) : null;
       })}
@@ -228,7 +228,7 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
     })
     .filter((line) => {
       const lowercaseLineName = line.name.toLowerCase();
-      const lowercaseLineVariation = line.variation?.toLowerCase();
+      const lowercaseLineVariation = line.variation?.toLowerCase() || "";
       const lowercaseSearchValue = searchInputValue.toLowerCase();
       const splitSearch = lowercaseSearchValue.split(" ");
       splitSearch;
@@ -236,7 +236,7 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
       splitSearch.forEach((word) => {
         if (
           lowercaseLineName.includes(word) ||
-          (lowercaseLineVariation && lowercaseLineVariation.includes(word))
+          lowercaseLineVariation.includes(word)
         ) {
           return;
         }
