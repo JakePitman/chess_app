@@ -71,6 +71,7 @@ const StartingPointMenu = ({
 type Props = {
   setRandomLine: () => void;
   lineTitle: string;
+  lineVariation: string;
   startingPoint: number | "random";
   setStartingPoint: Dispatch<SetStateAction<number | "random">>;
   maximumStartingPoint: number;
@@ -82,6 +83,7 @@ type Props = {
 const CommandColumn = ({
   setRandomLine,
   lineTitle,
+  lineVariation,
   startingPoint,
   setStartingPoint,
   maximumStartingPoint,
@@ -104,7 +106,10 @@ const CommandColumn = ({
         />
       ) : (
         <>
-          <p className={styles.inputHeader}>{lineTitle}</p>
+          <div className={styles.titleTextContainer}>
+            <p className={styles.lineTitle}>{lineTitle}</p>
+            <p className={styles.lineVariation}>{lineVariation}</p>
+          </div>
           <Button text="New line" onClick={setRandomLine} />
           <Button
             text={`Starting point: ${startingPoint}`}
