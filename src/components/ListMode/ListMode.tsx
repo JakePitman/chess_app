@@ -9,15 +9,11 @@ import { Line, MovesListType } from "../../sharedTypes";
 import Board from "../Board";
 import MovesList from "../MovesList";
 
-const handlePUT = (
-  title: string,
-  selected: boolean,
-  updateLinesFromDB: () => void
-) => {
+const handlePUT = (line: Line, updateLinesFromDB: () => void) => {
   axios
     .put("http://localhost:3000/line", {
-      name: title,
-      selected: !selected,
+      id: line.id,
+      selected: !line.selected,
     })
     .then((res) => {
       console.log({ res });
@@ -46,7 +42,7 @@ const handlePUTSelected = (
   lines.forEach((line) => {
     axios
       .put("http://localhost:3000/line", {
-        name: line.name,
+        id: line.id,
         selected: selected,
       })
       .then((res) => {
@@ -90,7 +86,7 @@ const LineRow = ({
     >
       <div
         className={styles.checkbox + ` ${selected && styles.selected}`}
-        onClick={() => handlePUT(name, selected, updateLinesFromDB)}
+        onClick={() => handlePUT(line, updateLinesFromDB)}
       />
       <div className={styles.lineRowTextContainer}>
         <Highlighter

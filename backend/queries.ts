@@ -46,16 +46,16 @@ const createLine = (request, response) => {
 };
 
 const toggleLine = (request, response) => {
-  const { name, selected } = request.body;
+  const { id, selected } = request.body;
 
   pool.query(
-    "UPDATE lines SET selected = $2 WHERE name = $1",
-    [name, selected],
+    "UPDATE lines SET selected = $2 WHERE id = $1",
+    [id, selected],
     (error, results) => {
       if (error) {
         throw error;
       }
-      response.status(200).send(`Line '${name}' updated with : ${selected}`);
+      response.status(200).send(`Line '${id}' updated with : ${selected}`);
     }
   );
 };
