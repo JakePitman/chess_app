@@ -228,14 +228,19 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
     })
     .filter((line) => {
       const lowercaseLineName = line.name.toLowerCase();
+      const lowercaseLineVariation = line.variation?.toLowerCase();
       const lowercaseSearchValue = searchInputValue.toLowerCase();
       const splitSearch = lowercaseSearchValue.split(" ");
       splitSearch;
       let result = true;
       splitSearch.forEach((word) => {
-        if (!lowercaseLineName.includes(word)) {
-          result = false;
+        if (
+          lowercaseLineName.includes(word) ||
+          (lowercaseLineVariation && lowercaseLineVariation.includes(word))
+        ) {
+          return;
         }
+        result = false;
       });
       return result;
     });
