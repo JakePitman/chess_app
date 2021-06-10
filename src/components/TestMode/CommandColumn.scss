@@ -9,13 +9,25 @@
   position: relative;
 }
 
-.inputHeader {
+.titleTextContainer {
+  padding: 5px;
   width: 100%;
   color: colors.$near-black;
   background: colors.$accent-blue;
-  padding: 5px;
+}
+
+.inputHeader {
+  width: 100%;
   text-align: center;
-  margin-bottom: 10px;
+}
+
+.lineTitle {
+  @extend .inputHeader;
+  font-weight: bold;
+}
+
+.lineVariation {
+  @extend .inputHeader;
 }
 
 .inputField {

@@ -72,19 +72,42 @@
   }
 }
 
-.lineTitleContainer {
+.lineRowTextContainer {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   margin: 0 5px;
+}
+
+.lineTitleContainer {
+  width: 100%;
+  padding: 2px;
 }
 
 .lineTitle {
   color: colors.$near-black;
   width: 100%;
+  font-weight: bold;
 }
 
-.lineTitleHighlighted {
+.lineRowTextHighlighted {
   @extend .lineTitle;
   background: colors.$accent-blue;
+}
+
+.lineVariationContainer {
+  padding: 5px;
+  .whiteRow & {
+    background: colors.$board-black-lighter;
+  }
+  .blackRow & {
+    background: colors.$board-white-darker;
+  }
+}
+
+.lineVariation {
+  color: colors.$near-black;
+  width: 100%;
 }
 
 .checkbox {

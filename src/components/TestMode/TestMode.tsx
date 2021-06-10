@@ -208,6 +208,7 @@ const TestMode = ({ lines }: Props) => {
           <CommandColumn
             setRandomLine={setRandomLine}
             lineTitle={currentLine.name}
+            lineVariation={currentLine.variation}
             startingPoint={startingPoint}
             setStartingPoint={setStartingPoint}
             maximumStartingPoint={lowestLineLength() - 2}
