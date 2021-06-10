@@ -91,7 +91,7 @@ const LineRow = ({
       <div className={styles.lineRowTextContainer}>
         <Highlighter
           className={styles.lineTitleContainer}
-          highlightClassName={styles.lineTitleHighlighted}
+          highlightClassName={styles.lineRowTextHighlighted}
           unhighlightClassName={styles.lineTitle}
           searchWords={splitSearchValues}
           autoEscape={true}
@@ -99,7 +99,7 @@ const LineRow = ({
         />
         <Highlighter
           className={styles.lineVariationContainer}
-          highlightClassName={styles.lineTitleHighlighted}
+          highlightClassName={styles.lineRowTextHighlighted}
           unhighlightClassName={styles.lineVariation}
           searchWords={splitSearchValues}
           autoEscape={true}
