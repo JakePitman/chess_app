@@ -184,7 +184,6 @@ const TestMode = ({ lines }: Props) => {
     <div className={styles.container}>
       <div className={styles.columnsContainer}>
         <div className={styles.sideColumn}>
-          <div style={{ color: "white" }}>{hintLevel}</div>
           <MovesList turns={movesMade}></MovesList>
         </div>
         <Board

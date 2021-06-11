@@ -10,7 +10,7 @@ type Props = {
 const Button = ({ text, onClick }: Props) => {
   return (
     <div onClick={onClick} className={styles.button}>
-      <div className={styles.innerBorder}>{text}</div>
+      {text}
     </div>
   );
 };
