@@ -5,7 +5,7 @@ import _ from "lodash";
 import styles from "./Square.scss";
 import BoardInfoContext from "../../contexts/BoardInfoContext";
 import Piece from "../Piece";
-import { PieceName, Side, Move } from "../../sharedTypes";
+import { PieceName, Side, Move, HintLevel } from "../../sharedTypes";
 
 type Props = {
   rankNumber: number;
@@ -24,7 +24,7 @@ type Props = {
   client: any;
   addMoveToList: (move: string) => void;
   setBoard: React.Dispatch<any>;
-  hintActive: boolean;
+  hintLevel: HintLevel;
 };
 
 const isLightSquare = (rankNumber: number, fileNumber: number) => {
@@ -98,7 +98,7 @@ const Square = ({
   client,
   addMoveToList,
   setBoard,
-  hintActive,
+  hintLevel,
 }: Props) => {
   const squareNotation = `${fileLetter}${rankNumber}`;
 
@@ -171,17 +171,20 @@ const Square = ({
     [OAM, client, pieceInfo]
   );
 
+  const squareColor = () => {
+    if (hintLevel > 0 && squareNotation === OAM.prevSquare) {
+      return styles.hintSquare;
+    } else if (hintLevel > 1 && isTargetOfOAM(squareNotation, OAM, isWhite)) {
+      return styles.answerSquare;
+    } else {
+      return isLightSquare(rankNumber, fileNumber)
+        ? styles.white
+        : styles.black;
+    }
+  };
+
   return (
-    <div
-      className={
-        hintActive && squareNotation === OAM.prevSquare
-          ? styles.hintSquare
-          : isLightSquare(rankNumber, fileNumber)
-          ? styles.white
-          : styles.black
-      }
-      ref={drop}
-    >
+    <div className={squareColor()} ref={drop}>
       {pieceInfo && (
         <Piece
           pieceInfo={pieceInfo}

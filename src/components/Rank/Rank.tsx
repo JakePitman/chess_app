@@ -3,7 +3,7 @@ import React from "react";
 import Square from "../Square";
 import styles from "./Rank.scss";
 import PieceName from "../../sharedTypes/PieceName";
-import { Move } from "../../sharedTypes";
+import { Move, HintLevel } from "../../sharedTypes";
 
 type Props = {
   rankNumber: number;
@@ -19,7 +19,7 @@ type Props = {
   client: any;
   addMoveToList: (move: string) => void;
   setBoard: React.Dispatch<any>;
-  hintActive: boolean;
+  hintLevel: HintLevel;
 };
 
 const FILE_LETTERS = {
@@ -42,7 +42,7 @@ const Rank = ({
   client,
   addMoveToList,
   setBoard,
-  hintActive,
+  hintLevel,
 }: Props) => {
   return (
     <div className={styles.mainContainer}>
@@ -62,7 +62,7 @@ const Rank = ({
               client={client}
               addMoveToList={addMoveToList}
               setBoard={setBoard}
-              hintActive={hintActive}
+              hintLevel={hintLevel}
             />
           );
         }
