@@ -5,7 +5,7 @@ import _ from "lodash";
 import styles from "./Square.scss";
 import BoardInfoContext from "../../contexts/BoardInfoContext";
 import Piece from "../Piece";
-import { PieceName, Side, Move } from "../../sharedTypes";
+import { PieceName, Side, Move, HintLevel } from "../../sharedTypes";
 
 type Props = {
   rankNumber: number;
@@ -24,7 +24,7 @@ type Props = {
   client: any;
   addMoveToList: (move: string) => void;
   setBoard: React.Dispatch<any>;
-  hintActive: boolean;
+  hintLevel: HintLevel;
 };
 
 const isLightSquare = (rankNumber: number, fileNumber: number) => {
@@ -98,7 +98,7 @@ const Square = ({
   client,
   addMoveToList,
   setBoard,
-  hintActive,
+  hintLevel,
 }: Props) => {
   const squareNotation = `${fileLetter}${rankNumber}`;
 
@@ -174,7 +174,7 @@ const Square = ({
   return (
     <div
       className={
-        hintActive && squareNotation === OAM.prevSquare
+        hintLevel === 1 && squareNotation === OAM.prevSquare
           ? styles.hintSquare
           : isLightSquare(rankNumber, fileNumber)
           ? styles.white

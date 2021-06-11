@@ -5,7 +5,7 @@ import _ from "lodash";
 import Board from "../Board";
 import MovesList from "../MovesList";
 import CommandColumn from "./CommandColumn";
-import { Line, MovesListType } from "../../sharedTypes";
+import { Line, MovesListType, HintLevel } from "../../sharedTypes";
 import styles from "./TestMode.scss";
 
 type Props = {
@@ -26,7 +26,7 @@ const TestMode = ({ lines }: Props) => {
   const [automaticMovesCompleted, setAutomaticMovesCompleted] =
     useState<boolean>(false);
   const [startingPoint, setStartingPoint] = useState<number | "random">(1);
-  const [hintActive, setHintActive] = useState<boolean>(false);
+  const [hintLevel, setHintLevel] = useState<HintLevel>(0);
 
   const flattenMoves = (movesObjects: MovesListType) =>
     _.flattenDeep(
@@ -200,8 +200,8 @@ const TestMode = ({ lines }: Props) => {
           addRemainingMoveToMakeToAutomaticMoves={
             addRemainingMoveToMakeToAutomaticMoves
           }
-          hintActive={hintActive}
-          setHintActive={setHintActive}
+          hintLevel={hintLevel}
+          setHintLevel={setHintLevel}
         />
         <div className={styles.sideColumn}>
           <CommandColumn
@@ -211,9 +211,10 @@ const TestMode = ({ lines }: Props) => {
             startingPoint={startingPoint}
             setStartingPoint={setStartingPoint}
             maximumStartingPoint={lowestLineLength() - 2}
-            giveHint={() => setHintActive(true)}
+            giveHint={() => setHintLevel(1)}
+            giveAnswer={() => setHintLevel(2)}
             OAM={OAM}
-            hintActive={hintActive}
+            hintLevel={hintLevel}
           />
         </div>
       </div>
