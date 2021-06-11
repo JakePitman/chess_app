@@ -119,7 +119,11 @@ const CommandColumn = ({
               setStartingPointPopupActive(true);
             }}
           />
-          <Button text="Hint" onClick={giveHint} />
+          {hintLevel === 0 ? (
+            <Button text="Hint" onClick={giveHint} />
+          ) : (
+            <Button text="Answer" onClick={giveAnswer} />
+          )}
           <div className={styles.message}>
             {OAM?.reason && hintLevel > 0 ? (
               OAM.reason

@@ -171,17 +171,20 @@ const Square = ({
     [OAM, client, pieceInfo]
   );
 
+  const squareColor = () => {
+    if (hintLevel > 0 && squareNotation === OAM.prevSquare) {
+      return styles.hintSquare;
+    } else if (hintLevel > 1 && isTargetOfOAM(squareNotation, OAM, isWhite)) {
+      return styles.answerSquare;
+    } else {
+      return isLightSquare(rankNumber, fileNumber)
+        ? styles.white
+        : styles.black;
+    }
+  };
+
   return (
-    <div
-      className={
-        hintLevel === 1 && squareNotation === OAM.prevSquare
-          ? styles.hintSquare
-          : isLightSquare(rankNumber, fileNumber)
-          ? styles.white
-          : styles.black
-      }
-      ref={drop}
-    >
+    <div className={squareColor()} ref={drop}>
       {pieceInfo && (
         <Piece
           pieceInfo={pieceInfo}

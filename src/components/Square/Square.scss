@@ -21,6 +21,11 @@
   background: colors.$accent-blue;
 }
 
+.answerSquare {
+  @extend .square;
+  background: #ff6a6a;
+}
+
 .hoverCircle {
   border: 1px solid black;
   width: 90%;
