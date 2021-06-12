@@ -51,10 +51,6 @@ const CommandColumn = ({
           placeholder="Add a variation"
         />
       </div>
-      <Button
-        text={isWhite ? "WHITE ↔" : "BLACK ↔"}
-        onClick={() => setIsWhite(!isWhite)}
-      ></Button>
       <div>
         <Button
           text="Add reason to last move"
@@ -111,6 +107,10 @@ const CommandColumn = ({
           }
         }}
       />{" "}
+      <Button
+        text={isWhite ? "WHITE ↔" : "BLACK ↔"}
+        onClick={() => setIsWhite(!isWhite)}
+      ></Button>
       <Button
         text="RESET BOARD"
         onClick={() => {
