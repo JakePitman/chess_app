@@ -56,7 +56,6 @@ const CommandColumn = ({
         onClick={() => setIsWhite(!isWhite)}
       ></Button>
       <div>
-        {/* <p className={styles.reasonHeader}>Add reason to last move</p> */}
         <Button
           text="Add reason to last move"
           onClick={() => {
