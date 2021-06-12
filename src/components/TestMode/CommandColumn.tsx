@@ -122,7 +122,11 @@ const CommandColumn = ({
           {hintLevel === 0 ? (
             <Button text="Hint" onClick={giveHint} />
           ) : (
-            <Button text="Answer" onClick={giveAnswer} />
+            <Button
+              text="Answer"
+              onClick={hintLevel === 2 ? null : giveAnswer}
+              clickable={hintLevel < 2}
+            />
           )}
           <div className={styles.message}>
             {OAM?.reason && hintLevel > 0 ? (

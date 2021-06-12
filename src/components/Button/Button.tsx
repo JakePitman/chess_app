@@ -5,11 +5,15 @@ import styles from "./Button.scss";
 type Props = {
   text: string;
   onClick: () => void;
+  clickable?: boolean;
 };
 
-const Button = ({ text, onClick }: Props) => {
+const Button = ({ text, onClick, clickable = true }: Props) => {
   return (
-    <div onClick={onClick} className={styles.button}>
+    <div
+      onClick={onClick}
+      className={styles.button + ` ${!clickable && styles.disabled}`}
+    >
       {text}
     </div>
   );
