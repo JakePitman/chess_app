@@ -16,5 +16,14 @@
     background: colors.$accent-blue;
   }
 
+  &.disabled {
+    cursor: default;
+
+    &:hover {
+      color: colors.$accent-blue;
+      background: colors.$near-black;
+    }
+  }
+
   transition: all 0.2s;
 }
