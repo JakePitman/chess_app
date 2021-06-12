@@ -11,7 +11,7 @@ type Props = {
 const Button = ({ text, onClick, clickable = true }: Props) => {
   return (
     <div
-      onClick={onClick}
+      onClick={clickable ? onClick : null}
       className={styles.button + ` ${!clickable && styles.disabled}`}
     >
       {text}

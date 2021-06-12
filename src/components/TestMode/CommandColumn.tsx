@@ -124,7 +124,7 @@ const CommandColumn = ({
           ) : (
             <Button
               text="Answer"
-              onClick={hintLevel === 2 ? null : giveAnswer}
+              onClick={giveAnswer}
               clickable={hintLevel < 2}
             />
           )}
