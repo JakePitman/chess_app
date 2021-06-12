@@ -9,12 +9,15 @@ const pool = new Pool({
 });
 
 const getLines = (request, response) => {
-  pool.query("SELECT * FROM lines ORDER BY name", (error, results) => {
-    if (error) {
-      throw error;
+  pool.query(
+    "SELECT * FROM lines ORDER BY name, variation",
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).json(results.rows);
     }
-    response.status(200).json(results.rows);
-  });
+  );
 };
 
 const getLineById = (request, response) => {
