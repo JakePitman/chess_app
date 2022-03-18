@@ -6,7 +6,7 @@ import styles from "./Board.scss";
 import Rank from "../Rank";
 import { BoardInfoProvider } from "../../contexts/BoardInfoContext";
 import movePieceFactory from "../../helpers/movePiece";
-import { Move } from "../../sharedTypes";
+import { Move, HintLevel } from "../../sharedTypes";
 
 type Props = {
   automaticMoves?: string[];
@@ -17,8 +17,8 @@ type Props = {
   OAM?: Move;
   updateRemainingMoves?: () => void;
   addRemainingMoveToMakeToAutomaticMoves?: () => void;
-  setHintActive?: Dispatch<SetStateAction<boolean>>;
-  hintActive?: boolean;
+  setHintLevel?: Dispatch<SetStateAction<HintLevel>>;
+  hintLevel?: HintLevel;
 };
 
 const Board = ({
@@ -30,8 +30,8 @@ const Board = ({
   OAM,
   updateRemainingMoves,
   addRemainingMoveToMakeToAutomaticMoves,
-  setHintActive,
-  hintActive = false,
+  setHintLevel,
+  hintLevel = 0,
 }: Props) => {
   const [board, setBoard] = useState(client.game.board);
 
@@ -43,7 +43,7 @@ const Board = ({
     (moveNotation: string, prevSquare: string) => {
       client.move(moveNotation);
       addMoveToList(moveNotation, prevSquare);
-      setHintActive && setHintActive(false);
+      setHintLevel && setHintLevel(0);
       updateRemainingMoves && updateRemainingMoves();
       addRemainingMoveToMakeToAutomaticMoves &&
         addRemainingMoveToMakeToAutomaticMoves();
@@ -71,7 +71,7 @@ const Board = ({
                 client={client}
                 addMoveToList={addMoveToList}
                 setBoard={setBoard}
-                hintActive={hintActive}
+                hintLevel={hintLevel}
               />
             ))}
           </div>

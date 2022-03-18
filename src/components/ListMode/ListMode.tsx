@@ -9,15 +9,11 @@ import { Line, MovesListType } from "../../sharedTypes";
 import Board from "../Board";
 import MovesList from "../MovesList";
 
-const handlePUT = (
-  title: string,
-  selected: boolean,
-  updateLinesFromDB: () => void
-) => {
+const handlePUT = (line: Line, updateLinesFromDB: () => void) => {
   axios
     .put("http://localhost:3000/line", {
-      name: title,
-      selected: !selected,
+      id: line.id,
+      selected: !line.selected,
     })
     .then((res) => {
       console.log({ res });
@@ -46,7 +42,7 @@ const handlePUTSelected = (
   lines.forEach((line) => {
     axios
       .put("http://localhost:3000/line", {
-        name: line.name,
+        id: line.id,
         selected: selected,
       })
       .then((res) => {
@@ -68,22 +64,20 @@ const handleDELETE = (id: number, updateLinesFromDB: () => void) => {
 };
 
 type LineRowProps = {
-  title: string;
-  selected: boolean;
-  id: number;
+  line: Line;
   updateLinesFromDB: () => void;
   isWhiteLine: boolean;
   searchInputValue: string;
 };
 
 const LineRow = ({
-  title,
-  selected,
-  id,
+  line,
   updateLinesFromDB,
   isWhiteLine,
   searchInputValue,
 }: LineRowProps) => {
+  const { name, variation, selected, id } = line;
+  const splitSearchValues = searchInputValue.toLowerCase().split(" ");
   return (
     <div
       className={
@@ -92,16 +86,26 @@ const LineRow = ({
     >
       <div
         className={styles.checkbox + ` ${selected && styles.selected}`}
-        onClick={() => handlePUT(title, selected, updateLinesFromDB)}
+        onClick={() => handlePUT(line, updateLinesFromDB)}
       />
-      <Highlighter
-        className={styles.lineTitleContainer}
-        highlightClassName={styles.lineTitleHighlighted}
-        unhighlightClassName={styles.lineTitle}
-        searchWords={searchInputValue.toLowerCase().split(" ")}
-        autoEscape={true}
-        textToHighlight={title}
-      />
+      <div className={styles.lineRowTextContainer}>
+        <Highlighter
+          className={styles.lineTitleContainer}
+          highlightClassName={styles.lineRowTextHighlighted}
+          unhighlightClassName={styles.lineTitle}
+          searchWords={splitSearchValues}
+          autoEscape={true}
+          textToHighlight={name}
+        />
+        <Highlighter
+          className={styles.lineVariationContainer}
+          highlightClassName={styles.lineRowTextHighlighted}
+          unhighlightClassName={styles.lineVariation}
+          searchWords={splitSearchValues}
+          autoEscape={true}
+          textToHighlight={variation ? variation : ""}
+        />
+      </div>
       <p
         className={styles.deleteButton}
         onClick={() => handleDELETE(id, updateLinesFromDB)}
@@ -124,13 +128,11 @@ const renderRows = (
       {lines.map((line) => {
         return line.playercolor === filterColor ? (
           <LineRow
-            title={line.name}
-            selected={line.selected}
-            id={line.id}
+            line={line}
             updateLinesFromDB={updateLinesFromDB}
             isWhiteLine={line.playercolor === "white"}
             searchInputValue={searchInputValue}
-            key={line.name}
+            key={line.id}
           />
         ) : null;
       })}
@@ -222,14 +224,19 @@ const ListMode = ({ lines, updateLinesFromDB }: Props) => {
     })
     .filter((line) => {
       const lowercaseLineName = line.name.toLowerCase();
+      const lowercaseLineVariation = line.variation?.toLowerCase() || "";
       const lowercaseSearchValue = searchInputValue.toLowerCase();
       const splitSearch = lowercaseSearchValue.split(" ");
       splitSearch;
       let result = true;
       splitSearch.forEach((word) => {
-        if (!lowercaseLineName.includes(word)) {
-          result = false;
+        if (
+          lowercaseLineName.includes(word) ||
+          lowercaseLineVariation.includes(word)
+        ) {
+          return;
         }
+        result = false;
       });
       return result;
     });

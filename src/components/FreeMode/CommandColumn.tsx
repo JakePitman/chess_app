@@ -31,6 +31,7 @@ const CommandColumn = ({
   resetBoard,
 }: Props) => {
   const [titleInput, setTitleInput] = useState<string>("");
+  const [variationInput, setVariationInput] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
   return (
@@ -43,13 +44,14 @@ const CommandColumn = ({
           className={styles.titleInput}
           placeholder="Add a title"
         />
+        <input
+          onChange={(e) => setVariationInput(e.target.value)}
+          value={variationInput}
+          className={styles.titleInput}
+          placeholder="Add a variation"
+        />
       </div>
-      <Button
-        text={isWhite ? "WHITE ↔" : "BLACK ↔"}
-        onClick={() => setIsWhite(!isWhite)}
-      ></Button>
       <div>
-        {/* <p className={styles.reasonHeader}>Add reason to last move</p> */}
         <Button
           text="Add reason to last move"
           onClick={() => {
@@ -86,6 +88,7 @@ const CommandColumn = ({
             axios
               .post("http://localhost:3000/lines", {
                 name: titleInput,
+                variation: variationInput,
                 playercolor: isWhite ? "white" : "black",
                 moves: JSON.stringify(moves),
               })
@@ -104,6 +107,10 @@ const CommandColumn = ({
           }
         }}
       />{" "}
+      <Button
+        text={isWhite ? "WHITE ↔" : "BLACK ↔"}
+        onClick={() => setIsWhite(!isWhite)}
+      ></Button>
       <Button
         text="RESET BOARD"
         onClick={() => {

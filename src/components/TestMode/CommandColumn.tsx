@@ -2,7 +2,7 @@ import React, { useState, SetStateAction, Dispatch } from "react";
 
 import styles from "./CommandColumn.scss";
 import Button from "../Button";
-import { Move } from "../../sharedTypes";
+import { Move, HintLevel } from "../../sharedTypes";
 
 const StartingPointMenuOption = ({
   value,
@@ -71,23 +71,27 @@ const StartingPointMenu = ({
 type Props = {
   setRandomLine: () => void;
   lineTitle: string;
+  lineVariation: string;
   startingPoint: number | "random";
   setStartingPoint: Dispatch<SetStateAction<number | "random">>;
   maximumStartingPoint: number;
   giveHint: () => void;
+  giveAnswer: () => void;
   OAM: Move | null;
-  hintActive: boolean;
+  hintLevel: HintLevel;
 };
 
 const CommandColumn = ({
   setRandomLine,
   lineTitle,
+  lineVariation,
   startingPoint,
   setStartingPoint,
   maximumStartingPoint,
   giveHint,
+  giveAnswer,
   OAM,
-  hintActive,
+  hintLevel,
 }: Props) => {
   const [message, setMessage] = useState<string>("");
   const [startingPointPopupActive, setStartingPointPopupActive] =
@@ -104,7 +108,10 @@ const CommandColumn = ({
         />
       ) : (
         <>
-          <p className={styles.inputHeader}>{lineTitle}</p>
+          <div className={styles.titleTextContainer}>
+            <p className={styles.lineTitle}>{lineTitle}</p>
+            <p className={styles.lineVariation}>{lineVariation}</p>
+          </div>
           <Button text="New line" onClick={setRandomLine} />
           <Button
             text={`Starting point: ${startingPoint}`}
@@ -112,9 +119,17 @@ const CommandColumn = ({
               setStartingPointPopupActive(true);
             }}
           />
-          <Button text="Hint" onClick={giveHint} />
+          {hintLevel === 0 ? (
+            <Button text="Hint" onClick={giveHint} />
+          ) : (
+            <Button
+              text="Answer"
+              onClick={giveAnswer}
+              clickable={hintLevel < 2}
+            />
+          )}
           <div className={styles.message}>
-            {OAM?.reason && hintActive ? (
+            {OAM?.reason && hintLevel > 0 ? (
               OAM.reason
                 .split("\n")
                 .map((reason) => <p key={reason}>‣ {reason}</p>)
