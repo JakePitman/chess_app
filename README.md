@@ -11,7 +11,7 @@
 
 ## Test Mode
 
-> A saved line will be selected at random, and a random number of moves will be made automatically. From here, it will wait for the user to make the correct move for their chosen colour
+> A saved line will be selected at random, and a random number of moves will be made automatically. From here, the app will wait for the user to make the correct move for their chosen colour
 > ![test-automatic-moves](./assets/test-mode-automatic-moves-demo.gif)
 > Incorrect moves are rejected
 > ![test-wrong-moves](./assets/test-mode-wrong-moves-demo.gif)
